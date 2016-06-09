@@ -219,13 +219,7 @@ int power_hint_override(__unused struct power_module *module,
 
     int resources_interaction_fling_boost[] = {
         CPUBW_HWMON_MIN_FREQ, 0x33,
-        MIN_FREQ_BIG_CORE_0, 0x3E8,
-        MIN_FREQ_LITTLE_CORE_0, 0x3E8,
         SCHED_BOOST_ON_V3, 0x2,
-    };
-
-    int resources_interaction_boost[] = {
-        MIN_FREQ_BIG_CORE_0, 0x3E8,
     };
 
     if (hint == POWER_HINT_SET_PROFILE) {
@@ -257,9 +251,6 @@ int power_hint_override(__unused struct power_module *module,
         if (duration >= 1500) {
             interaction(duration, ARRAY_SIZE(resources_interaction_fling_boost),
                     resources_interaction_fling_boost);
-        } else {
-            interaction(duration, ARRAY_SIZE(resources_interaction_boost),
-                    resources_interaction_boost);
         }
         return HINT_HANDLED;
     }
