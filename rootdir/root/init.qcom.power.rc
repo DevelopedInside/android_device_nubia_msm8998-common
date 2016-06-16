@@ -152,9 +152,6 @@ on enable-low-power
     # Disable sched_boost
     write /proc/sys/kernel/sched_boost 0
 
-    # Set perfd properties
-    setprop sys.post_boot.parsed 1
-
 on charger
     mount ext4 /dev/block/bootdevice/by-name/system /system ro
 
@@ -211,6 +208,5 @@ on property:dev.bootcomplete=1
     write /dev/cpuset/system-background/cpus 0-3
     write /dev/cpuset/camera-daemon/cpus 0-3
 
-    # Start perfd after all properties have been properly set
-    rm /data/system/perfd/default_values
-    start perfd
+    # Set perfd properties
+    setprop sys.post_boot.parsed 1
