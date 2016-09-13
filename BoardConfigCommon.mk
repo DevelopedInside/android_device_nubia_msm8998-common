@@ -166,9 +166,6 @@ BOARD_HARDWARE_CLASS += \
 # CNE and DPM
 BOARD_USES_QCNE := true
 
-# Clang
-USE_CLANG_PLATFORM_BUILD := true
-
 # Crypto
 TARGET_HW_DISK_ENCRYPTION := true
 
