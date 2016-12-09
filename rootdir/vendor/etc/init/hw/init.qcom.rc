@@ -211,6 +211,9 @@ on boot
 
     # Create vpp directory
     mkdir /persist/vpp 0770 media media
+    
+    # Wifi firmware reload path
+    chown wifi wifi /sys/module/wlan/parameters/fwpath
 
     # load WIGIG platform driver
     insmod /vendor/lib/modules/msm_11ad_proxy.ko
