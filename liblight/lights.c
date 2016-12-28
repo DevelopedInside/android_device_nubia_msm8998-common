@@ -48,6 +48,9 @@ static struct light_state_t g_buttons;
 // Display
 char const* const LCD_FILE = "/sys/class/leds/lcd-backlight/brightness";
 
+char const* const LCD_MAX_BRIGHTNESS_FILE =
+    "/sys/class/leds/lcd-backlight/max_brightness";
+
 // Nubia LED
 char const* const LED_BRIGHTNESS = "/sys/class/leds/nubia_led/brightness";
 
@@ -87,6 +90,11 @@ char const* const BATTERY_CHARGING_STATUS =
 #define LED_GRADE_HOME_BATTERY_LOW 0
 #define LED_GRADE_HOME_NOTIFICATION 6
 #define LED_GRADE_HOME_BATTERY 6
+
+// Max display brightness
+#define DEFAULT_MAX_BRIGHTNESS 255
+
+int max_brightness;
 
 int initialized = 0;
 
@@ -177,6 +185,16 @@ static int set_light_backlight(struct light_device_t* dev,
   if (!dev) {
     return -1;
   }
+
+  // If max panel brightness is not the default (255),
+  // apply linear scaling across the accepted range.
+  if (max_brightness != DEFAULT_MAX_BRIGHTNESS) {
+    int old_brightness = brightness;
+    brightness = brightness * max_brightness / DEFAULT_MAX_BRIGHTNESS;
+    ALOGV("%s: scaling brightness %d => %d\n", __func__, old_brightness,
+          brightness);
+  }
+
   pthread_mutex_lock(&g_lock);
   err = write_int(LCD_FILE, brightness);
   pthread_mutex_unlock(&g_lock);
@@ -447,6 +465,13 @@ static int open_lights(const struct hw_module_t* module, char const* name,
     set_light = set_light_attention;
   else
     return -EINVAL;
+
+  read_int(LCD_MAX_BRIGHTNESS_FILE, &max_brightness);
+  if (max_brightness < 0) {
+    ALOGE("%s: failed to read max panel brightness, fallback to 255!\n",
+          __func__);
+    max_brightness = DEFAULT_MAX_BRIGHTNESS;
+  }
 
   pthread_once(&g_init, init_globals);
 
