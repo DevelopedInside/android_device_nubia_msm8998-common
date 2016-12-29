@@ -37,11 +37,12 @@
 
 /******************************************************************************/
 
-#define BLINK_MODE_ON   "6"
-#define BLINK_MODE_OFF  "2"
+#define BLINK_MODE_ON       "6"
+#define BLINK_MODE_BREATH   "3"
+#define BLINK_MODE_OFF      "2"
 
-#define CHANNEL_BUTTONS 8
-#define CHANNEL_RED     16
+#define CHANNEL_BUTTONS     8
+#define CHANNEL_RED         16
 
 #define BRIGHTNESS_BUTTONS  3
 #define BRIGHTNESS_RED      8
@@ -64,39 +65,19 @@ static int active_states = 0;
 
 static int last_state = BREATH_SOURCE_NONE;
 
-static int g_breathing = 0;
-
 
 char const*const LCD_FILE
         = "/sys/class/leds/lcd-backlight/brightness";
 
 
 char const*const BREATH_RED_LED
-        = "sys/class/leds/nubia_led/blink_mode";
+        = "/sys/class/leds/nubia_led/blink_mode";
 
 char const*const BREATH_RED_OUTN
         = "/sys/class/leds/nubia_led/outn";
 
-char const*const BREATH_RED_FADE
-        = "/sys/class/leds/nubia_led/fade_parameter";
-
 char const*const BREATH_RED_GRADE
         = "/sys/class/leds/nubia_led/grade_parameter";
-
-char const*const BREATH_RED_DUTY_PCTS
-        = "/sys/class/leds/nubia_led/duty_pcts";
-
-char const*const BREATH_RED_START_IDX
-        = "/sys/class/leds/nubia_led/start_idx";
-
-char const*const BREATH_RED_PAUSE_LO
-        = "/sys/class/leds/nubia_led/pause_lo";
-
-char const*const BREATH_RED_PAUSE_HI
-        = "/sys/class/leds/nubia_led/pause_hi";
-
-char const*const BREATH_RED_RAMP_STEP_MS
-        = "/sys/class/leds/nubia_led/ramp_step_ms";
 
 
 char const*const BATTERY_CAPACITY
@@ -105,11 +86,6 @@ char const*const BATTERY_CAPACITY
 char const*const BATTERY_IS_CHARGING
         = "/sys/class/power_supply/battery/status";
 
-
-#define RAMP_SIZE 8
-static int BRIGHTNESS_RAMP[RAMP_SIZE]
-        = { 0, 12, 25, 37, 50, 72, 85, 100 };
-#define RAMP_STEP_DURATION 50
 
 /**
  * Device methods
@@ -163,34 +139,14 @@ static int write_str(char const* path, char* value)
     }
 }
 
-static int is_lit(struct light_state_t const* state)
-{
-    return state->color & 0x00ffffff;
-}
-
 static int rgb_to_brightness(struct light_state_t const* state)
 {
     int color = state->color & 0x00ffffff;
-    return ((77*((color>>16)&0x00ff))
-            + (150*((color>>8)&0x00ff)) + (29*(color&0x00ff))) >> 8;
-}
-
-static char* get_scaled_duty_pcts(int brightness)
-{
-    char *buf = malloc(5 * RAMP_SIZE * sizeof(char));
-    char *pad = "";
-    int i = 0;
-
-    memset(buf, 0, 5 * RAMP_SIZE * sizeof(char));
-
-    for (i = 0; i < RAMP_SIZE; i++) {
-        char temp[5] = "";
-        snprintf(temp, sizeof(temp), "%s%d", pad, (BRIGHTNESS_RAMP[i] * brightness / 255));
-        strcat(buf, temp);
-        pad = ",";
-    }
-    ALOGV("%s: brightness=%d duty=%s", __func__, brightness, buf);
-    return buf;
+    return (
+      ((color >> 16) & 0xff)
+    + ((color >> 8 ) & 0xff)
+    + ( color        & 0xff)
+    ) / 3;
 }
 
 static int set_light_backlight(struct light_device_t* dev,
@@ -207,28 +163,9 @@ static int set_light_backlight(struct light_device_t* dev,
 static int set_breath_light_locked(int event_source,
         struct light_state_t const* state)
 {
-    int brightness, blink;
-    int onMS, offMS, stepDuration, pauseHi;
-    unsigned int colorRGB;
-    char *duty;
+    char* blink_mode;
 
-    switch (state->flashMode) {
-        case LIGHT_FLASH_TIMED:
-            onMS = state->flashOnMS;
-            offMS = state->flashOffMS;
-            break;
-        case LIGHT_FLASH_NONE:
-        default:
-            onMS = 0;
-            offMS = 0;
-            break;
-    }
-
-    blink = onMS > 0 && offMS > 0;
-
-    colorRGB = state->color;
-
-    brightness = (colorRGB >> 16) & 0xFF;
+    int brightness = (state->color >> 16) & 0xFF;
 
     if (brightness > 0) {
         active_states |= event_source;
@@ -236,11 +173,9 @@ static int set_breath_light_locked(int event_source,
         active_states &= ~event_source;
 
         write_int(BREATH_RED_OUTN, CHANNEL_BUTTONS);
-        write_str(BREATH_RED_FADE, "1 0 0");
         write_str(BREATH_RED_LED, BLINK_MODE_OFF);
 
         write_int(BREATH_RED_OUTN, CHANNEL_RED);
-        write_str(BREATH_RED_FADE, "1 0 0");
         write_str(BREATH_RED_LED, BLINK_MODE_OFF);
 
         if (active_states == 0) {
@@ -251,9 +186,11 @@ static int set_breath_light_locked(int event_source,
 
     if (active_states & BREATH_SOURCE_NOTIFICATION) {
         state = &g_notification;
+        blink_mode = BLINK_MODE_BREATH;
         last_state = BREATH_SOURCE_NOTIFICATION;
     } else if (active_states & BREATH_SOURCE_BATTERY) {
         state = &g_battery;
+        blink_mode = BLINK_MODE_BREATH; // TODO: get battery status
         last_state = BREATH_SOURCE_BATTERY;
     } else if (active_states & BREATH_SOURCE_BUTTONS) {
         if (last_state == BREATH_SOURCE_BUTTONS)
@@ -263,6 +200,7 @@ static int set_breath_light_locked(int event_source,
         last_state = BREATH_SOURCE_BUTTONS;
     } else if (active_states & BREATH_SOURCE_ATTENTION) {
         state = &g_attention;
+        blink_mode = BLINK_MODE_BREATH;
         last_state = BREATH_SOURCE_ATTENTION;
     } else {
         last_state = BREATH_SOURCE_NONE;
@@ -273,37 +211,14 @@ static int set_breath_light_locked(int event_source,
     if ((active_states & BREATH_SOURCE_BUTTONS) == 0) {
         ALOGE(" Red led on");
         write_int(BREATH_RED_OUTN, CHANNEL_RED);
-        write_str(BREATH_RED_FADE, "4 5 0");
-        write_str(BREATH_RED_LED, BLINK_MODE_ON);
-
-        if (blink) {
-            duty = get_scaled_duty_pcts(brightness);
-            stepDuration = RAMP_STEP_DURATION;
-            pauseHi = onMS - (stepDuration * RAMP_SIZE * 2);
-            if (stepDuration * RAMP_SIZE * 2 > onMS) {
-                stepDuration = onMS / (RAMP_SIZE * 2);
-                pauseHi = 0;
-            }
-
-            write_int(BREATH_RED_START_IDX, 0);
-            write_str(BREATH_RED_DUTY_PCTS, duty);
-            write_int(BREATH_RED_PAUSE_LO, offMS);
-            write_int(BREATH_RED_PAUSE_HI, pauseHi);
-            write_int(BREATH_RED_RAMP_STEP_MS, stepDuration);
-
-            free(duty);
-        } else {
-            write_int(BREATH_RED_GRADE, brightness);
-        }
+        write_str(BREATH_RED_LED, blink_mode);
     } else {
         ALOGE(" Button led on");
         write_int(BREATH_RED_OUTN, CHANNEL_BUTTONS);
-        write_str(BREATH_RED_FADE, "1 0 0");
         write_int(BREATH_RED_GRADE, BRIGHTNESS_BUTTONS);
         write_str(BREATH_RED_LED, BLINK_MODE_ON);
 
         write_int(BREATH_RED_OUTN, CHANNEL_RED);
-        write_str(BREATH_RED_FADE, "1 0 0");
         write_int(BREATH_RED_GRADE, BRIGHTNESS_RED);
         write_str(BREATH_RED_LED, BLINK_MODE_ON);
     }
@@ -314,13 +229,11 @@ static int set_breath_light_locked(int event_source,
 static int set_light_buttons(struct light_device_t* dev,
         struct light_state_t const* state)
 {
-    int err = 0;
-    int brightness = rgb_to_brightness(state);
     pthread_mutex_lock(&g_lock);
     g_buttons = *state;
     set_breath_light_locked(BREATH_SOURCE_BUTTONS, &g_buttons);
     pthread_mutex_unlock(&g_lock);
-    return err;
+    return 0;
 }
 
 static int set_light_battery(struct light_device_t* dev,
@@ -348,6 +261,7 @@ static int set_light_attention(struct light_device_t* dev,
 {
     pthread_mutex_lock(&g_lock);
     g_attention = *state;
+    set_breath_light_locked(BREATH_SOURCE_ATTENTION, &g_attention);
     pthread_mutex_unlock(&g_lock);
     return 0;
 }
