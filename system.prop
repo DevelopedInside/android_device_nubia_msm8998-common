@@ -164,9 +164,6 @@ persist.data.iwlan.enable=true
 persist.data.wda.enable=true
 persist.rmnet.data.enable=true
 
-# SDCardFS
-ro.sys.sdcardfs=true
-
 # Sensors
 ro.qti.sensors.dev_ori=true
 ro.qti.sensors.dpc=true
