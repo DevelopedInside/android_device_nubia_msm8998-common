@@ -352,7 +352,8 @@ int set_interactive_override(__unused struct power_module *module, int on)
         /* Display off */
         if ((strncmp(governor, INTERACTIVE_GOVERNOR, strlen(INTERACTIVE_GOVERNOR)) == 0) &&
             (strlen(governor) == strlen(INTERACTIVE_GOVERNOR))) {
-            int resource_values[] = {};
+            int resource_values[] = { GO_HISPEED_LOAD_LITTLE, 0x64,
+                                      GO_HISPEED_LOAD_BIG, 0x64};
             perform_hint_action(DISPLAY_STATE_HINT_ID,
                     resource_values, ARRAY_SIZE(resource_values));
             ALOGI("Display Off hint start");
