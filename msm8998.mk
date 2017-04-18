@@ -14,8 +14,6 @@
 # limitations under the License.
 #
 
-$(call inherit-product, vendor/nubia/msm8998-common/msm8998-common-vendor.mk)
-
 # Setup dalvik vm configs
 $(call inherit-product, frameworks/native/build/phone-xhdpi-6144-dalvik-heap.mk)
 
@@ -458,3 +456,6 @@ PRODUCT_PACKAGES += \
 
 PRODUCT_BOOT_JARS += \
     WfdCommon
+
+# Inherit the proprietary files
+$(call inherit-product, vendor/nubia/msm8998-common/msm8998-common-vendor.mk)

@@ -296,4 +296,4 @@ WIFI_HIDL_FEATURE_DUAL_INTERFACE := true
 WPA_SUPPLICANT_VERSION := VER_0_8_X
 
 # inherit from the proprietary version
--include vendor/nubia/msm8998-common/BoardConfigVendor.mk
+include vendor/nubia/msm8998-common/BoardConfigVendor.mk
