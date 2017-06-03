@@ -51,8 +51,6 @@ static struct light_state_t g_buttons;
 #define BREATH_SOURCE_ATTENTION     0x08
 #define BREATH_SOURCE_NONE          0x00
 
-static int active_status = BREATH_SOURCE_NONE;
-
 //static int last_state = BREATH_SOURCE_NONE;
 
 
@@ -85,6 +83,11 @@ char const*const BATTERY_IS_CHARGING
 
 #define LED_GRADE_BUTTON	3
 #define LED_GRADE_HOME		8
+
+static int active_status = BREATH_SOURCE_NONE;
+
+static int cur_home_led_status = BLINK_MODE_OFF;
+static int cur_button_led_status = BLINK_MODE_OFF;
 
 /**
  * Device methods
@@ -150,16 +153,24 @@ static int rgb_to_brightness(struct light_state_t const* state)
 
 static void set_led_home_status(int mode)
 {
-	write_int(LED_IN_SWITCH, LED_CHANNEL_HOME);
-	write_int(LED_IN_GRADE_PARA, LED_GRADE_HOME);
-	write_int(LED_IN_MODE_BLINK, mode);
+	if(mode != cur_home_led_status)
+	{
+		write_int(LED_IN_SWITCH, LED_CHANNEL_HOME);
+		write_int(LED_IN_GRADE_PARA, LED_GRADE_HOME);
+		write_int(LED_IN_MODE_BLINK, mode);
+		cur_home_led_status = mode;
+	}
 }
 
 static void set_led_button_status(int mode)
 {
-	write_int(LED_IN_SWITCH, LED_CHANNEL_BUTTON);
-	write_int(LED_IN_GRADE_PARA, LED_GRADE_BUTTON);
-	write_int(LED_IN_MODE_BLINK, mode);
+	if(mode != cur_button_led_status)
+	{
+		write_int(LED_IN_SWITCH, LED_CHANNEL_BUTTON);
+		write_int(LED_IN_GRADE_PARA, LED_GRADE_BUTTON);
+		write_int(LED_IN_MODE_BLINK, mode);
+		cur_button_led_status = mode;
+	}
 }
 
 static char* get_led_status_string(int mode)
