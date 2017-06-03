@@ -37,16 +37,6 @@
 
 /******************************************************************************/
 
-#define BLINK_MODE_ON       "6"
-#define BLINK_MODE_BREATH   "3"
-#define BLINK_MODE_OFF      "2"
-
-#define CHANNEL_BUTTONS     8
-#define CHANNEL_RED         16
-
-#define BRIGHTNESS_BUTTONS  3
-#define BRIGHTNESS_RED      8
-
 static pthread_once_t g_init = PTHREAD_ONCE_INIT;
 static pthread_mutex_t g_lock = PTHREAD_MUTEX_INITIALIZER;
 
@@ -59,33 +49,42 @@ static struct light_state_t g_buttons;
 #define BREATH_SOURCE_BATTERY       0x02
 #define BREATH_SOURCE_BUTTONS       0x04
 #define BREATH_SOURCE_ATTENTION     0x08
-#define BREATH_SOURCE_NONE          0xFF
+#define BREATH_SOURCE_NONE          0x00
 
-static int active_states = 0;
+static int active_status = BREATH_SOURCE_NONE;
 
-static int last_state = BREATH_SOURCE_NONE;
+//static int last_state = BREATH_SOURCE_NONE;
 
 
 char const*const LCD_FILE
         = "/sys/class/leds/lcd-backlight/brightness";
 
 
-char const*const BREATH_RED_LED
+char const*const LED_IN_MODE_BLINK
         = "/sys/class/leds/nubia_led/blink_mode";
 
-char const*const BREATH_RED_OUTN
+char const*const LED_IN_SWITCH
         = "/sys/class/leds/nubia_led/outn";
 
-char const*const BREATH_RED_GRADE
+char const*const LED_IN_GRADE_PARA
         = "/sys/class/leds/nubia_led/grade_parameter";
 
-
+/*
 char const*const BATTERY_CAPACITY
         = "/sys/class/power_supply/battery/capacity";
 
 char const*const BATTERY_IS_CHARGING
         = "/sys/class/power_supply/battery/status";
+*/
+#define BLINK_MODE_ON		6
+#define BLINK_MODE_BREATH	3
+#define BLINK_MODE_OFF		2
 
+#define LED_CHANNEL_HOME	16
+#define LED_CHANNEL_BUTTON	8
+
+#define LED_GRADE_BUTTON	3
+#define LED_GRADE_HOME		8
 
 /**
  * Device methods
@@ -149,6 +148,46 @@ static int rgb_to_brightness(struct light_state_t const* state)
     ) / 3;
 }
 
+static void set_led_home_status(int mode)
+{
+	write_int(LED_IN_SWITCH, LED_CHANNEL_HOME);
+	write_int(LED_IN_GRADE_PARA, LED_GRADE_HOME);
+	write_int(LED_IN_MODE_BLINK, mode);
+}
+
+static void set_led_button_status(int mode)
+{
+	write_int(LED_IN_SWITCH, LED_CHANNEL_BUTTON);
+	write_int(LED_IN_GRADE_PARA, LED_GRADE_BUTTON);
+	write_int(LED_IN_MODE_BLINK, mode);
+}
+
+static char* get_led_status_string(int mode)
+{
+	char* string;
+	switch(mode)
+	{
+		case BLINK_MODE_ON:
+			string = "On";
+			break;
+		case BLINK_MODE_OFF:
+			string = "Off";
+			break;
+		case BLINK_MODE_BREATH:
+			string = "Breath";
+			break;
+		default:
+			string = "Unknown";
+			break;
+	}
+	return string;
+}
+
+static void log_led_status(int home_mode, int button_mode)
+{
+	ALOGE("Home LED %s / Button LED %s\n", get_led_status_string(home_mode), get_led_status_string(button_mode) );
+}
+
 static int set_light_backlight(struct light_device_t* dev,
         struct light_state_t const* state)
 {
@@ -166,63 +205,42 @@ static int set_breath_light_locked(int event_source,
     char* blink_mode;
 
     int brightness = (state->color >> 16) & 0xFF;
+	int home_status = BLINK_MODE_OFF;
+	int button_status = BLINK_MODE_OFF;
 
     if (brightness > 0) {
-        active_states |= event_source;
+        active_status |= event_source;
     } else {
-        active_states &= ~event_source;
+        active_status &= ~event_source;
+	}
 
-        write_int(BREATH_RED_OUTN, CHANNEL_BUTTONS);
-        write_str(BREATH_RED_LED, BLINK_MODE_OFF);
+	if(active_status == 0) //nothing, close all
+	{
+		set_led_home_status(BLINK_MODE_OFF);
+		set_led_button_status(BLINK_MODE_OFF);
+		log_led_status(BLINK_MODE_OFF, BLINK_MODE_OFF);
 
-        write_int(BREATH_RED_OUTN, CHANNEL_RED);
-        write_str(BREATH_RED_LED, BLINK_MODE_OFF);
+		return 0;
+	}
+	if(active_status & BREATH_SOURCE_BUTTONS) //button backlight, turn all on
+	{
+		home_status = BLINK_MODE_ON;
+		button_status = BLINK_MODE_ON;
+	}
 
-        if (active_states == 0) {
-            last_state = BREATH_SOURCE_NONE;
-            return 0;
-        }
-    }
+	if(active_status & BREATH_SOURCE_BATTERY) //battery status, set home on
+	{
+		home_status = BLINK_MODE_ON;
+	}
 
-    if (active_states & BREATH_SOURCE_NOTIFICATION) {
-        state = &g_notification;
-        blink_mode = BLINK_MODE_BREATH;
-        last_state = BREATH_SOURCE_NOTIFICATION;
-    } else if (active_states & BREATH_SOURCE_BATTERY) {
-        state = &g_battery;
-        blink_mode = BLINK_MODE_BREATH; // TODO: get battery status
-        last_state = BREATH_SOURCE_BATTERY;
-    } else if (active_states & BREATH_SOURCE_BUTTONS) {
-        if (last_state == BREATH_SOURCE_BUTTONS)
-            return 0;
+	if( (active_status & BREATH_SOURCE_NOTIFICATION ) || (active_status & BREATH_SOURCE_ATTENTION) ) //notification, set home breath
+	{
+		home_status = BLINK_MODE_BREATH;
+	}
 
-        state = &g_buttons;
-        last_state = BREATH_SOURCE_BUTTONS;
-    } else if (active_states & BREATH_SOURCE_ATTENTION) {
-        state = &g_attention;
-        blink_mode = BLINK_MODE_BREATH;
-        last_state = BREATH_SOURCE_ATTENTION;
-    } else {
-        last_state = BREATH_SOURCE_NONE;
-        ALOGE(" Unknown state");
-        return 0;
-    }
-
-    if ((active_states & BREATH_SOURCE_BUTTONS) == 0) {
-        ALOGE(" Red led on");
-        write_int(BREATH_RED_OUTN, CHANNEL_RED);
-        write_str(BREATH_RED_LED, blink_mode);
-    } else {
-        ALOGE(" Button led on");
-        write_int(BREATH_RED_OUTN, CHANNEL_BUTTONS);
-        write_int(BREATH_RED_GRADE, BRIGHTNESS_BUTTONS);
-        write_str(BREATH_RED_LED, BLINK_MODE_ON);
-
-        write_int(BREATH_RED_OUTN, CHANNEL_RED);
-        write_int(BREATH_RED_GRADE, BRIGHTNESS_RED);
-        write_str(BREATH_RED_LED, BLINK_MODE_ON);
-    }
-
+	set_led_home_status(home_status);
+	set_led_button_status(button_status);
+	log_led_status(home_status, button_status);
     return 0;
 }
 
@@ -328,6 +346,6 @@ struct hw_module_t HAL_MODULE_INFO_SYM = {
     .version_minor = 0,
     .id = LIGHTS_HARDWARE_MODULE_ID,
     .name = "Lights Module for Nubia Z11",
-    .author = "Parheliamm, XiNGRZ",
+    .author = "Parheliamm, XiNGRZ, RichardTung",
     .methods = &lights_module_methods,
 };
