@@ -215,7 +215,7 @@ static int set_breath_light_locked(int event_source,
 {
     char* blink_mode;
 
-    int brightness = (state->color >> 16) & 0xFF;
+    int brightness = rgb_to_brightness(state);
 	int home_status = BLINK_MODE_OFF;
 	int button_status = BLINK_MODE_OFF;
 
