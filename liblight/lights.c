@@ -377,6 +377,7 @@ static int compare_led_status(struct led_data *led1, struct led_data *led2)
 static void copy_led_status(struct led_data *to, struct led_data *from)
 {
 	if (to == NULL || from == NULL) return;
+	to->status = from->status;
 	to->min_grade = from->min_grade;
 	to->fade_time = from->fade_time;
 	to->fade_on_time = from->fade_on_time;
@@ -393,6 +394,7 @@ static void set_led_home_status(struct led_data *mode)
 	if(mode == NULL) return;
 	if( !compare_led_status(mode, &current_home_led_status) )
 	{
+		ALOGE("Write Home Status");
 		set_led_selected(LED_CHANNEL_HOME);
 		if(mode->min_grade >= 0)
 			set_led_current_grade(mode->min_grade);
@@ -413,6 +415,7 @@ static void set_led_button_status(struct led_data *mode)
 	if(mode == NULL) return;
 	if( !compare_led_status(mode, &current_button_led_status) )
 	{
+		ALOGE("Write Button Status");
 		set_led_selected(LED_CHANNEL_BUTTON);
 		if(mode->min_grade >= 0)
 			set_led_current_grade(mode->min_grade);
