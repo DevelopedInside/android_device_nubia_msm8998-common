@@ -105,8 +105,11 @@ all:
 #define LED_CHANNEL_HOME	16
 #define LED_CHANNEL_BUTTON	8
 
-#define LED_GRADE_BUTTON	8
-#define LED_GRADE_HOME		8
+#define LED_GRADE_BUTTON			8
+#define LED_GRADE_HOME				8
+#define LED_GRADE_HOME_BATTERY_LOW	0
+#define LED_GRADE_HOME_NOTIFICATION	6
+#define LED_GRADE_HOME_BATTERY		6
 
 char const*const LED_IN_MODE_BLINK
         = "/sys/class/leds/nubia_led/blink_mode";
@@ -300,6 +303,10 @@ static int rgb_to_brightness(struct light_state_t const* state)
     ) / 3;
 }
 
+inline int get_max(int a, int b)
+{
+	return a > b ? a : b;
+}
 
 /*
  * select a led
@@ -325,7 +332,7 @@ static void set_led_current_grade(int min_grade)
 /*
  * set fade of a led
  * need to select a led using select_led_selected(id)
- * Warning: these args will be filled when set mode to BREATH
+ * Warning: these args only take effect in mode BREATH_ONCE
  * args:
  *	fade_time
  *	on_time
@@ -354,8 +361,8 @@ static void set_led_current_mode(int mode)
  * args:
  *	*led1, *led2: led_data
  * return:
- *	true: equal
- *	false: not equal
+ *	1: equal
+ *	0: not equal
  */
 static int compare_led_status(struct led_data *led1, struct led_data *led2)
 {
@@ -373,11 +380,14 @@ static int compare_led_status(struct led_data *led1, struct led_data *led2)
  * args:
  *	*to: copy to
  *	*from: copy from
+ *	taken: is this status already be taken? affect status when status is BREATH_ONCE
  */
-static void copy_led_status(struct led_data *to, struct led_data *from)
+static void copy_led_status(struct led_data *to, struct led_data *from, int taken)
 {
 	if (to == NULL || from == NULL) return;
-	to->status = from->status;
+	if(taken && from->status == BLINK_MODE_BREATH_ONCE)		//after BREATH_ONCE, LED will always on
+		to->status = BLINK_MODE_ON;
+	else to->status = from->status;
 	to->min_grade = from->min_grade;
 	to->fade_time = from->fade_time;
 	to->fade_on_time = from->fade_on_time;
@@ -401,7 +411,7 @@ static void set_led_home_status(struct led_data *mode)
 		if(mode->fade_time >= 0)
 			set_led_current_fade(mode->fade_time, mode->fade_on_time, mode->fade_off_time);
 		set_led_current_mode(mode->status);
-		copy_led_status(&current_home_led_status, mode);
+		copy_led_status(&current_home_led_status, mode, true);
 	}
 }
 
@@ -421,7 +431,7 @@ static void set_led_button_status(struct led_data *mode)
 			set_led_current_grade(mode->min_grade);
 		//button led not support fade
 		set_led_current_mode(mode->status);
-		copy_led_status(&current_button_led_status, mode);
+		copy_led_status(&current_button_led_status, mode, true);
 	}
 }
 
@@ -506,13 +516,13 @@ static int set_breath_light_locked(int event_source,
 	if(active_status & BREATH_SOURCE_BATTERY) //battery status, set home on
 	{
 		home_status.status = BLINK_MODE_ON;
-		home_status.min_grade = LED_GRADE_HOME;
+		home_status.min_grade = get_max(home_status.min_grade, LED_GRADE_HOME_BATTERY);
 	}
 
 	if( (active_status & BREATH_SOURCE_NOTIFICATION ) || (active_status & BREATH_SOURCE_ATTENTION) ) //notification, set home breath
 	{
 		home_status.status = BLINK_MODE_BREATH;
-		home_status.min_grade = LED_GRADE_HOME;
+		home_status.min_grade = get_max(home_status.min_grade, LED_GRADE_HOME_NOTIFICATION);
 	}
 
 	set_led_home_status(&home_status);
