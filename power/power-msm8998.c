@@ -47,6 +47,11 @@
 #include "performance.h"
 #include "power-common.h"
 
+int launch_handle = -1;
+int launch_mode;
+int cpu_boost_handle = -1;
+int cpu_boost_mode;
+
 static int current_power_profile = PROFILE_BALANCED;
 
 extern void interaction(int duration, int num_args, int opt_list[]);
@@ -197,20 +202,44 @@ static int process_interaction_hint(void *data)
 static int process_launch_hint(void *data)
 {
     int duration = 2000;
-    interaction(duration, ARRAY_SIZE(resources_launch),
-            resources_launch);
-    return HINT_HANDLED;
+
+    if (data && launch_mode == 0) {
+        launch_handle = interaction_with_handle(
+            launch_handle, duration, ARRAY_SIZE(resources_launch), resources_launch);
+        if (CHECK_HANDLE(launch_handle)) {
+            launch_mode = 1;
+            ALOGI("Activity launch hint handled");
+            return HINT_HANDLED;
+        } else {
+            return HINT_NONE;
+        }
+    } else if (data == NULL && launch_mode == 1) {
+        release_request(launch_handle);
+        launch_mode = 0;
+        return HINT_HANDLED;
+    }
+    return HINT_NONE;
 }
 
 static int process_cpu_boost_hint(void *data)
 {
     int duration = *(int32_t *)data / 1000;
-    if (duration > 0) {
-        interaction(duration, ARRAY_SIZE(resources_cpu_boost),
-                resources_cpu_boost);
+    if (duration > 0 && data && cpu_boost_mode == 0) {
+        cpu_boost_handle = interaction_with_handle(
+            cpu_boost_handle, duration, ARRAY_SIZE(resources_cpu_boost), resources_cpu_boost);
+        if (CHECK_HANDLE(cpu_boost_handle)) {
+            cpu_boost_mode = 1;
+            ALOGI("CPU boost hint handled");
+            return HINT_HANDLED;
+        } else {
+            return HINT_NONE;
+        }
+    } else if (data == NULL && cpu_boost_mode == 1) {
+        release_request(cpu_boost_handle);
+        cpu_boost_mode = 0;
         return HINT_HANDLED;
     }
-	return HINT_NONE;
+    return HINT_NONE;
 }
 
 static int process_video_encode_hint(void *metadata)
