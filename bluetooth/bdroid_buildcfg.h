@@ -39,6 +39,7 @@ static inline const char* BtmGetDefaultName()
     return "";
 }
 
+#define BTM_DEF_LOCAL_NAME BtmGetDefaultName()
 #define BLUETOOTH_QTI_SW TRUE
 // Disables read remote device feature
 #define MAX_ACL_CONNECTIONS   16
