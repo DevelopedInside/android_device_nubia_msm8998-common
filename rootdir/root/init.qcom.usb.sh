@@ -27,7 +27,6 @@
 # IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #
 #
-setprop sys.checkusbsh.config qcom-usb-sh-doing
 chown -h root.system /sys/devices/platform/msm_hsusb/gadget/wakeup
 chmod -h 220 /sys/devices/platform/msm_hsusb/gadget/wakeup
 
@@ -83,23 +82,6 @@ case "$usbcurrentlimit" in
 esac
 
 #
-# ZTEMT: Allow USB enumeration with or without debug port
-#
-
-if [ -f "/persist/property/persist.sys.usb.factory" ]; then
-	cat /persist/property/persist.sys.usb.factory | while read line
-	do
-		setprop persist.sys.usb.factory $line
-	done
-else
-	mkdir -p /persist/property
-	touch /persist/property/persist.sys.usb.factory
-	echo 1 > /persist/property/persist.sys.usb.factory
-	chown -R system:system /persist/property
-	setprop persist.sys.usb.factory 1
-fi
-
-#
 # Check ESOC for external MDM
 #
 # Note: currently only a single MDM is supported
@@ -124,131 +106,80 @@ else
 	soc_id=`cat /sys/devices/system/soc/soc0/id`
 fi
 
-# check configfs is mounted or not
-if [ -d /config/usb_gadget ]; then
-        # Chip-serial is used for unique MSM identification in Product string
-        msm_serial=`cat /sys/devices/soc0/serial_number`;
-        msm_serial_hex=`printf %08X $msm_serial`
-        machine_type=`cat /sys/devices/soc0/machine`
-        product_string="$machine_type-$soc_hwplatform _SN:$msm_serial_hex"
-        echo "$product_string" > /config/usb_gadget/g1/strings/0x409/product
-
-        # # ADB requires valid iSerialNumber; if ro.serialno is missing, use dummy
-        # serialno=`getprop ro.serialno`
-        # if [ "$serialno" == "" ]; then
-        #     serialno=1234567
-        # fi
-        # echo $serialno > /config/usb_gadget/g1/strings/0x409/serialnumber
-
-        # Use fixed serialno if in ffbm mode or /cache/usb/usb_fixed_serialno is set
-        bootmode=`getprop ro.bootmode`
-        serialnomode=`cat /cache/usb/usb_fixed_serialno`
-        if [ "$bootmode" = "ffbm-01" ] || [ "$serialnomode" -eq 1 ]; then
-                setprop persist.sys.usb.fixedserialno 1
-        else
-                setprop persist.sys.usb.fixedserialno 0
-        fi
-
-        setprop sys.usb.configfs 1
-fi
-
 #
 # Allow USB enumeration with default PID/VID
 #
 baseband=`getprop ro.baseband`
+
 echo 1  > /sys/class/android_usb/f_mass_storage/lun/nofua
 usb_config=`getprop persist.sys.usb.config`
-#case "$usb_config" in
-#    "" | "adb") #USB persist config not set, select default configuration
-#      case "$esoc_link" in
-#          "PCIe")
-#              setprop persist.sys.usb.config diag,diag_mdm,serial_cdev,rmnet_qti_ether,mass_storage,adb
-#          ;;
-#          *)
-#	  case "$baseband" in
-#	      "apq")
-#	          setprop persist.sys.usb.config diag,adb
-#	      ;;
-#	      *)
-#	      case "$soc_hwplatform" in
-#	          "Dragon" | "SBC")
-#	              setprop persist.sys.usb.config diag,adb
-#	          ;;
-#                  *)
-#		  soc_machine=${soc_machine:0:3}
-#		  case "$soc_machine" in
-#		    "SDA")
-#	              setprop persist.sys.usb.config diag,adb
-#		    ;;
-#		    *)
-#	            case "$target" in
-#                      "msm8916")
-#		          setprop persist.sys.usb.config diag,serial_smd,rmnet_bam,adb
-#		      ;;
-#	              "msm8994" | "msm8992")
-#	                  setprop persist.sys.usb.config diag,serial_smd,serial_tty,rmnet_ipa,mass_storage,adb
-#		      ;;
-#	              "msm8996")
-#	                  setprop persist.sys.usb.config diag,serial_cdev,serial_tty,rmnet_ipa,mass_storage,adb
-#		      ;;
-#	              "msm8909")
-#		          setprop persist.sys.usb.config diag,serial_smd,rmnet_qti_bam,adb
-#		      ;;
-#	              "msm8937")
-#			    case "$soc_id" in
-#				    "313" | "320")
-#				       setprop persist.sys.usb.config diag,serial_smd,rmnet_ipa,adb
-#				    ;;
-#				    *)
-#				       setprop persist.sys.usb.config diag,serial_smd,rmnet_qti_bam,adb
-#				    ;;
-#			    esac
-#		      ;;
-#	              "msm8952" | "msm8953")
-#		          setprop persist.sys.usb.config diag,serial_smd,rmnet_ipa,adb
-#		      ;;
-#	              "msm8998" | "sdm660")
-#		          setprop persist.sys.usb.config diag,serial_cdev,rmnet,adb
-#		      ;;
-#	              *)
-#		          setprop persist.sys.usb.config diag,adb
-#		      ;;
-#                    esac
-#		    ;;
-#		  esac
-#	          ;;
-#	      esac
-#	      ;;
-#	  esac
-#	  ;;
-#      esac
-#      ;;
-#  * ) ;; #USB persist config exists, do nothing
-#esac
-
-build_type=`getprop ro.build.type`
-if [ -f "/sdcard/usb_config.txt" ];then
-	cat /sdcard/usb_config.txt | while read configline
-	do
-		setprop persist.sys.usb.config $configline
-	done
-else
-	case "$usb_config" in
-	      "nubia,adb"|"nubia")
-	       # do nothing
+case "$usb_config" in
+    "" | "adb") #USB persist config not set, select default configuration
+      case "$esoc_link" in
+          "PCIe")
+              setprop persist.sys.usb.config diag,diag_mdm,serial_cdev,rmnet_qti_ether,mass_storage,adb
+          ;;
+          *)
+	  case "$baseband" in
+	      "apq")
+	          setprop persist.sys.usb.config diag,adb
 	      ;;
-	       *)
-	          case "$build_type" in
-	              "eng")
-	                 setprop persist.sys.usb.config nubia,adb
-	              ;;
-	               *)
-	                 setprop persist.sys.usb.config nubia
-	              ;;
-	         esac
+	      *)
+	      case "$soc_hwplatform" in
+	          "Dragon" | "SBC")
+	              setprop persist.sys.usb.config diag,adb
+	          ;;
+                  *)
+		  soc_machine=${soc_machine:0:3}
+		  case "$soc_machine" in
+		    "SDA")
+	              setprop persist.sys.usb.config diag,adb
+		    ;;
+		    *)
+	            case "$target" in
+                      "msm8916")
+		          setprop persist.sys.usb.config diag,serial_smd,rmnet_bam,adb
+		      ;;
+	              "msm8994" | "msm8992")
+	                  setprop persist.sys.usb.config diag,serial_smd,serial_tty,rmnet_ipa,mass_storage,adb
+		      ;;
+	              "msm8996")
+	                  setprop persist.sys.usb.config diag,serial_cdev,serial_tty,rmnet_ipa,mass_storage,adb
+		      ;;
+	              "msm8909")
+		          setprop persist.sys.usb.config diag,serial_smd,rmnet_qti_bam,adb
+		      ;;
+	              "msm8937")
+			    case "$soc_id" in
+				    "313" | "320")
+				       setprop persist.sys.usb.config diag,serial_smd,rmnet_ipa,adb
+				    ;;
+				    *)
+				       setprop persist.sys.usb.config diag,serial_smd,rmnet_qti_bam,adb
+				    ;;
+			    esac
+		      ;;
+	              "msm8952" | "msm8953")
+		          setprop persist.sys.usb.config diag,serial_smd,rmnet_ipa,adb
+		      ;;
+	              "msm8998" | "sdm660")
+		          setprop persist.sys.usb.config diag,serial_cdev,rmnet,adb
+		      ;;
+	              *)
+		          setprop persist.sys.usb.config diag,adb
+		      ;;
+                    esac
+		    ;;
+		  esac
+	          ;;
+	      esac
 	      ;;
-	esac
-fi
+	  esac
+	  ;;
+      esac
+      ;;
+  * ) ;; #USB persist config exists, do nothing
+esac
 
 # set USB controller's device node
 case "$target" in
@@ -276,6 +207,25 @@ case "$target" in
     *)
 	;;
 esac
+
+# check configfs is mounted or not
+if [ -d /config/usb_gadget ]; then
+	# Chip-serial is used for unique MSM identification in Product string
+	msm_serial=`cat /sys/devices/soc0/serial_number`;
+	msm_serial_hex=`printf %08X $msm_serial`
+	machine_type=`cat /sys/devices/soc0/machine`
+	product_string="$machine_type-$soc_hwplatform _SN:$msm_serial_hex"
+	echo "$product_string" > /config/usb_gadget/g1/strings/0x409/product
+
+	# ADB requires valid iSerialNumber; if ro.serialno is missing, use dummy
+	serialno=`getprop ro.serialno`
+	if [ "$serialno" == "" ]; then
+	    serialno=1234567
+	fi
+	echo $serialno > /config/usb_gadget/g1/strings/0x409/serialnumber
+
+	setprop sys.usb.configfs 1
+fi
 
 #
 # Do target specific things
@@ -393,4 +343,3 @@ case "$soc_id" in
 		setprop sys.usb.rps_mask 40
 	;;
 esac
-setprop sys.checkusbsh.config qcom-usb-sh-over

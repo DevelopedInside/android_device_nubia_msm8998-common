@@ -25,11 +25,11 @@
 # ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #
 
-import init.nubia.usb.rc
+import init.qcom.usb.rc
 import init.msm.usb.configfs.rc
 import init.target.rc
-# nubia rc
-import init.nubia.rc
+import init.qcom.factory.rc
+import init.qcom.test.rc
 
 on early-init
     mount debugfs debugfs /sys/kernel/debug
@@ -38,8 +38,10 @@ on early-init
 on init
     # Set permissions for persist partition
     mkdir /persist 0771 root system
-    # See storage config details at http://source.android.com/tech/storage/
-    # NUBIA: Some commands are moved to and modified in init.project.rc
+
+    # Support legacy paths
+    symlink /sdcard /mnt/sdcard
+    symlink /sdcard /storage/sdcard0
 
     # Create cgroup mount point for memory
     mount tmpfs none /sys/fs/cgroup mode=0750,uid=0,gid=1000
@@ -219,8 +221,7 @@ on post-fs-data
     mkdir /data/misc/qsee 0770 system system
 
     #Create folder for mm-qcamera-daemon
-    #ZTEMT:fengxun modify from 0770
-    mkdir /data/misc/camera 0775 camera camera
+    mkdir /data/misc/camera 0770 camera camera
 
     mkdir /data/media 0770 media_rw media_rw
     chown media_rw media_rw /data/media
@@ -377,9 +378,6 @@ on post-fs-data
     write /sys/block/dm-0/queue/read_ahead_kb 2048
     write /sys/block/dm-1/queue/read_ahead_kb 2048
 
-    #WAPI
-    mkdir /data/misc/wapi_certificate 0770 system wifi
-
     # create QDMA related dirs
     mkdir /data/misc/qdmastats 0700 system system
     mkdir /data/misc/qdma 0770 system system
@@ -503,7 +501,7 @@ on property:vold.decrypt=trigger_restart_framework
     start config_bt_addr
     start config_bluetooth
     start wcnss-service
-#    start cnss_diag
+    start cnss_diag
 
 
 service cnd /system/bin/cnd
@@ -611,18 +609,12 @@ service bt_logger /system/bin/bt_logger
    disabled
    oneshot
 
-service ftmd /system/bin/ftmdaemon -n
+service ftmd /system/bin/logwrapper /system/bin/ftmdaemon
     class late_start
     user root
     group bluetooth net_bt_admin misc net_bt_stack qcom_diag net_bt
     disabled
     oneshot
-
-on properity:persist.service.ftmdaemon=1
-    start ftmd
-
-on properity:persist.service.ftmdaemon=0
-    stop ftmd
 
 service bridgemgrd /system/bin/bridgemgrd
     class late_start
@@ -823,14 +815,6 @@ service cnss_diag /system/bin/cnss_diag -q -f -b 128
     class main
     user system
     group system wifi inet net_admin sdcard_rw media_rw diag
-    disabled
-    oneshot
-
-service cnssLogsystem /system/bin/cnssLogsystem
-    class main
-    user root
-    group root
-    disabled
     oneshot
 
 service cnss-daemon /system/bin/cnss-daemon -n -l
@@ -914,16 +898,9 @@ service wifi-crda /system/bin/sh /system/etc/init.crda.sh
    disabled
    oneshot
 
-service recovery-cplog /system/bin/sh /system/etc/recovery.cplog.sh
-   class late_start
-   user root
-   disabled
-   oneshot
-
 on property:sys.boot_completed=1
     start qcom-post-boot
     start qti-testscripts
-    start recovery-cplog
 
 service atfwd /system/bin/ATFWD-daemon
     class late_start
@@ -1009,17 +986,10 @@ service hcidump /system/bin/sh /system/etc/hcidump.sh
     disabled
     oneshot
 
-service poweroffcharge /sbin/poweroffcharge
+service charger /charger
     class charger
-    seclabel u:r:poweroffcharge:s0
-    group root system
-
-service productionmode /sbin/productionmode
-    class core
-    user root
-    seclabel u:r:productionmode:s0
-    disabled
-    oneshot
+    group system graphics
+    seclabel u:r:healthd:s0
 
 service ssr_diag /system/bin/ssr_diag
     class late_start
@@ -1099,16 +1069,14 @@ service wfdservice /system/bin/wfdservice
     group audio camera inet net_bt_stack drmrpc media_rw media input net_admin
     #removed these because of limit of 12 groups
     #graphics net_bt net_bt_admin bluetooth
-#NUBIA MODIFY for wfd get wfdservice when it connecting
-    #disabled
-    #oneshot
+    disabled
+    oneshot
 
-#on property:sys.wfdservice=enable
-#    start wfdservice
+on property:sys.wfdservice=enable
+    start wfdservice
 
-#on property:sys.wfdservice=disable
-#    stop wfdservice
-#NUBIA MODIFY END
+on property:sys.wfdservice=disable
+    stop wfdservice
 
 service RIDL /system/vendor/bin/RIDLClient.exe
     class late_start

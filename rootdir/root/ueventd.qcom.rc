@@ -49,9 +49,6 @@
 /dev/rmnet_ctrl           0660   usb        usb
 /dev/dpl_ctrl             0660   usb        usb
 
-#permissions for IR uart
-/dev/ttyMSM1		  0666   system     system
-
 #permissions for CSVT
 /dev/smd11                0660   radio      radio
 
@@ -159,7 +156,6 @@
 /dev/sdsprpc-smd          0660   system     system
 
 #permissions for audio
-/dev/tiload_node          0666   root       root
 /dev/wcd_dsp0_control     0660   system     audio
 /dev/wcd-dsp-glink        0660   system     audio
 /dev/audio_slimslave      0660   system     audio

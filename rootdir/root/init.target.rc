@@ -1,4 +1,4 @@
-# Copyright (c) 2013-2017, The Linux Foundation. All rights reserved.
+# Copyright (c) 2013-2016, The Linux Foundation. All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions are
@@ -26,34 +26,16 @@
 # IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #
 #
-# NUBIA project customization
-import init.project.rc
+
 on early-init
-    mkdir /system 0777 root root
     mkdir /firmware 0771 system system
     mkdir /bt_firmware 0771 system system
+    symlink /data/tombstones /tombstones
     mkdir /dsp 0771 media media
-    write /proc/sys/kernel/sched_boost 1
-
-on init
-    write /dev/stune/foreground/schedtune.sched_boost_no_override 1
-    write /dev/stune/top-app/schedtune.sched_boost_no_override 1
-    write /dev/stune/schedtune.colocate 0
-    write /dev/stune/background/schedtune.colocate 0
-    write /dev/stune/system-background/schedtune.colocate 0
-    write /dev/stune/foreground/schedtune.colocate 0
-    write /dev/stune/top-app/schedtune.colocate 1
 
 on fs
-    chown system system /dev/goodix_fp
     wait /dev/block/platform/soc/1da4000.ufshc
     symlink /dev/block/platform/soc/1da4000.ufshc /dev/block/bootdevice
-# modify for boot mount persist partition fix reformat partition issue
-    wait /dev/block/bootdevice/by-name/persist
-    mount ext4 /dev/block/bootdevice/by-name/persist /persist nosuid nodev barrier=1
-    mkdir /persist/data 0700 system system
-    mkdir /persist/bms 0700 root system
-    restorecon_recursive /persist
     mount_all fstab.qcom
     swapon_all fstab.qcom
 
@@ -64,6 +46,11 @@ on fs
     wait /dev/block/bootdevice/by-name/cache
     mount ext4 /dev/block/bootdevice/by-name/cache /cache nosuid nodev barrier=1
 
+    wait /dev/block/bootdevice/by-name/persist
+    mount ext4 /dev/block/bootdevice/by-name/persist /persist nosuid nodev barrier=1
+    restorecon_recursive /persist
+    mkdir /persist/data 0700 system system
+
     wait /dev/block/bootdevice/by-name/dsp
     mount ext4 /dev/block/bootdevice/by-name/dsp /dsp ro nosuid nodev barrier=1
 
@@ -73,45 +60,28 @@ on fs
     wait /dev/block/bootdevice/by-name/bluetooth
     mount vfat /dev/block/bootdevice/by-name/bluetooth /bt_firmware ro shortname=lower,uid=1002,gid=3002,dmask=227,fmask=337,context=u:object_r:bt_firmware_file:s0
 
-    # add nubia embedlog
-    wait /dev/block/bootdevice/by-name/embedlog
-    mount ext3 /dev/block/bootdevice/by-name/embedlog /embedlog rw nosuid nodev barrier=1 context=u:object_r:embedlog_file:s0
-
-    mkdir /persist/data 0700 system system
-    mkdir /persist/bms 0700 root system
-    restorecon_recursive /persist
-    write /sys/kernel/boot_adsp/boot 1
-
-on init
-    write /sys/module/qpnp_rtc/parameters/poweron_alarm 1
+on post-fs
+    start qseecomd
+    exec - root root root -- /system/bin/init.qti.qseecomd.sh
+    write /dev/ipa 1
 
 on post-fs-data
-    mkdir /data/tombstones/modem 0771 system system
-    mkdir /data/tombstones/lpass 0771 system system
-    mkdir /data/tombstones/wcnss 0771 system system
-    mkdir /data/tombstones/dsps 0771 system system
-    mkdir /data/misc/qvop 0660 system system
+    mkdir /data/tombstones 0771 system system
+    mkdir /tombstones/modem 0771 system system
+    mkdir /tombstones/lpass 0771 system system
+    mkdir /tombstones/wcnss 0771 system system
+    mkdir /tombstones/dsps 0771 system system
     mkdir /data/misc/hbtp 0750 system system
-    mkdir /data/misc/seemp 0700 system system
-    mkdir /data/misc/qvr 0770 system system
-    mkdir /data/misc/qdmastats 0700 system system
-    mkdir /data/misc/qdma 0770 system system
 
-# For cpusets initialize for Silver Only first and then Silver + Gold
-# Silver Only configuration cannot work with 0-7
 on boot
     start rmt_storage
     start rfs_access
-    #write /dev/cpuset/top-app/cpus 0-3
-    #write /dev/cpuset/foreground/cpus 0-3
-    #write /dev/cpuset/foreground/boost/cpus 0-3
-    #write /dev/cpuset/background/cpus 0-3
-    #write /dev/cpuset/system-background/cpus 0-3
-    #write /dev/cpuset/top-app/cpus 0-7
-    #write /dev/cpuset/foreground/cpus 0-7
-    #write /dev/cpuset/foreground/boost/cpus 0-7
-    #write /dev/cpuset/background/cpus 0-7
-    #write /dev/cpuset/system-background/cpus 0-7
+    write /dev/cpuset/top-app/cpus 0-7
+    write /dev/cpuset/foreground/cpus 0-7
+    write /dev/cpuset/foreground/boost/cpus 0-7
+    write /dev/cpuset/background/cpus 0-7
+    write /dev/cpuset/system-background/cpus 0-7
+
    ####Regionalization config and prop files####
    chmod 0644 /persist/speccfg/spec
    chmod 0644 /persist/speccfg/devicetype
@@ -129,52 +99,13 @@ on boot
    chown system system /persist/speccfg/vendor_persist.prop
    chown system system /persist/speccfg/submask
    chown system system /persist/speccfg/partition
-
-   #for audio driver to read
-   chmod 0644 /persist/tas2555_cal.bin
-
-# Tuxera exFAT kernel module
-    insmod /system/lib/modules/texfat.ko
-
-#install video modules
-   insmod /system/lib/modules/msm-vidc-vmem.ko
-   insmod /system/lib/modules/msm-vidc.ko
-   insmod /system/lib/modules/msm-vidc-dyn-gov.ko
-   insmod /system/lib/modules/msm-vidc-table-gov.ko
-
-#fingerprint service
-service fingerprintd /system/bin/fingerprintd
+#start camera server as daemon
+service qcamerasvr /system/bin/mm-qcamera-daemon
     class late_start
-    user system
-    group media_rw system
-
-#Peripheral manager
-service per_mgr /system/bin/pm-service
-    class core
-    user system
-    group system
-    ioprio rt 4
-
-service per_proxy /system/bin/pm-proxy
-    class core
-    user system
-    group system
-    disabled
-
-on property:init.svc.per_mgr=running
-    start per_proxy
-
-on property:sys.shutdown.requested=*
-    stop per_proxy
-
-on charger
-    start hvdcp_opti
+    user camera
+    group camera system inet input graphics
 
 ## import cne init file
-service qvop-daemon /system/bin/qvop-daemon
-    class late_start
-    user system
-    group system drmrpc
 #on post-fs
 #    export LD_PRELOAD /vendor/lib/libNimsWrap.so
 #
@@ -205,11 +136,6 @@ service qseecomd /system/bin/qseecomd
    user root
    group root
 
-service spdaemon /system/bin/spdaemon
-   class core
-   user system
-   group system
-
 #service mpdecision /system/bin/mpdecision --avg_comp
 #   user root
 #   disabled
@@ -222,9 +148,6 @@ service spdaemon /system/bin/spdaemon
 service thermal-engine /system/vendor/bin/thermal-engine
    class main
    user root
-   socket thermal-send-client stream 0666 system system
-   socket thermal-recv-client stream 0660 system system
-   socket thermal-recv-passive-client stream 0666 system system
    group root
 
 #service security-check1 /sbin/security_boot_check system
@@ -251,11 +174,11 @@ service hbtp /system/vendor/bin/hbtp_daemon
     group system
     disabled
 
-service audiod /system/bin/audiod
-   class late_start
-   user system
-   group system
-
+#service audiod /system/bin/audiod
+#   class late_start
+#   user system
+#   group system
+#
 #service usf_tester /system/bin/usf_tester
 #    user system
 #    group system inet
@@ -321,13 +244,13 @@ service imsqmidaemon /system/bin/imsqmidaemon
     class main
     user system
     socket ims_qmid stream 0660 system radio
-    group radio log diag
+    group radio net_raw log diag
 
 service imsdatadaemon /system/bin/imsdatadaemon
     class main
     user system
     socket ims_datad stream 0660 system radio
-    group system wifi radio inet log diag
+    group system wifi radio inet net_raw log diag net_admin
     disabled
 #
 #service mdm_helper /system/bin/mdm_helper
@@ -393,7 +316,7 @@ service ims_rtp_daemon /system/bin/ims_rtp_daemon
    class main
    user system
    socket ims_rtpd stream 0660 system radio
-   group radio diag inet log
+   group radio net_raw diag inet log
    disabled
 
 service imscmservice /system/bin/imscmservice
@@ -401,11 +324,7 @@ service imscmservice /system/bin/imscmservice
    user system
    group radio diag inet log
    disabled
-service powerofflog /system/bin/sh /system/etc/fg_logs_start.sh /cache/nubialog
-    disabled
-    oneshot
-on property:sys.poweroffcharge.control=on
-    start powerofflog
+
 on property:sys.ims.DATA_DAEMON_STATUS=1
     start ims_rtp_daemon
     start imscmservice
@@ -436,22 +355,6 @@ on property:init.svc.zygote=running
 on property:init.svc.zygote=restarting
     stop ppd
 
-on charger
-    wait /dev/block/bootdevice/by-name/persist
-    mount ext4 /dev/block/bootdevice/by-name/persist /persist nosuid nodev barrier=1
-    wait /dev/block/bootdevice/by-name/cache
-    mount ext4 /dev/block/bootdevice/by-name/cache /cache nosuid nodev barrier=1
-    mount_all fstab.qcom
-    restorecon_recursive /persist
-    restorecon_recursive /cache
-    restorecon_recursive /sys/kernel/debug
-    rm /sdcard
-    symlink /cache /sdcard
-    load_system_props
-    start qcom-post-boot
-    mkdir /cache/nubialog 0755 system system
-    chmod 755 /system/etc/fg_logs_start.sh
-    chown root shell /system/etc/fg_logs_start.sh
 #
 #service nqs /system/bin/nqs
 #    class late_start
@@ -471,97 +374,8 @@ on charger
 #    user system
 #    group system
 
-service seempd /system/bin/seempd
-    class late_start
-    user system
-    group system
-    socket seempdw dgram 0666 system system
-
 service energy-awareness /system/bin/energy-awareness
     class main
     user system
     group system
     oneshot
-
-service mdtpd /system/vendor/bin/mdtpd
-    class late_start
-    user root
-    group system radio drmrpc
-
-#dm instructions added by nubia
-service dmapp /system/bin/dmapp
-    class main
-    seclabel u:r:dm:s0
-
-#LCD display preference added by nubia
-on property:persist.sys.image.enhance=w
-    write /sys/kernel/lcd_enhance/saturation 24
-
-on property:persist.sys.image.enhance=n
-    write /sys/kernel/lcd_enhance/saturation 25
-
-on property:persist.sys.image.enhance=i
-    write /sys/kernel/lcd_enhance/saturation 26
-
-on property:persist.sys.image.colortmp=w
-    write /sys/kernel/lcd_enhance/colortmp 24
-
-on property:persist.sys.image.colortmp=n
-    write /sys/kernel/lcd_enhance/colortmp 25
-
-on property:persist.sys.image.colortmp=c
-    write /sys/kernel/lcd_enhance/colortmp 26
-
-#for lcd colortmp continuous
-on property:persist.sys.lcd.colortmp=*
-   write /sys/kernel/lcd_enhance/colortmp ${persist.sys.lcd.colortmp}
-
-on property:persist.sys.image.cabc=f
-    write /sys/kernel/lcd_enhance/cabc 23
-
-on property:persist.sys.image.cabc=l
-    write /sys/kernel/lcd_enhance/cabc 24
-
-on property:persist.sys.image.cabc=m
-    write /sys/kernel/lcd_enhance/cabc 25
-
-on property:persist.sys.image.cabc=h
-    write /sys/kernel/lcd_enhance/cabc 26
-#LCD display preference end
-
-service hvdcp_opti /system/bin/hvdcp_opti
-     class main
-     user root
-     group system wakelock
-
-service qvrd /system/vendor/bin/qvrservice
-    class late_start
-    user system
-    group system camera graphics
-    socket qvrservice stream 0666 system system
-
-service smcinvoked /system/vendor/bin/smcinvoked
-    class main
-    user system
-    group system
-
-service qdmastatsd /system/bin/qdmastatsd
-    class late_start
-    user system
-    group system
-
-on late-fs
-# boot time fs tune
-   write /sys/block/sda/queue/iostats 0
-   write /sys/block/sda/queue/read_ahead_kb 2048
-   write /sys/block/sda/queue/nr_requests 256
-   write /sys/block/dm-0/queue/read_ahead_kb 2048
-   write /sys/block/dm-1/queue/read_ahead_kb 2048
-
-on property:sys.boot_completed =1
-# end boot time fs tune
-   write /sys/block/sda/queue/iostats 1
-   write /sys/block/sda/queue/read_ahead_kb 128
-   write /sys/block/sda/queue/nr_requests 128
-   write /sys/block/dm-0/queue/read_ahead_kb 512
-   write /sys/block/dm-1/queue/read_ahead_kb 512
