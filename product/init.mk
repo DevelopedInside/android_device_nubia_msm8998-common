@@ -2,10 +2,9 @@
 PRODUCT_PACKAGES += \
     fstab.qcom \
     init.class_main.sh \
-    init.cmx.rc \
-    init.mdm.sh \
     init.msm.usb.configfs.rc \
     init.qcom.early_boot.sh \
+    init.qcom.power.rc \
     init.qcom.rc \
     init.qcom.sensors.sh \
     init.qcom.sh \
@@ -16,12 +15,8 @@ PRODUCT_PACKAGES += \
 
 # Nubia scripts
 PRODUCT_PACKAGES += \
-    init.nubia.extend.usb.rc \
     init.nubia.rc \
-    init.nubia.sh \
-    init.nubia.touch.lcd.rc \
-    init.nubia.usb.rc \
-    init.project.rc
+    init.nubia.touch.lcd.rc
 
 # Etc scripts
 PRODUCT_PACKAGES += \

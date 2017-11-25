@@ -28,8 +28,8 @@
 import init.qcom.usb.rc
 import init.msm.usb.configfs.rc
 import init.target.rc
-import init.qcom.factory.rc
-import init.qcom.test.rc
+# nubia rc
+import init.nubia.rc
 
 on early-init
     mount debugfs debugfs /sys/kernel/debug
@@ -40,8 +40,15 @@ on init
     mkdir /persist 0771 root system
 
     # Support legacy paths
+    # NUBIA START
+    mkdir /mnt/media_rw/usba 0700 media_rw media_rw
+    mkdir /storage/usba 0700 root root
+    export EXTERNAL_STORAGE /sdcard
+    export OTG_STORAGE /storage/usba
+    # Support legacy paths
     symlink /sdcard /mnt/sdcard
     symlink /sdcard /storage/sdcard0
+    # NUBIA END
 
     # Create cgroup mount point for memory
     mount tmpfs none /sys/fs/cgroup mode=0750,uid=0,gid=1000
@@ -220,9 +227,11 @@ on post-fs-data
     # Create directory for TZ Apps
     mkdir /data/misc/qsee 0770 system system
 
-    #Create folder for mm-qcamera-daemon
-    mkdir /data/misc/camera 0770 camera camera
-
+    # NUBIA START
+    #ZTEMT:fengxun modify from 0770 
+    mkdir /data/misc/camera 0775 camera camera 
+    # NUBIA END
+    
     mkdir /data/media 0770 media_rw media_rw
     chown media_rw media_rw /data/media
 
@@ -377,6 +386,11 @@ on post-fs-data
     # set aggressive read ahead for dm-0 and dm-1 during boot up
     write /sys/block/dm-0/queue/read_ahead_kb 2048
     write /sys/block/dm-1/queue/read_ahead_kb 2048
+
+    # NUBIA START
+    # WAPI 
+    mkdir /data/misc/wapi_certificate 0770 system wifi 
+    # NUBIA END
 
     # create QDMA related dirs
     mkdir /data/misc/qdmastats 0700 system system
