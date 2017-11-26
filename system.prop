@@ -245,25 +245,8 @@ ro.vendor.at_library=libqti-at.so
 ro.core_ctl_min_cpu=2
 ro.core_ctl_max_cpu=4
 
-#hwui properties
-ro.hwui.texture_cache_size=72
-ro.hwui.layer_cache_size=48
-ro.hwui.r_buffer_cache_size=8
-ro.hwui.path_cache_size=32
-ro.hwui.gradient_cache_size=1
-ro.hwui.drop_shadow_cache_size=6
-ro.hwui.texture_cache_flushrate=0.4
-ro.hwui.text_small_cache_width=1024
-ro.hwui.text_small_cache_height=1024
-ro.hwui.text_large_cache_width=2048
-ro.hwui.text_large_cache_height=1024
-
-# enable navigation bar
-qemu.hw.mainkeys=0
-
 #property to enable VDS WFD solution
 persist.hwc.enable_vds=1
-
 
 #Increase cached app limit
 ro.sys.fw.bg_apps_limit=60
@@ -288,17 +271,9 @@ ro.qti.sensors.iod=false
 persist.camera.vdbea.switch=1
 #ZTEMT:added by guxiaodong for Camera Video Beauty Trigger Switch --end
 
-#ZTEMT add for get total camera number
-ro.total.camera.number=3
-#ZTEMT add for focus
 persist.camera.depth.focus.cb=0
 #Expose aux camera for below packages
 camera.aux.packagelist=com.android.camera,cn.nubia.factory,org.codeaurora.snapcam
-
-#device name for camera picture
-ro.config.devicename=nubia smart phone
-#camera extern mode exif when product this should be deleted.
-persist.sys.exif.model=nubia Z17
 
 #Enable stm events
 persist.debug.coresight.config=stm-events
@@ -315,10 +290,6 @@ persist.sys.standard_charger=USB_HVDCP_3
 #add for factorytest
 persist.factory.nfc_additional=true
 #add end
-
-#Dolby DS1 DOLBY_UDC
-dmid=3067269873
-audio.ds1.metainfo.key=273
 
 #thermal product config
 ro.thermal.product=0
