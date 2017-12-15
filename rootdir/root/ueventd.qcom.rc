@@ -304,8 +304,8 @@
 # Kmsg device
 /dev/kmsg                                               0620   root       system
 
-# nubia add start 
-# goodix fingerprint device point 
-/dev/goodix_fp            0660   system     system 
-/dev/fpc                  0660   system     system 
-# nubia add end 
+# nubia add start
+# goodix fingerprint device point
+/dev/goodix_fp            0660   system     system
+/dev/fpc                  0660   system     system
+# nubia add end

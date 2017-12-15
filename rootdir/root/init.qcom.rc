@@ -229,10 +229,10 @@ on post-fs-data
     mkdir /data/misc/qsee 0770 system system
 
     # NUBIA START
-    #ZTEMT:fengxun modify from 0770 
-    mkdir /data/misc/camera 0775 camera camera 
+    #ZTEMT:fengxun modify from 0770
+    mkdir /data/misc/camera 0775 camera camera
     # NUBIA END
-    
+
     mkdir /data/media 0770 media_rw media_rw
     chown media_rw media_rw /data/media
 
@@ -389,8 +389,8 @@ on post-fs-data
     write /sys/block/dm-1/queue/read_ahead_kb 2048
 
     # NUBIA START
-    # WAPI 
-    mkdir /data/misc/wapi_certificate 0770 system wifi 
+    # WAPI
+    mkdir /data/misc/wapi_certificate 0770 system wifi
     # NUBIA END
 
     # create QDMA related dirs
