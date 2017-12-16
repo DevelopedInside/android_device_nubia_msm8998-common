@@ -1,4 +1,3 @@
-ifneq ($(BOARD_VENDOR_QCOM_GPS_LOC_API_HARDWARE),)
 LOCAL_PATH := $(call my-dir)
 
 include $(CLEAR_VARS)
@@ -31,4 +30,3 @@ LOCAL_C_INCLUDES := \
     $(TARGET_OUT_HEADERS)/libloc_pla
 
 include $(BUILD_SHARED_LIBRARY)
-endif
