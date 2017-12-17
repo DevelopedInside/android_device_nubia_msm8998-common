@@ -1,8 +1,10 @@
 # NFC
 PRODUCT_PACKAGES += \
+    libnfc \
+    libnfc_jni \
     nfc_nci.bcm2079x.default \
     com.android.nfc_extras \
-    NQNfcNci \
+    NfcNci \
     Tag
 
 # NFC configs
