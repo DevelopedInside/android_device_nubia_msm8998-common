@@ -294,6 +294,18 @@
 /dev/hbtp_input           0660   system     system
 /dev/hbtp_vm              0660   system     system
 
+# nubia add start
+# goodix fingerprint device point
+/dev/goodix_fp            0660   system      system
+/dev/fpc		  0660   system      system
+# nubia add end
+
+/dev/bcm2079x 0660 nfc nfc
+
+#added by nubia, begin
+/dev/tas2555 0666 root root
+#added by nubia, end
+
 # Add device block for FRP
 /dev/block/platform/soc/7824900.sdhci/by-name/config    0600   system     system
 /dev/block/platform/soc/7464900.sdhci/by-name/frp       0600   system     system
@@ -303,9 +315,3 @@
 
 # Kmsg device
 /dev/kmsg                                               0620   root       system
-
-# nubia add start
-# goodix fingerprint device point
-/dev/goodix_fp            0660   system     system
-/dev/fpc                  0660   system     system
-# nubia add end
