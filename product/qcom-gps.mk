@@ -12,7 +12,8 @@ PRODUCT_COPY_FILES += \
 PRODUCT_PACKAGES += \
     gps.msm8998 \
     libcurl \
-    libgnsspps
+    libgnsspps \
+    libvehiclenetwork-native
 
 # Permissions
 PRODUCT_COPY_FILES += \
