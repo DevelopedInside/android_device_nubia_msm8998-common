@@ -264,6 +264,33 @@ vendor/lib64/libsdm-diag.so
 vendor/lib64/libsdmextension.so
 #vendor/lib64/libuiblur.so
 
+# Graphics firmware
+etc/firmware/leia_pfp_470.fw
+etc/firmware/leia_pm4_470.fw
+etc/firmware/a530_gpmu.fw2
+etc/firmware/a530_pfp.fw
+etc/firmware/a530_pm4.fw
+etc/firmware/a530v1_pfp.fw
+etc/firmware/a530v1_pm4.fw
+etc/firmware/a530v2_seq.fw2
+etc/firmware/a530v3_gpmu.fw2
+etc/firmware/a530v3_seq.fw2
+etc/firmware/a540_gpmu.fw2
+etc/firmware/a540_zap.b00
+etc/firmware/a540_zap.b01
+etc/firmware/a540_zap.b02
+etc/firmware/a540_zap.elf
+etc/firmware/a540_zap.mdt
+
+# IPA
+bin/ipacm-diag
+etc/firmware/ipa_fws.b00
+etc/firmware/ipa_fws.b01
+etc/firmware/ipa_fws.b02
+etc/firmware/ipa_fws.b03
+etc/firmware/ipa_fws.b04
+etc/firmware/ipa_fws.mdt
+
 # Keystore
 vendor/lib/hw/keystore.msm8998.so
 vendor/lib64/hw/keystore.msm8998.so
@@ -439,12 +466,17 @@ vendor/lib64/libvoice-svc.so
 
 # Sensors
 bin/sensors.qcom
+
+lib/sensors.hal.tof.so
 vendor/lib/hw/activity_recognition.msm8998.so
 vendor/lib/libsensor1.so
 vendor/lib/libsensor_reg.so
 vendor/lib/libsensor1.so
 vendor/lib/sensor_calibrate.so
 vendor/lib/sensors.ssc.so
+
+lib64/sensors.hal.tof.so
+lib64/sensors.oem.so
 vendor/lib64/hw/activity_recognition.msm8998.so
 vendor/lib64/libsensor1.so
 vendor/lib64/libsensor_reg.so
