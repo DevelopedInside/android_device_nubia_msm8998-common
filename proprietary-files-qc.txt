@@ -4,12 +4,14 @@ vendor/lib/libadsp_default_listener.so
 vendor/lib/libadsp_hvx_callback_skel.so
 vendor/lib/libadsp_hvx_stub.so
 vendor/lib/libadsprpc.so
+vendor/lib/libmdsprpc.so
 vendor/lib/libfastcvadsp_stub.so
 vendor/lib/libfastcvopt.so
 vendor/lib64/libadsp_default_listener.so
 vendor/lib64/libadsprpc.so
 vendor/lib64/libfastcvadsp_stub.so
 vendor/lib64/libfastcvopt.so
+vendor/lib64/libmdsprpc.so
 
 # ADSP modules
 vendor/lib/rfsa/adsp/libFastRPC_AUE_Forward_skel.so
@@ -38,22 +40,35 @@ vendor/lib/rfsa/adsp/libvpp_frc.so
 vendor/lib/rfsa/adsp/libvpp_svc_skel.so
 
 # Audio
+etc/drc/drc_cfg_AZ.txt
+etc/drc/drc_cfg_5.1.txt
+etc/surround_sound_3mic/surround_sound_rec_AZ.cfg
+etc/surround_sound_3mic/surround_sound_rec_5.1.cfg
+
 vendor/lib/libacdb-fts.so
 vendor/lib/libacdbloader.so
+vendor/lib/libacdbmapper.so
 vendor/lib/libacdbrtac.so
 vendor/lib/libadiertac.so
 vendor/lib/libadm.so
 vendor/lib/libaudcal.so
+vendor/lib/libaudioalsa.so
+vendor/lib/libdrc.so
 vendor/lib/libhwdaphal.so
+vendor/lib/libqct_resampler.so
+vendor/lib/libsurround_3mic_proc.so
 vendor/lib/libqtigef.so
 vendor/lib/soundfx/libqcbassboost.so
 vendor/lib/soundfx/libqcreverb.so
 vendor/lib/soundfx/libqcvirt.so
+
 vendor/lib64/libacdb-fts.so
 vendor/lib64/libacdbloader.so
+vendor/lib64/libacdbmapper.so
 vendor/lib64/libacdbrtac.so
 vendor/lib64/libadiertac.so
 vendor/lib64/libaudcal.so
+vendor/lib64/libaudioalsa.so
 vendor/lib64/libhwdaphal.so
 vendor/lib64/libqtigef.so
 vendor/lib64/soundfx/libqcbassboost.so
@@ -304,24 +319,43 @@ vendor/lib/libsmwrapper.so
 -vendor/lib64/libgpustats.so
 lib64/libOmxVpp.so
 lib64/libvpplibrary.so
+lib64/libstagefright_soft_flacdec.so
+
 lib/libOmxVpp.so
 lib/libvpplibrary.so
+lib/libstagefright_soft_flacdec.so
+
 vendor/lib64/libI420colorconvert.so
 vendor/lib64/libmiracast.so
 vendor/lib64/libmm-color-convertor.so
 vendor/lib64/libmmosal.so
 vendor/lib64/libOmxAacDec.so
+vendor/lib64/libOmxAlacDec.so
+vendor/lib64/libOmxAlacDecSw.so
+vendor/lib64/libOmxAmrwbplusDec.so
+vendor/lib64/libOmxApeDec.so
+vendor/lib64/libOmxApeDecSw.so
 vendor/lib64/libOmxEvrcDec.so
+vendor/lib64/libOmxMux.so
 vendor/lib64/libOmxQcelp13Dec.so
+vendor/lib64/libOmxWmaDec.so
 vendor/lib64/libvpphvx.so
+
 vendor/lib/libI420colorconvert.so
 vendor/lib/libmiracast.so
 vendor/lib/libmm-color-convertor.so
 vendor/lib/libmmosal.so
 vendor/lib/libOmxAacDec.so
+vendor/lib/libOmxAlacDec.so
+vendor/lib/libOmxAlacDecSw.so
+vendor/lib/libOmxAmrwbplusDec.so
+vendor/lib/libOmxApeDec.so
+vendor/lib/libOmxApeDecSw.so
 vendor/lib/libOmxEvrcDec.so
-vendor/lib/libOmxVideoDSMode.so
+vendor/lib/libOmxMux.so
 vendor/lib/libOmxQcelp13Dec.so
+vendor/lib/libOmxVideoDSMode.so
+vendor/lib/libOmxWmaDec.so
 vendor/lib/libvpphvx.so
 vendor/lib/libvqzip.so
 
@@ -463,6 +497,30 @@ vendor/lib64/libimscamera_jni.so
 vendor/lib64/libimsmedia_jni.so
 vendor/lib64/librcc.so
 vendor/lib64/libvoice-svc.so
+
+# SCVE
+vendor/lib/libscveBlobDescriptor.so
+vendor/lib/libscveBlobDescriptor_stub.so
+vendor/lib/libscveCleverCapture.so
+vendor/lib/libscveCleverCapture_stub.so
+vendor/lib/libscveCommon.so
+vendor/lib/libscveCommon_stub.so
+vendor/lib/libscveFaceRecognition.so
+vendor/lib/libscveImageCloning.so
+vendor/lib/libscveImageCorrection.so
+vendor/lib/libscveImageRemoval.so
+vendor/lib/libscveMotionVector.so
+vendor/lib/libscveObjectMatting.so
+vendor/lib/libscveObjectMatting_stub.so
+vendor/lib/libscveObjectSegmentation.so
+vendor/lib/libscveObjectSegmentation_stub.so
+vendor/lib/libscveObjectTracker.so
+vendor/lib/libscveObjectTracker_stub.so
+vendor/lib/libscvePanorama.so
+vendor/lib/libscvePanorama_lite.so
+vendor/lib/libscveTextReco.so
+vendor/lib/libscveTextRecoPostProcessing.so
+vendor/lib/libscveTextReco_stub.so
 
 # Sensors
 bin/sensors.qcom
