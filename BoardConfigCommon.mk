@@ -194,7 +194,7 @@ ifeq ($(HOST_OS),linux)
     WITH_DEXPREOPT ?= true
   endif
 endif
-WITH_DEXPREOPT_BOOT_IMG_ONLY ?= true
+WITH_DEXPREOPT_BOOT_IMG_AND_SYSTEM_SERVER_ONLY ?= true
 
 # Filesystem
 TARGET_ANDROID_FILESYSTEM_CONFIG_H := $(PLATFORM_PATH)/android_filesystem_config.h
