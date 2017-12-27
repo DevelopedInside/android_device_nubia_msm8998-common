@@ -63,7 +63,7 @@ ro.use_data_netmgrd=true
 drm.service.enabled=true
 
 # FRP
-ro.frp.pst=/dev/block/bootdevice/by-name/frp
+ro.frp.pst=/dev/block/platform/soc/1da4000.ufshc/by-name/frp
 
 # Graphics
 debug.sf.hw=1
