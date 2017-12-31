@@ -229,8 +229,6 @@ TARGET_USERIMAGES_USE_EXT4 := true
 TARGET_PER_MGR_ENABLED := true
 
 # Power
-TARGET_POWERHAL_VARIANT := qcom
-BOARD_POWER_CUSTOM_BOARD_LIB := libpower_msm8998
 TARGET_TAP_TO_WAKE_NODE := "/sys/class/tpnode/tpnode/synaptics/wake_gesture"
 
 # Properties
