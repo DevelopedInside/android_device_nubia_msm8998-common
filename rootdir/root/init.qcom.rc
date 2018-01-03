@@ -590,12 +590,12 @@ service nqnfcinfo /system/vendor/bin/nqnfcinfo
     oneshot
 
 service perfd /system/vendor/bin/perfd
-   class main
-   user root
-   group root readproc
-   disabled
-   socket perfd seqpacket 0666 root system
-   writepid /dev/cpuset/system-background/tasks
+    class main
+    user root
+    group root readproc
+    disabled
+    socket perfd seqpacket 0666 root system
+    writepid /dev/cpuset/system-background/tasks
 
 service iop /system/bin/iop
     class main
@@ -732,15 +732,15 @@ service rmt_storage /system/bin/rmt_storage
     writepid /dev/cpuset/system-background/tasks
 
 service rfs_access /system/bin/rfs_access
-   class core
-   user root
-   group system net_raw
-   writepid /dev/cpuset/system-background/tasks
+    class core
+    user root
+    group system net_raw
+    writepid /dev/cpuset/system-background/tasks
 
 service tftp_server /system/bin/tftp_server
-   class core
-   user root
-   writepid /dev/cpuset/system-background/tasks
+    class core
+    user root
+    writepid /dev/cpuset/system-background/tasks
 
 on property:wc_transport.start_hci=true
     start start_hci_filter
