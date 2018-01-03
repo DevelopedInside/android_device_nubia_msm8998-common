@@ -37,9 +37,8 @@ start_sensors()
         chown -h system.root /persist/sensors/sensors_settings
 
         mkdir -p /data/misc/sensors
-        # NUBIA START (775 -> 777)
-        chmod -h 777 /data/misc/sensors
-        # NUBIA END
+        chmod -h 775 /data/misc/sensors
+
         start sensors
     fi
 }

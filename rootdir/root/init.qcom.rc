@@ -27,7 +27,6 @@
 
 import init.qcom.power.rc
 import init.qcom.usb.rc
-import init.msm.usb.configfs.rc
 import init.target.rc
 # nubia rc
 import init.nubia.rc
@@ -73,6 +72,191 @@ on early-boot
     exec u:r:qti_init_shell:s0 -- /init.qcom.early_boot.sh
 
 on boot
+    # NUBIA START
+    # Hall_device
+    chown system system /sys/class/hall_device/hall_device/enable
+    chmod 0644 /sys/class/hall_device/hall_device/enable
+
+    # Fingerprint
+    mkdir /dev/fpcSocket 0770 system system
+    chmod -R 0777 /dev/fpcSocket
+    chown system system /sys/bus/platform/devices/1.fpc1020/irq
+    chown system system /sys/bus/platform/devices/1.fpc1020/wakeup_enable
+
+    # Ir remote
+    chown system system /sys/class/ir_remote/ir_remote/enable
+    chmod 0644 /sys/class/ir_remote/ir_remote/enable
+
+    # Proximity
+    chown system system /sys/class/proximity/proximity/enable
+    chown system system /sys/class/proximity/proximity/prox_uncover_max
+    chown system system /sys/class/proximity/proximity/reg
+    chown system system /sys/class/proximity/proximity/prox_value
+    chown system system /sys/class/proximity/proximity/dev_init
+    chown system system /sys/class/proximity/proximity/delay
+    chmod 0777 /persist/sensors
+    chown system system /sys/class/proximity/proximity/prox_manual_calibrate_threshold
+    chown system system /sys/class/proximity/proximity/prox_init
+    chown system system /sys/class/proximity/proximity/prox_threshold_init
+    chown system system /sys/class/proximity/proximity/prox_offset_init
+    chown system system /sys/class/proximity/proximity/prox_thres
+    chown system system /sys/class/proximity/proximity/chip_name
+    chown system system /sys/class/proximity/proximity/prox_threshold_cal_start
+    chown system system /sys/class/proximity/proximity/prox_offset_cal_start
+    chown system system /sys/class/proximity/proximity/prox_offset_cal
+    chown system system /sys/class/proximity/proximity/prox_data_safe_range_max
+    chown system system /sys/class/proximity/proximity/prox_data_safe_range_min
+    chown system system /sys/class/proximity/proximity/prox_calibrate
+    chown system system /sys/class/proximity/proximity/prox_calibrate_start
+    chown system system /sys/class/proximity/proximity/prox_calibrate_result
+    chown system system /sys/class/proximity/proximity/prox_data_max
+    chown system system /sys/class/proximity/proximity/prox_debug
+    chown system system /sys/class/proximity/proximity/prox_thres_max
+    chown system system /sys/class/proximity/proximity/prox_thres_min
+    chown system system /sys/class/proximity/proximity/prox_threshold_high
+    chown system system /sys/class/proximity/proximity/prox_threshold_low
+    chown system system /sys/class/proximity/proximity/prox_thres_param_high
+    chown system system /sys/class/proximity/proximity/prox_thres_param_low
+    chown system system /sys/class/proximity/proximity/prox_pluse_length
+    chown system system /sys/class/proximity/proximity/prox_thres_pulse_count
+    chown system system /sys/class/proximity/proximity/prox_wakelock
+    chown system system /sys/class/proximity/proximity/prox_phone_is_sleep
+    chown system system /sys/class/proximity/proximity/prox_irq
+    chown system system /sys/class/proximity/proximity/prox_offset_cal_verify
+    chown system system /sys/class/proximity/proximity/prox_calibrate_verify
+
+    chmod 0644 /sys/class/proximity/proximity/reg
+    chmod 0644 /sys/class/proximity/proximity/prox_value
+    chmod 0644 /sys/class/proximity/proximity/prox_offset_cal
+    chmod 0644 /sys/class/proximity/proximity/dev_init
+    chmod 0644 /sys/class/proximity/proximity/prox_manual_calibrate_threshold
+    chmod 0644 /sys/class/proximity/proximity/chip_name
+    chmod 0644 /sys/class/proximity/proximity/prox_threshold_cal_start
+    chmod 0644 /sys/class/proximity/proximity/prox_offset_cal_start
+    chmod 0644 /sys/class/proximity/proximity/prox_data_safe_range_max
+    chmod 0644 /sys/class/proximity/proximity/prox_data_safe_range_min
+    chmod 0644 /sys/class/proximity/proximity/prox_calibrate_start
+    chmod 0644 /sys/class/proximity/proximity/prox_calibrate_result
+    chmod 0644 /sys/class/proximity/proximity/prox_debug
+    chmod 0644 /sys/class/proximity/proximity/prox_thres_max
+    chmod 0644 /sys/class/proximity/proximity/prox_thres_min
+    chmod 0644 /sys/class/proximity/proximity/prox_threshold_high
+    chmod 0644 /sys/class/proximity/proximity/prox_threshold_low
+    chmod 0644 /sys/class/proximity/proximity/prox_pluse_length
+    chmod 0644 /sys/class/proximity/proximity/prox_thres_pulse_count
+    chmod 0644 /sys/class/proximity/proximity/prox_irq
+    chmod 0644 /sys/class/proximity/proximity/prox_offset_cal_verify
+    chmod 0644 /sys/class/proximity/proximity/prox_calibrate_verify
+    chown system system /persist/sensors/xtalk_cal
+    chmod 0664 /persist/sensors/xtalk_cal
+    
+    #ztemt:jixd add for infinity calibration ---start
+    mkdir /persist/camera 0755 system system
+    chown system system /persist/camera
+    chmod 0751 /persist/camera
+    chown system system /persist/camera/camera_focus_pos.conf
+    chmod 0644 /persist/camera/camera_focus_pos.conf
+    #ztemt:jixd add for infinity calibration ---end
+
+    # Light
+    chown system system /sys/class/light/light/enable
+    chown system system /sys/class/light/light/tp_cfg
+    chown system system /sys/class/light/light/fac_calibrate
+    chown system system /sys/class/light/light/calibrate
+    chown system system /sys/class/light/light/chip_name
+    chown system system /sys/class/light/light/light_value
+    chown system system /sys/class/light/light/delay
+    chown system system /sys/class/light/light/red_data
+    chown system system /sys/class/light/light/green_data
+    chown system system /sys/class/light/light/blue_data
+    chown system system /sys/class/light/light/clear_data
+    chown system system /sys/class/light/light/dump_reg
+    chown system system /sys/class/light/light/module_tpcolor
+    chown system system /sys/class/light/light/dump_tp_parameter
+    chown system system /sys/class/light/light/dev_init
+
+    chmod 0644 system system /sys/class/light/light/enable
+    chmod 0644 system system /sys/class/light/light/tp_cfg
+    chmod 0644 system system /sys/class/light/light/fac_calibrate
+    chmod 0644 system system /sys/class/light/light/calibrate
+    chmod 0644 system system /sys/class/light/light/chip_name
+    chmod 0644 system system /sys/class/light/light/light_value
+    chmod 0644 system system /sys/class/light/light/delay
+    chmod 0644 system system /sys/class/light/light/red_data
+    chmod 0644 system system /sys/class/light/light/blue_data
+    chmod 0644 system system /sys/class/light/light/green_data
+    chmod 0644 system system /sys/class/light/light/clear_data
+    chmod 0644 system system /sys/class/light/light/dump_reg
+    chmod 0644 system system /sys/class/light/light/module_tpcolor
+    chmod 0644 system system /sys/class/light/light/dump_tp_parameter
+    chown 0644 system system /sys/class/light/light/dev_init
+    chown system system /persist/sensors/rgb_color_cfg
+    chmod 0664 /persist/sensors/rgb_color_cfg
+    chown system system /persist/sensors/rgbc_cfg
+    chmod 0664 /persist/sensors/rgbc_cfg
+
+    # Breath light
+    chown system system /sys/class/leds/nubia_led/brightness
+    chown system system /sys/class/leds/nubia_led/fade_parameter
+    chown system system /sys/class/leds/nubia_led/grade_parameter
+    chown system system /sys/class/leds/nubia_led/outn
+    chown system system /sys/class/leds/nubia_led/blink_mode
+
+    # Vibartor
+    chmod 0660 /dev/drv2605
+    chown system system /dev/drv2605
+    chown system system /sys/class/timed_output/vibrator_drv2605/enable
+
+    # Optical key left
+    chown system system /sys/class/optical_key/optical_key_left/chip_name
+    chown system system /sys/class/optical_key/optical_key_left/delay
+    chown system system /sys/class/optical_key/optical_key_left/dev
+    chown system system /sys/class/optical_key/optical_key_left/enable
+    chown system system /sys/class/optical_key/optical_key_left/power
+    chown system system /sys/class/optical_key/optical_key_left/additional_log
+    chown system system /sys/class/optical_key/optical_key_left/init
+    chown system system /sys/class/optical_key/optical_key_left/threshold
+    chown system system /sys/class/optical_key/optical_key_left/temp_poll
+    chown system system /sys/class/optical_key/optical_key_left/emission_current
+
+
+    chmod 0644 /sys/class/optical_key/optical_key_left/chip_name
+    chmod 0644 /sys/class/optical_key/optical_key_left/delay
+    chmod 0644 /sys/class/optical_key/optical_key_left/dev
+    chmod 0644 /sys/class/optical_key/optical_key_left/enable
+    chmod 0644 /sys/class/optical_key/optical_key_left/power
+    chmod 0644 /sys/class/optical_key/optical_key_left/additional_log
+    chmod 0644 /sys/class/optical_key/optical_key_left/init
+    chmod 0666 /sys/class/optical_key/optical_key_left/threshold
+    chmod 0666 /sys/class/optical_key/optical_key_left/temp_poll
+    chmod 0666 /sys/class/optical_key/optical_key_left/emission_current
+    chmod 0644 /sys/class/optical_key/optical_key_left/reg
+
+    # Optical key right
+    chown system system /sys/class/optical_key/optical_key_right/chip_name
+    chown system system /sys/class/optical_key/optical_key_right/delay
+    chown system system /sys/class/optical_key/optical_key_right/dev
+    chown system system /sys/class/optical_key/optical_key_right/enable
+    chown system system /sys/class/optical_key/optical_key_right/power
+    chown system system /sys/class/optical_key/optical_key_right/additional_log
+    chown system system /sys/class/optical_key/optical_key_right/init
+    chown system system /sys/class/optical_key/optical_key_right/threshold
+    chown system system /sys/class/optical_key/optical_key_right/temp_poll
+    chown system system /sys/class/optical_key/optical_key_right/emission_current
+
+    chmod 0644 /sys/class/optical_key/optical_key_right/chip_name
+    chmod 0644 /sys/class/optical_key/optical_key_right/delay
+    chmod 0644 /sys/class/optical_key/optical_key_right/dev
+    chmod 0644 /sys/class/optical_key/optical_key_right/enable
+    chmod 0644 /sys/class/optical_key/optical_key_right/power
+    chmod 0644 /sys/class/optical_key/optical_key_right/additional_log
+    chmod 0644 /sys/class/optical_key/optical_key_right/init
+    chmod 0666 /sys/class/optical_key/optical_key_right/threshold
+    chmod 0666 /sys/class/optical_key/optical_key_right/temp_poll
+    chmod 0666 /sys/class/optical_key/optical_key_right/emission_current
+    chmod 0644 /sys/class/optical_key/optical_key_right/reg
+    # NUBIA END
+
     chown bluetooth bluetooth /sys/module/bluetooth_power/parameters/power
     chown bluetooth net_bt /sys/class/rfkill/rfkill0/type
     chown bluetooth net_bt /sys/class/rfkill/rfkill0/state
@@ -228,10 +412,12 @@ on post-fs-data
     # Create directory for TZ Apps
     mkdir /data/misc/qsee 0770 system system
 
-    # NUBIA START
+    # NUBIA START 
+    #Create folder for mm-qcamera-daemon
     #ZTEMT:fengxun modify from 0770
     mkdir /data/misc/camera 0775 camera camera
-    # NUBIA END
+    mkdir /data/nubiaeffect 0777 camera camera
+    # NUBIA END 
 
     mkdir /data/media 0770 media_rw media_rw
     chown media_rw media_rw /data/media
@@ -388,10 +574,10 @@ on post-fs-data
     write /sys/block/dm-0/queue/read_ahead_kb 2048
     write /sys/block/dm-1/queue/read_ahead_kb 2048
 
-    # NUBIA START
+    # NUBIA START 
     # WAPI
     mkdir /data/misc/wapi_certificate 0770 system wifi
-    # NUBIA END
+    # NUBIA END 
 
     # create QDMA related dirs
     mkdir /data/misc/qdmastats 0700 system system
@@ -409,6 +595,7 @@ service perfd /system/vendor/bin/perfd
    group root readproc
    disabled
    socket perfd seqpacket 0666 root system
+   writepid /dev/cpuset/system-background/tasks
 
 service iop /system/bin/iop
     class main
@@ -416,6 +603,7 @@ service iop /system/bin/iop
     group root
     disabled
     socket iop seqpacket 0666 root system
+    writepid /dev/cpuset/system-background/tasks
 
 service qcomsysd /system/bin/qcom-system-daemon
     class main
@@ -516,17 +704,21 @@ on property:vold.decrypt=trigger_restart_framework
     start config_bt_addr
     start config_bluetooth
     start wcnss-service
-    start cnss_diag
+    # NUBIA START
+    # start cnss_diag
+    # NUBIA END
 
 
 service cnd /system/bin/cnd
     class main
     socket cnd stream 660 root inet
+    writepid /dev/cpuset/system-background/tasks
 
 service dpmd /system/bin/dpmd
     class late_start
     socket dpmd stream 660 root system
     group system readproc
+    writepid /dev/cpuset/system-background/tasks
 
 service irsc_util /system/bin/irsc_util "/etc/sec_config"
     class core
@@ -536,15 +728,19 @@ service irsc_util /system/bin/irsc_util "/etc/sec_config"
 service rmt_storage /system/bin/rmt_storage
     class core
     user root
+    group root system wakelock
+    writepid /dev/cpuset/system-background/tasks
 
 service rfs_access /system/bin/rfs_access
    class core
    user root
    group system net_raw
+   writepid /dev/cpuset/system-background/tasks
 
 service tftp_server /system/bin/tftp_server
    class core
    user root
+   writepid /dev/cpuset/system-background/tasks
 
 on property:wc_transport.start_hci=true
     start start_hci_filter
@@ -624,12 +820,20 @@ service bt_logger /system/bin/bt_logger
    disabled
    oneshot
 
-service ftmd /system/bin/logwrapper /system/bin/ftmdaemon
+# NUBIA START
+service ftmd /system/bin/ftmdaemon -n
     class late_start
     user root
     group bluetooth net_bt_admin misc net_bt_stack qcom_diag net_bt
     disabled
     oneshot
+
+on properity:persist.service.ftmdaemon=1
+    start ftmd
+
+on properity:persist.service.ftmdaemon=0
+    stop ftmd
+# NUBIA END
 
 service bridgemgrd /system/bin/bridgemgrd
     class late_start
@@ -655,36 +859,38 @@ service qmuxd /system/bin/qmuxd
     class main
     user root
     group radio audio bluetooth gps nfc qcom_diag
-    disabled
+    writepid /dev/cpuset/system-background/tasks
 
 service netmgrd /system/bin/netmgrd
     class main
-    disabled
+    user root
+    group root wifi wakelock radio inet
+    writepid /dev/cpuset/system-background/tasks
 
 service ipacm-diag /system/bin/ipacm-diag
     class main
     user system
     socket ipacm_log_file dgram 660 system net_admin
     group net_admin qcom_diag
-    disabled
 
 service ipacm /system/bin/ipacm
     class main
     user net_admin
     group net_admin inet
-    disabled
+    writepid /dev/cpuset/system-background/tasks
 
 service qti /system/vendor/bin/qti
     class main
     user radio
-    group radio net_raw qcom_diag usb net_admin
-    disabled
+    group radio qcom_diag usb
+    writepid /dev/cpuset/system-background/tasks
 
 service sensors /system/bin/sensors.qcom
     class core
     user root
     group root
     disabled
+    writepid /dev/cpuset/system-background/tasks
 
 on property:ro.use_data_netmgrd=false
     # netmgr not supported on specific target
@@ -830,6 +1036,7 @@ service cnss_diag /system/bin/cnss_diag -q -f -b 128
     class main
     user system
     group system wifi inet net_admin sdcard_rw media_rw diag
+    disabled
     oneshot
 
 service cnss-daemon /system/bin/cnss-daemon -n -l
@@ -955,21 +1162,20 @@ service battery_monitor /system/bin/battery_monitor
     group system
     disabled
 
+service ril-daemon /system/bin/rild
+    class main
+    socket rild stream 660 root radio
+    socket sap_uim_socket1 stream 660 bluetooth bluetooth
+    socket rild-debug stream 660 radio system
+    user root
+    group radio cache inet misc audio log readproc wakelock qcom_diag net_raw
+
 service ril-daemon2 /system/bin/rild -c 2
     class main
     socket rild2 stream 660 root radio
     socket rild-debug2 stream 660 radio system
     user root
-    disabled
-    group radio cache inet misc audio sdcard_r sdcard_rw qcom_diag diag log
-
-service ril-daemon3 /system/bin/rild -c 3
-    class main
-    socket rild3 stream 660 root radio
-    socket rild-debug3 stream 660 radio system
-    user root
-    disabled
-    group radio cache inet misc audio sdcard_r sdcard_rw qcom_diag diag log
+    group radio cache inet misc audio log readproc wakelock qcom_diag net_raw
 
 service usb_uicc_enable /system/bin/sh /system/etc/init.qcom.uicc.sh
     class late_start
@@ -1005,6 +1211,7 @@ service charger /charger
     class charger
     group system graphics
     seclabel u:r:healthd:s0
+    writepid /dev/cpuset/system-background/tasks
 
 service ssr_diag /system/bin/ssr_diag
     class late_start
@@ -1071,12 +1278,7 @@ service msm_irqbalance /system/bin/msm_irqbalance -f /system/vendor/etc/msm_irqb
     user root
     group root
     disabled
-
-service msm_irqbl_sdm630 /system/bin/msm_irqbalance -f /system/vendor/etc/msm_irqbalance_sdm630.conf
-    class core
-    user root
-    group root
-    disabled
+    writepid /dev/cpuset/system-background/tasks
 
 service wfdservice /system/bin/wfdservice
     class main
@@ -1084,22 +1286,17 @@ service wfdservice /system/bin/wfdservice
     group audio camera inet net_bt_stack drmrpc media_rw media input net_admin
     #removed these because of limit of 12 groups
     #graphics net_bt net_bt_admin bluetooth
-    disabled
-    oneshot
+#NUBIA MODIFY for wfd get wfdservice when it connecting
+    #disabled
+    #oneshot
 
-on property:sys.wfdservice=enable
-    start wfdservice
+#on property:sys.wfdservice=enable
+#    start wfdservice
 
-on property:sys.wfdservice=disable
-    stop wfdservice
+#on property:sys.wfdservice=disable
+#    stop wfdservice
+#NUBIA MODIFY END
 
-service RIDL /system/vendor/bin/RIDLClient.exe
-    class late_start
-    oneshot
-    user system
-    group system inet log sdcard_r sdcard_rw qcom_diag
-    # removed for security team - misc bluetooth radio gps wifi diag media_rw
-    # limited to 12 groups.  Unused: audio usb net_bt_admin net_bt_stac net_raw net_admin
 
 # service for USERDEBUG
 service LKCore-dbg /system/vendor/bin/LKCore
