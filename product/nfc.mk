@@ -2,7 +2,7 @@
 PRODUCT_PACKAGES += \
     libnfc \
     libnfc_jni \
-    nfc_nci.bcm2079x.default \
+#   nfc_nci.bcm2079x.default \
     com.android.nfc_extras \
     NfcNci \
     Tag
