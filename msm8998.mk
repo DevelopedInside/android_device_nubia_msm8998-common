@@ -346,6 +346,13 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/rootdir/bin/init.qti.qseecomd.sh:$(TARGET_COPY_OUT_VENDOR)/bin/init.qti.qseecomd.sh \
     $(LOCAL_PATH)/rootdir/etc/init.qcom.bt.sh:$(TARGET_COPY_OUT_VENDOR)/etc/init.qcom.bt.sh
 
+# RCS
+PRODUCT_PACKAGES += \
+    rcs_service_aidl \
+    rcs_service_aidl.xml \
+    rcs_service_api \
+    rcs_service_api.xml
+
 # Releasetools
 PRODUCT_PACKAGES += \
     librecovery_updater_nubia
@@ -372,6 +379,13 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     android.hardware.thermal@1.0-impl \
     android.hardware.thermal@1.0-service
+
+# Telephony
+PRODUCT_PACKAGES += \
+    telephony-ext
+
+PRODUCT_BOOT_JARS += \
+    telephony-ext
 
 # USB
 PRODUCT_PACKAGES += \
