@@ -177,6 +177,7 @@ PRODUCT_PACKAGES += \
     memtrack.msm8998 \
     libdisplayconfig \
     liboverlay \
+    libqdMetaData.system \
     libtinyxml 
 
 PRODUCT_PACKAGES += \
