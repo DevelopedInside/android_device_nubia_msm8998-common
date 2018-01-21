@@ -190,6 +190,7 @@ service thermal-engine /vendor/bin/thermal-engine
    socket thermal-recv-passive-client stream 0666 system system
    socket thermal-send-rule stream 0660 system system
    group root
+   writepid /dev/cpuset/system-background/tasks
 
 #service security-check1 /sbin/security_boot_check system
 #    class core
@@ -204,6 +205,7 @@ service adsprpcd /vendor/bin/adsprpcd
    class main
    user media
    group media
+   writepid /dev/cpuset/system-background/tasks
 
 service hbtp /vendor/bin/hbtp_daemon
     class main
@@ -282,6 +284,7 @@ service imsqmidaemon /vendor/bin/imsqmidaemon
     user system
     socket ims_qmid stream 0660 system radio
     group radio log diag
+    writepid /dev/cpuset/system-background/tasks
 
 service imsdatadaemon /vendor/bin/imsdatadaemon
     class main
@@ -289,6 +292,7 @@ service imsdatadaemon /vendor/bin/imsdatadaemon
     socket ims_datad stream 0660 system radio
     group system wifi radio inet log diag
     disabled
+    writepid /dev/cpuset/system-background/tasks
 #
 #service mdm_helper /system/bin/mdm_helper
 #    class core
@@ -354,12 +358,14 @@ service ims_rtp_daemon /vendor/bin/ims_rtp_daemon
    user system
    group radio diag inet log
    disabled
+   writepid /dev/cpuset/system-background/tasks
 
 service vendor.imsrcsservice /vendor/bin/imsrcsd
    class main
    user system
    group radio diag inet log
    disabled
+   writepid /dev/cpuset/system-background/tasks
 
 service powerofflog /system/bin/sh /system/etc/fg_logs_start.sh /cache/nubialog
     disabled
@@ -380,6 +386,7 @@ service ppd /vendor/bin/mm-pp-dpps
     group system graphics
     socket pps stream 0660 system system
     disabled
+    writepid /dev/cpuset/system-background/tasks
 
 on property:init.svc.hwcomposer-2-1=stopped
     stop ppd
@@ -445,6 +452,7 @@ service hvdcp_opti /vendor/bin/hvdcp_opti
     class main
     user root
     group system wakelock
+    writepid /dev/cpuset/system-background/tasks
 
 service qvrd /system/bin/qvrservice
     class late_start

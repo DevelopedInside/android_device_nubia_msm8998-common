@@ -677,6 +677,7 @@ service cnd /vendor/bin/cnd
     class main
     user system
     group system wifi inet radio wakelock net_admin
+    writepid /dev/cpuset/system-background/tasks
 
 service dpmQmiMgr /vendor/bin/dpmQmiMgr
     class main
@@ -708,8 +709,8 @@ service start_hci_filter /vendor/bin/wcnss_filter
     class late_start
     user bluetooth
     group bluetooth diag system wakelock
-    seclabel u:r:bluetooth:s0
     disabled
+    writepid /dev/cpuset/system-background/tasks
 
 service bt-dun /system/bin/dun-server /dev/smd7 /dev/rfcomm0
     class late_start
@@ -769,6 +770,7 @@ service qmuxd /vendor/bin/qmuxd
 service netmgrd /vendor/bin/netmgrd
     class main
     disabled
+    writepid /dev/cpuset/system-background/tasks
 
 service ipacm-diag /vendor/bin/ipacm-diag
     class main
@@ -776,24 +778,28 @@ service ipacm-diag /vendor/bin/ipacm-diag
     socket ipacm_log_file dgram 660 radio radio
     group radio diag oem_2901
     disabled
+    writepid /dev/cpuset/system-background/tasks
 
 service ipacm /vendor/bin/ipacm
     class main
     user radio
     group radio inet
     disabled
+    writepid /dev/cpuset/system-background/tasks
 
 service qti /vendor/bin/qti
     class main
     user radio
     group radio oem_2901 diag usb net_admin
     disabled
+    writepid /dev/cpuset/system-background/tasks
 
 service sensors /vendor/bin/sensors.qcom
     class core
     user root
     group root
     disabled
+    writepid /dev/cpuset/system-background/tasks
 
 on property:ro.use_data_netmgrd=false
     # netmgr not supported on specific target
@@ -973,6 +979,7 @@ service cnss-daemon /vendor/bin/cnss-daemon -n -l
     user system
     group system inet net_admin wifi
     capabilities NET_ADMIN
+    writepid /dev/cpuset/system-background/tasks
 
 on property:sys.shutdown.requested=*
     stop cnss-daemon
@@ -1023,6 +1030,7 @@ service loc_launcher /vendor/bin/loc_launcher
     #loc_launcher will start as root and set its uid to gps
     class late_start
     group gps inet diag wifi
+    writepid /dev/cpuset/system-background/tasks
 
 on property:crypto.driver.load=1
      insmod /system/lib/modules/qce.ko
@@ -1080,6 +1088,7 @@ service qvop-daemon /vendor/bin/qvop-daemon
     class late_start
     user system
     group system drmrpc
+    writepid /dev/cpuset/system-background/tasks
 
 service atfwd /vendor/bin/ATFWD-daemon
     class late_start
@@ -1221,6 +1230,7 @@ service vendor.msm_irqbalance /vendor/bin/msm_irqbalance -f /vendor/etc/msm_irqb
     user root
     group root
     disabled
+    writepid /dev/cpuset/system-background/tasks
 
 service vendor.msm_irqbal_lb /vendor/bin/msm_irqbalance -f /vendor/etc/msm_irqbalance_little_big.conf
     class core
@@ -1292,6 +1302,7 @@ service time_daemon /vendor/bin/time_daemon
     class main
     user root
     group root
+    writepid /dev/cpuset/system-background/tasks
 
 service qdmastatsd /vendor/bin/qdmastatsd
     class late_start
