@@ -452,6 +452,10 @@ PRODUCT_VERITY_SIGNING_KEY := build/target/product/security/verity
 PRODUCT_PACKAGES += \
     verity_key
 
+# VNDK-SP
+PRODUCT_PACKAGES += \
+    vndk-sp
+
 # Wifi
 PRODUCT_PACKAGES += \
     libqsap_sdk \
