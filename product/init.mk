@@ -10,6 +10,7 @@ PRODUCT_PACKAGES += \
     init.qcom.sh \
     init.qcom.usb.rc \
     init.qcom.usb.sh \
+    init.recovery.qcom.rc \
     ueventd.qcom.rc
 
 # Nubia scripts
@@ -19,5 +20,4 @@ PRODUCT_PACKAGES += \
 
 # Etc scripts
 PRODUCT_PACKAGES += \
-    init.qcom.bt.sh \
-    init.qcom.post_boot.sh
+    init.qcom.bt.sh
