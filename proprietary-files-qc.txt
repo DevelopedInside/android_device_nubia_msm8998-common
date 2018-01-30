@@ -44,7 +44,6 @@ etc/drc/drc_cfg_AZ.txt
 etc/drc/drc_cfg_5.1.txt
 etc/surround_sound_3mic/surround_sound_rec_AZ.cfg
 etc/surround_sound_3mic/surround_sound_rec_5.1.cfg
-
 vendor/lib/libacdb-fts.so
 vendor/lib/libacdbloader.so
 vendor/lib/libacdbmapper.so
@@ -61,7 +60,6 @@ vendor/lib/libqtigef.so
 vendor/lib/soundfx/libqcbassboost.so
 vendor/lib/soundfx/libqcreverb.so
 vendor/lib/soundfx/libqcvirt.so
-
 vendor/lib64/libacdb-fts.so
 vendor/lib64/libacdbloader.so
 vendor/lib64/libacdbmapper.so
@@ -375,9 +373,6 @@ vendor/lib/libconnctrl.so
 bin/energy-awareness
 bin/msm_irqbalance
 
-# Powerhint
-etc/powerhint.xml
-
 # Peripheral manager
 bin/pm-proxy
 bin/pm-service
@@ -390,6 +385,9 @@ framework/com.qti.snapdragon.sdk.display.jar
 -vendor/app/colorservice/colorservice.apk
 vendor/bin/mm-pp-dpps
 vendor/lib64/libdisp-aba.so
+
+# Powerhint
+etc/powerhint.xml
 
 # QMI
 bin/irsc_util
@@ -503,9 +501,32 @@ vendor/lib64/libimsmedia_jni.so
 vendor/lib64/librcc.so
 vendor/lib64/libvoice-svc.so
 
+# SCVE
+vendor/lib/libscveBlobDescriptor.so
+vendor/lib/libscveBlobDescriptor_stub.so
+vendor/lib/libscveCleverCapture.so
+vendor/lib/libscveCleverCapture_stub.so
+vendor/lib/libscveCommon.so
+vendor/lib/libscveCommon_stub.so
+vendor/lib/libscveFaceRecognition.so
+vendor/lib/libscveImageCloning.so
+vendor/lib/libscveImageCorrection.so
+vendor/lib/libscveImageRemoval.so
+vendor/lib/libscveMotionVector.so
+vendor/lib/libscveObjectMatting.so
+vendor/lib/libscveObjectMatting_stub.so
+vendor/lib/libscveObjectSegmentation.so
+vendor/lib/libscveObjectSegmentation_stub.so
+vendor/lib/libscveObjectTracker.so
+vendor/lib/libscveObjectTracker_stub.so
+vendor/lib/libscvePanorama.so
+vendor/lib/libscvePanorama_lite.so
+vendor/lib/libscveTextReco.so
+vendor/lib/libscveTextRecoPostProcessing.so
+vendor/lib/libscveTextReco_stub.so
+
 # Sensors
 bin/sensors.qcom
-
 lib/sensors.hal.tof.so
 vendor/lib/hw/activity_recognition.msm8998.so
 vendor/lib/libsensor1.so
