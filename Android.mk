@@ -27,7 +27,11 @@
 
 LOCAL_PATH := $(call my-dir)
 
+ifneq ($(filter nx563j nx595j,$(TARGET_DEVICE)),)
+
 include $(call all-makefiles-under,$(LOCAL_PATH))
+
+include $(CLEAR_VARS)
 
 # Create a link for the WCNSS config file
 $(shell mkdir -p $(TARGET_OUT)/etc/firmware/wlan/qca_cld; \
@@ -90,3 +94,4 @@ $(shell ln -s /persist/rfs/shared $(TARGET_OUT)/rfs/apq/gnss/shared)
 $(shell ln -s /persist/hlos_rfs/shared $(TARGET_OUT)/rfs/apq/gnss/hlos)
 $(shell ln -s /firmware $(TARGET_OUT)/rfs/apq/gnss/readonly/firmware)
 # END RFS folder structure
+endif
