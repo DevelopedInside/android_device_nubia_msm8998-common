@@ -221,11 +221,9 @@ loop
 */
 char const* const LED_IN_FADE_PARA = "/sys/class/leds/nubia_led/fade_parameter";
 
-/*
 char const* const BATTERY_CAPACITY = "/sys/class/power_supply/battery/capacity";
 
 char const* const BATTERY_CHARGING_STATUS = "/sys/class/power_supply/battery/status";
-*/
 
 
 struct led_data
@@ -276,6 +274,31 @@ static int write_int(char const* path, int value)
         if (already_warned == 0)
         {
             ALOGE("write_int failed to open %s\n", path);
+            already_warned = 1;
+        }
+        return -errno;
+    }
+}
+
+static int read_int(char const* path, int* value)
+{
+    int fd;
+    static int already_warned = 0;
+
+    fd = open(path, O_RDONLY);
+    if (fd >= 0)
+    {
+        char buffer[20];
+        int amt = read(fd, buffer, 20);
+        sscanf(buffer, "%d\n", value);
+        close(fd);
+        return amt == -1 ? -errno : 0;
+    }
+    else
+    {
+        if (already_warned == 0)
+        {
+            ALOGD("read_int failed to open %s\n", path);
             already_warned = 1;
         }
         return -errno;
@@ -537,8 +560,39 @@ static int set_breath_light_locked(int event_source, struct light_state_t const*
 
     if (active_status & BREATH_SOURCE_BATTERY) // battery status, set home on
     {
-        home_status.status = BLINK_MODE_ON;
-        home_status.min_grade = get_max(home_status.min_grade, LED_GRADE_HOME_BATTERY);
+        // can't get battery info from state, getting it from sysfs
+        int is_charging = 0;
+        int capacity = 0;
+        char charging_status[15];
+        FILE* fp = fopen(BATTERY_CHARGING_STATUS, "rb");
+        fgets(charging_status, 14, fp);
+        fclose(fp);
+        if (strstr(charging_status, "Discharging") != NULL)
+            is_charging = 0;
+        else
+            is_charging = 1;
+        read_int(BATTERY_CAPACITY, &capacity);
+        if (is_charging == 0)
+        {
+            // battery low
+            home_status.status = BLINK_MODE_BREATH;
+            home_status.min_grade = get_max(home_status.min_grade, LED_GRADE_HOME_BATTERY_LOW);
+        }
+        else
+        {
+            if (capacity < 90)
+            { // see batteryService.java:978
+                // battery chagring
+                home_status.status = BLINK_MODE_BREATH;
+                home_status.min_grade = get_max(home_status.min_grade, LED_GRADE_HOME_BATTERY);
+            }
+            else
+            {
+                // battery full
+                home_status.status = BLINK_MODE_ON;
+                home_status.min_grade = get_max(home_status.min_grade, LED_GRADE_HOME_BATTERY);
+            }
+        }
     }
 
     if ((active_status & BREATH_SOURCE_NOTIFICATION)
