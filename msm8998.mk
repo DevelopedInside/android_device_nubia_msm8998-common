@@ -200,7 +200,7 @@ PRODUCT_PACKAGES += \
     android.hardware.biometrics.fingerprint@2.1-service \
     fingerprintd
 
-# For android_filesystem_config.h
+# For config.fs
 PRODUCT_PACKAGES += \
     fs_config_files
 
