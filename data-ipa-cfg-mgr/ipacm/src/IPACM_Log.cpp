@@ -1,5 +1,5 @@
 /* 
-Copyright (c) 2013-2018, The Linux Foundation. All rights reserved.
+Copyright (c) 2013, The Linux Foundation. All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions are
@@ -50,13 +50,8 @@ IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <errno.h>
 #include <IPACM_Defs.h>
 
-void logmessage(int log_level)
-{
-	return;
-}
-
 /* start IPACMDIAG socket*/
-int create_socket(unsigned int *sockfd)
+int create_socket(int *sockfd)
 {
 
   if ((*sockfd = socket(AF_UNIX, SOCK_DGRAM, 0)) == IPACM_FAILURE)
@@ -78,7 +73,7 @@ void ipacm_log_send( void * user_data)
 	ipacm_log_buffer_t ipacm_log_buffer;
 	int numBytes=0, len;
 	struct sockaddr_un ipacmlog_socket;
-	static unsigned int ipacm_log_sockfd = 0;
+	static int ipacm_log_sockfd = 0;
 
 	if(ipacm_log_sockfd == 0)
 	{
@@ -91,7 +86,7 @@ void ipacm_log_send( void * user_data)
 		printf("create ipacm_log socket successfully\n");
 	}
 	ipacmlog_socket.sun_family = AF_UNIX;
-	strlcpy(ipacmlog_socket.sun_path, IPACMLOG_FILE, sizeof(ipacmlog_socket.sun_path));
+	strlcpy(ipacmlog_socket.sun_path, IPACMLOG_FILE,sizeof(ipacmlog_socket.sun_path));
 	len = strlen(ipacmlog_socket.sun_path) + sizeof(ipacmlog_socket.sun_family);
 
 	memcpy(ipacm_log_buffer.user_data, user_data, MAX_BUF_LEN);
