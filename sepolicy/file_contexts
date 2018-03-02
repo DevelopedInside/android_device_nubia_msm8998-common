@@ -1,0 +1,23 @@
+# We have a couple of non-standard NV partitions
+/dev/block/bootdevice/by-name/oem_dycnvbk                       u:object_r:modem_efs_partition_device:s0
+/dev/block/bootdevice/by-name/oem_stanvbk                       u:object_r:modem_efs_partition_device:s0
+
+# FRP partition
+/dev/block/bootdevice/by-name/frp                               u:object_r:frp_block_device:s0
+
+# NFC
+/dev/bcm2079x                                                   u:object_r:nfc_device:s0
+
+# Persist partition
+/dev/block/bootdevice/by-name/persist                           u:object_r:persist_block_device:s0
+
+# data
+/data/misc/netmgr(/.*)?                                         u:object_r:net_data_file:s0
+/data/oemnvitems(/.*)?                                          u:object_r:nv_data_file:s0
+
+# sys
+/sys/kernel/debug/msm_core(/.*)?                                u:object_r:debugfs_msm_core:s0
+/sys/kernel/debug/rmt_storage/rmts                              u:object_r:debugfs_rmts:s0
+
+# Vibrator
+/sys/devices/virtual/timed_output/vibrator/vmax_mv              u:object_r:sysfs_vibrator:s0
