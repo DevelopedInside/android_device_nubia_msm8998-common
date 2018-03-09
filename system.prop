@@ -46,7 +46,7 @@ ro.bluetooth.emb_wp_mode=false
 ro.bluetooth.wipower=false
 
 # Camera
-camera.aux.packagelist=com.android.camera,cn.nubia.factory,org.codeaurora.snapcam,org.cyanogenmod.snap
+camera.aux.packagelist=com.android.camera,cn.nubia.factory,org.codeaurora.snapcam,org.lineageos.snap
 persist.camera.depth.focus.cb=0
 persist.camera.vdbea.switch=1
 persist.ts.rtmakeup=false
