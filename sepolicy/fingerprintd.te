@@ -1,3 +1,10 @@
-allow fingerprintd firmware_file:file { getattr open read };
-allow fingerprintd tee_device:chr_file { ioctl open read write };
-allow fingerprintd uhid_device:chr_file { ioctl open write };
+r_dir_file(fingerprintd, firmware_file)
+
+allow fingerprintd tee_device:chr_file { rw_file_perms };
+allow fingerprintd uhid_device:chr_file { rw_file_perms };
+
+allow fingerprintd sysfs_fingerprint:dir { r_dir_perms };
+allow fingerprintd sysfs_fingerprint:file { rw_file_perms };
+
+allow fingerprintd sysfs_fpc_irq:file { rw_file_perms };
+allow fingerprintd sysfs_fpc_wakeup:file { rw_file_perms };

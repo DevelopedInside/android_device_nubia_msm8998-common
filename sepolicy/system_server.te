@@ -1,4 +1,2 @@
 allow system_server sensors_persist_file:file write;
-
-# Vibrator
 allow system_server sysfs_vibrator:file rw_file_perms;

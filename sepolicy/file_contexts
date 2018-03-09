@@ -2,8 +2,16 @@
 /dev/block/bootdevice/by-name/oem_dycnvbk                       u:object_r:modem_efs_partition_device:s0
 /dev/block/bootdevice/by-name/oem_stanvbk                       u:object_r:modem_efs_partition_device:s0
 
+# Amplifier persist files
+/persist/tas2555_cal.bin                                        u:object_r:persist_amp_cal_file:s0
+
 # FRP partition
 /dev/block/bootdevice/by-name/frp                               u:object_r:frp_block_device:s0
+
+# Fingerprint
+/sys/devices/soc/1.fpc_fpc1020(/.*)?                            u:object_r:sysfs_fingerprint:s0
+/sys/devices/soc/1.fpc_fpc1020/irq                              u:object_r:sysfs_fpc_irq:s0
+/sys/devices/soc/1.fpc_fpc1020/enable_wakeup                    u:object_r:sysfs_fpc_wakeup:s0
 
 # NFC
 /dev/bcm2079x                                                   u:object_r:nfc_device:s0
