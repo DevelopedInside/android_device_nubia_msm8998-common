@@ -7,13 +7,19 @@ on init
     write /dev/stune/foreground/schedtune.colocate 0
     write /dev/stune/top-app/schedtune.colocate 1
 
+# For cpusets initialize for Silver Only first and then Silver + Gold
+# Silver Only configuration cannot work with 0-7
 on boot
-    # Update foreground and background cpusets
+    write /dev/cpuset/top-app/cpus 0-3
+    write /dev/cpuset/foreground/cpus 0-3
+    write /dev/cpuset/background/cpus 0-3
+    write /dev/cpuset/system-background/cpus 0-3
+
+    write /dev/cpuset/top-app/cpus 0-7
     write /dev/cpuset/foreground/cpus 0-7
     write /dev/cpuset/foreground/boost/cpus 0-7
     write /dev/cpuset/background/cpus 0-7
     write /dev/cpuset/system-background/cpus 0-7
-    write /dev/cpuset/top-app/cpus 0-7
 
     # add a cpuset for the camera daemon
     # we want all cores for camera
@@ -27,38 +33,29 @@ on boot
     # Enable sched boost in order to schedule tasks on perf cluster
     write /proc/sys/kernel/sched_boost 1
 
-on enable-low-power
+on charger
+    mount ext4 /dev/block/bootdevice/by-name/system /system ro
+
+    write /sys/module/lpm_levels/parameters/sleep_disabled N
+
+    # Disable thermal core control
+    write /sys/module/msm_thermal/core_control/enabled 0
+
+    # Online cpu0 and set governor powersave
+    write /sys/devices/system/cpu/cpu0/online 1
+    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor powersave
+
+    # Offline remaining cores
+    write /sys/devices/system/cpu/cpu1/online 0
+    write /sys/devices/system/cpu/cpu2/online 0
+    write /sys/devices/system/cpu/cpu3/online 0
+    write /sys/devices/system/cpu/cpu4/online 0
+    write /sys/devices/system/cpu/cpu5/online 0
+    write /sys/devices/system/cpu/cpu6/online 0
+    write /sys/devices/system/cpu/cpu7/online 0
+
+on property:dev.bootcomplete=1
     # Apply Scheduler and Governor settings for 8998
-
-    # Enable core control
-    write /sys/devices/system/cpu/cpu4/core_ctl/min_cpus 2
-    write /sys/devices/system/cpu/cpu4/core_ctl/max_cpus 4
-    write /sys/devices/system/cpu/cpu4/core_ctl/busy_up_thres 60
-    write /sys/devices/system/cpu/cpu4/core_ctl/busy_down_thres 30
-    write /sys/devices/system/cpu/cpu4/core_ctl/offline_delay_ms 100
-    write /sys/devices/system/cpu/cpu4/core_ctl/is_big_cluster 1
-    write /sys/devices/system/cpu/cpu4/core_ctl/task_thres 4
-
-    # Enable Adaptive LMK
-    write /sys/module/lowmemorykiller/parameters/enable_adaptive_lmk 1
-    write /sys/module/lowmemorykiller/parameters/minfree "18432,23040,27648,51256,150296,200640"
-    write /sys/module/lowmemorykiller/parameters/vmpressure_file_min 162500
-
-    # Setting b.L scheduler parameters
-    write /proc/sys/kernel/sched_boost 0
-    write /proc/sys/kernel/sched_migration_fixup 1
-    write /proc/sys/kernel/sched_upmigrate 95
-    write /proc/sys/kernel/sched_downmigrate 90
-    write /proc/sys/kernel/sched_group_upmigrate 100
-    write /proc/sys/kernel/sched_group_downmigrate 95
-    write /proc/sys/kernel/sched_select_prev_cpu_us 0
-    write /proc/sys/kernel/sched_freq_inc_notify 400000
-    write /proc/sys/kernel/sched_freq_dec_notify 400000
-    write /proc/sys/kernel/sched_spill_nr_run 5
-    write /proc/sys/kernel/sched_restrict_cluster_spill 1
-
-    # Starting io prefetcher service
-    start iop
 
     # Disable thermal hotplug to switch governor
     write /sys/module/msm_thermal/core_control/enabled 0
@@ -99,6 +96,15 @@ on enable-low-power
     write /sys/devices/system/cpu/cpu4/cpufreq/scaling_min_freq 300000
     write /sys/devices/system/cpu/cpu4/cpufreq/interactive/ignore_hispeed_on_notif 1
 
+    # Enable core control
+    write /sys/devices/system/cpu/cpu0/core_ctl/min_cpus 2
+    write /sys/devices/system/cpu/cpu4/core_ctl/min_cpus 2
+    write /sys/devices/system/cpu/cpu4/core_ctl/busy_up_thres 60
+    write /sys/devices/system/cpu/cpu4/core_ctl/busy_down_thres 30
+    write /sys/devices/system/cpu/cpu4/core_ctl/offline_delay_ms 100
+    write /sys/devices/system/cpu/cpu4/core_ctl/is_big_cluster 1
+    write /sys/devices/system/cpu/cpu4/core_ctl/task_thres 4
+
     # Re-enable thermal hotplug
     write /sys/module/msm_thermal/core_control/enabled 1
 
@@ -122,6 +128,7 @@ on enable-low-power
     write /sys/class/devfreq/soc:qcom,cpubw/bw_hwmon/up_scale 250
     write /sys/class/devfreq/soc:qcom,cpubw/bw_hwmon/idle_mbps 1600
 
+    # Configure memory latencies
     write /sys/class/devfreq/soc:qcom,memlat-cpu0/governor "mem_latency"
     write /sys/class/devfreq/soc:qcom,memlat-cpu0/polling_interval 10
     write /sys/class/devfreq/soc:qcom,memlat-cpu0/mem_latency/ratio_ceil 400
@@ -130,6 +137,7 @@ on enable-low-power
     write /sys/class/devfreq/soc:qcom,memlat-cpu4/mem_latency/ratio_ceil 400
     write /sys/class/devfreq/soc:qcom,mincpubw/governor "cpufreq"
 
+    # Setup power retention
     write /sys/module/lpm_levels/system/pwr/cpu0/ret/idle_enabled "N"
     write /sys/module/lpm_levels/system/pwr/cpu1/ret/idle_enabled "N"
     write /sys/module/lpm_levels/system/pwr/cpu2/ret/idle_enabled "N"
@@ -138,38 +146,42 @@ on enable-low-power
     write /sys/module/lpm_levels/system/perf/cpu5/ret/idle_enabled "N"
     write /sys/module/lpm_levels/system/perf/cpu6/ret/idle_enabled "N"
     write /sys/module/lpm_levels/system/perf/cpu7/ret/idle_enabled "N"
+    write /sys/module/lpm_levels/system/pwr/pwr-l2-dynret/idle_enabled "N"
+    write /sys/module/lpm_levels/system/pwr/pwr-l2-ret/idle_enabled "N"
+    write /sys/module/lpm_levels/system/perf/perf-l2-dynret/idle_enabled "N"
+    write /sys/module/lpm_levels/system/perf/perf-l2-ret/idle_enabled "N"
     write /sys/module/lpm_levels/parameters/sleep_disabled "N"
-    
-    # Set idle GPU to 257 Mhz
-    write /sys/class/kgsl/kgsl-3d0/default_pwrlevel 6
+
+    # Update cpusets now that boot is complete and we want better load balancing
+    write /dev/cpuset/top-app/cpus 0-7
+    write /dev/cpuset/foreground/boost/cpus 0-3,6-7
+    write /dev/cpuset/foreground/cpus 0-3,6-7
+    write /dev/cpuset/background/cpus 0-1
+    write /dev/cpuset/system-background/cpus 0-3
+    write /dev/cpuset/camera-daemon/cpus 0-3
+
+    # Disable sched boost
+    write /proc/sys/kernel/sched_boost 0
+
+    # Enable Adaptive LMK
+    write /sys/module/lowmemorykiller/parameters/enable_adaptive_lmk 1
+    write /sys/module/lowmemorykiller/parameters/minfree "18432,23040,27648,51256,150296,200640"
+    write /sys/module/lowmemorykiller/parameters/vmpressure_file_min 162500
+
+    # Setting b.L scheduler parameters
+    write /proc/sys/kernel/sched_migration_fixup 1
+    write /proc/sys/kernel/sched_upmigrate 95
+    write /proc/sys/kernel/sched_downmigrate 90
+    write /proc/sys/kernel/sched_group_upmigrate 100
+    write /proc/sys/kernel/sched_group_downmigrate 95
+    write /proc/sys/kernel/sched_select_prev_cpu_us 0
+    write /proc/sys/kernel/sched_freq_inc_notify 400000
+    write /proc/sys/kernel/sched_freq_dec_notify 400000
+    write /proc/sys/kernel/sched_spill_nr_run 5
+    write /proc/sys/kernel/sched_restrict_cluster_spill 1
 
     # Set perfd properties
     setprop sys.post_boot.parsed 1
 
-on charger
-    mount ext4 /dev/block/bootdevice/by-name/system /system ro
-
-    write /sys/devices/system/cpu/cpu1/online 0
-    write /sys/devices/system/cpu/cpu2/online 0
-    write /sys/devices/system/cpu/cpu3/online 0
-    write /sys/devices/system/cpu/cpu5/online 0
-    write /sys/devices/system/cpu/cpu6/online 0
-    write /sys/devices/system/cpu/cpu7/online 0
-    write /sys/module/msm_thermal/core_control/cpus_offlined 254
-    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor "powersave"
-    write /sys/devices/system/cpu/cpu4/cpufreq/scaling_governor "powersave"
-    write /sys/module/lpm_levels/parameters/sleep_disabled 0
-
-on class_start:late_start
-    trigger enable-low-power
-
-on property:init.svc.recovery=running
-    trigger enable-low-power
-
-on property:dev.bootcomplete=1
-    # update cpusets now that boot is complete and we want better load balancing
-    write /dev/cpuset/top-app/cpus 0-7
-    write /dev/cpuset/foreground/boost/cpus 0-2
-    write /dev/cpuset/foreground/cpus 0-2
-    write /dev/cpuset/background/cpus 0
-    write /dev/cpuset/system-background/cpus 0-2
+    # Starting io prefetcher service
+    start iop
