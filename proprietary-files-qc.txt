@@ -73,6 +73,17 @@ vendor/lib64/soundfx/libqcbassboost.so
 vendor/lib64/soundfx/libqcreverb.so
 vendor/lib64/soundfx/libqcvirt.so
 
+# Audio amplifer TAS2555
+bin/tas2555-ftc
+lib/libTAS2555ftc.so
+lib64/libTAS2555ftc.so
+etc/firmware/tas2555_uCDSP.bin
+
+# Audio Dolby
+vendor/etc/dolby/dax-default.xml
+vendor/lib/soundfx/libhwdap.so
+vendor/lib/soundfx/libswdap.so
+
 # Bluetooth
 bin/btnvtool
 bin/hci_qcomm_init
