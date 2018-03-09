@@ -1,43 +1,45 @@
+#
+# system.prop for nubia msm8998 devices
+#
+
 # Audio
 af.fast_track_multiplier=2
-audio_hal.period_size=192
-ro.qc.sdk.audio.fluencetype=fluence
-persist.audio.fluence.voicecall=true
-persist.audio.fluence.voicerec=false
-persist.audio.fluence.speaker=false
-tunnel.audio.encode=false
-persist.audio.ras.enabled=false
-audio.offload.disable=false
-audio.offload.buffer.size.kb=32
-audio.offload.video=true
-audio.offload.pcm.16bit.enable=true
-audio.offload.pcm.24bit.enable=true
-audio.offload.track.enable=false
 audio.deep_buffer.media=true
-audio.heap.size.multiplier=7
-use.voice.path.for.pcm.voip=true
-audio.offload.multiaac.enable=true
 audio.dolby.ds2.enabled=true
 audio.dolby.ds2.hardbypass=true
+audio.ds1.metainfo.key=273
+audio.effect.name=dolby
+audio.heap.size.multiplier=7
+audio.noisy.broadcast.delay=600
+audio.offload.buffer.size.kb=32
+audio.offload.disable=false
+audio.offload.gapless.enabled=true
+audio.offload.multiaac.enable=true
 audio.offload.multiple.enabled=false
 audio.offload.passthrough=false
-ro.qc.sdk.audio.ssr=false
-audio.offload.gapless.enabled=true
-audio.safx.pbe.enabled=true
+audio.offload.pcm.16bit.enable=true
+audio.offload.pcm.24bit.enable=true
+audio.offload.pstimeout.secs=3
+audio.offload.track.enable=false
+audio.offload.video=true
 audio.parser.ip.buffer.size=0
+audio.safx.pbe.enabled=true
+audio_hal.period_size=192
+dmid=3067269873
+dolby.monospeaker=false
 flac.sw.decoder.24bit.support=true
+fm.a2dp.conc.disabled=true
+persist.audio.fluence.speaker=false
+persist.audio.fluence.voicecall=true
+persist.audio.fluence.voicerec=false
+persist.audio.ras.enabled=false
+qcom.hw.aac.encoder=true
+ro.qc.sdk.audio.fluencetype=fluence
+ro.qc.sdk.audio.ssr=false
+tunnel.audio.encode=false
 use.qti.sw.alac.decoder=true
 use.qti.sw.ape.decoder=true
-qcom.hw.aac.encoder=true
-fm.a2dp.conc.disabled=true
-audio.noisy.broadcast.delay=600
-audio.offload.pstimeout.secs=3
-
-audio.effect.name=dolby
-dolby.monospeaker=false
-#Dolby DS1 DOLBY_UDC
-dmid=3067269873
-audio.ds1.metainfo.key=273
+use.voice.path.for.pcm.voip=true
 
 # Battery
 ro.cutoff_voltage_mv=3200
@@ -52,49 +54,56 @@ ro.bluetooth.emb_wp_mode=false
 ro.bluetooth.wipower=false
 
 # Cabl
-ro.qualcomm.cabl=0
-ro.qcom.ad=1
 ro.qcom.ad.calib.data=/system/etc/calib.cfg
 ro.qcom.ad.sensortype=2
+ro.qcom.ad=1
+ro.qualcomm.cabl=0
 
 # Camera
-persist.camera.vdbea.switch=1
-persist.camera.depth.focus.cb=0
 camera.aux.packagelist=com.android.camera,cn.nubia.factory,org.codeaurora.snapcam
+persist.camera.depth.focus.cb=0
+persist.camera.vdbea.switch=1
 persist.ts.rtmakeup=false
+
+# Charger
+persist.sys.standard_charger=USB_HVDCP_3
 
 # CNE
 persist.cne.feature=1
-
-# Core control
-ro.core_ctl_min_cpu=2
-ro.core_ctl_max_cpu=4
 
 # Data cache
 ro.device.cache_dir=/data/cache
 
 # Data
-ro.use_data_netmgrd=true
-persist.data.netmgrd.qos.enable=true
 persist.data.mode=concurrent
+persist.data.netmgrd.qos.enable=true
+ro.use_data_netmgrd=true
+
+# Display
+persist.sys.image.enhance=w
+persist.sys.lcd.anim.scale=1.0
+persist.sys.lcd.colortmp=127
+persist.sys.switch_se=2
 
 # DRM
 drm.service.enabled=true
+
+# Enable stm events
+persist.debug.coresight.config=stm-events
 
 # FRP
 ro.frp.pst=/dev/block/bootdevice/by-name/frp
 
 # Graphics
-debug.sf.hw=1
 debug.gralloc.enable_fb_ubwc=1
+debug.sf.hw=1
 dev.pm.dyn_samplingrate=1
-persist.demo.hdmirotationlock=false
-sdm.debug.disable_partial_split=1
-ro.opengles.version=196610
 persist.debug.wfd.enable=1
-persist.sys.wfd.virtual=0
+persist.demo.hdmirotationlock=false
 persist.hwc.enable_vds=1
-#ro.sf.lcd_density=480 - for nx563j
+persist.sys.wfd.virtual=0
+ro.opengles.version=196610
+sdm.debug.disable_partial_split=1
 
 # GPS
 persist.gps.qc_nlp_in_use=1
@@ -102,109 +111,106 @@ persist.loc.nlp_name=com.qualcomm.location
 ro.gps.agps_provider=1
 
 # Media
-media.stagefright.enable-player=true
-media.stagefright.enable-http=true
+media.aac_51_output_enabled=true
 media.stagefright.enable-aac=true
+media.stagefright.enable-http=true
+media.stagefright.enable-player=true
 media.stagefright.enable-qcp=true
 media.stagefright.enable-scan=true
-mmp.enable.3g2=true
-media.aac_51_output_enabled=true
-mm.enable.smoothstreaming=true
 mm.enable.qcom_parser=13631231
+mm.enable.smoothstreaming=true
+mmp.enable.3g2=true
 persist.mm.enable.prefetch=true
 vidc.enc.dcvs.extra-buff-count=2
 
 # NFC
-ro.nfc.port=I2C
 persist.nfc.smartcard.config=SIM1,eSE1
-persist.sys.switch_se=2
-persist.sys.remove_beam=0
 persist.sys.nfc_reader_twinkle=true
+persist.sys.remove_beam=0
+persist.sys.switch_se=2
+ro.nfc.port=I2C
 
 # Perf
-ro.sys.fw.bg_apps_limit=60
-ro.vendor.extension_library=libqti-perfd-client.so
 ro.am.reschedule_service=true
-
-# QTI
+ro.core_ctl_max_cpu=4
+ro.core_ctl_min_cpu=2
+ro.sys.fw.bg_apps_limit=60
 ro.vendor.at_library=libqti-at.so
+ro.vendor.extension_library=libqti-perfd-client.so
+ro.vendor.gt_library=libqti-gt.so
 
 # IMS
+persist.activate_mbn.enabled=false
+persist.data.iwlan.enable=true
 persist.dbg.ims_volte_enable=1
 persist.dbg.volte_avail_ovr=1
 persist.dbg.vt_avail_ovr=1
-persist.radio.videopause.mode=1
-persist.data.iwlan.enable=true
 persist.dbg.wfc_avail_ovr=1
-persist.regional.wipedata.level=all
-persist.radio.sw_mbn_update=0
-persist.radio.hw_mbn_update=0
-persist.radio.trigger.silence=true
 persist.device.type=omt
+persist.radio.hw_mbn_update=0
+persist.radio.sw_mbn_update=0
+persist.radio.trigger.silence=true
 persist.radio.trigger.supportux=true
-persist.activate_mbn.enabled=false
+persist.radio.videopause.mode=1
+persist.regional.wipedata.level=all
 
 # Storage
 ro.sys.sdcardfs=true
 
 # RIL
-rild.libpath=/system/vendor/lib64/libril-qc-qmi-1.so
-
-persist.rild.nitz_plmn=
+DEVICE_PROVISIONED=1
+keyguard.no_require_sim=true
+persist.radio.apm_sim_not_pwdn=1
+persist.radio.custom_ecc=1
+persist.radio.data_con_rprt=1
+persist.radio.data_ltd_sys_ind=1
+persist.radio.enhance_ecall=true
+persist.radio.hw_mbn_update=0
+persist.radio.ignore_dom_time=10
+persist.radio.multisim.config=dsds
+persist.radio.rat_on=combine
+persist.radio.sib16_support=1
+persist.radio.start_ota_daemon=0
+persist.radio.sw_mbn_update=0
+persist.radio.VT_CAM_INTERFACE=2
 persist.rild.nitz_long_ons_0=
 persist.rild.nitz_long_ons_1=
 persist.rild.nitz_long_ons_2=
 persist.rild.nitz_long_ons_3=
+persist.rild.nitz_plmn=
 persist.rild.nitz_short_ons_0=
 persist.rild.nitz_short_ons_1=
 persist.rild.nitz_short_ons_2=
 persist.rild.nitz_short_ons_3=
-
+persist.sys.ap.restart_level=0
+persist.sys.oem_smooth=1
+persist.sys.ssr.restart_level=3
 ril.subscription.types=NV,RUIM
-DEVICE_PROVISIONED=1
+rild.libpath=/system/vendor/lib64/libril-qc-qmi-1.so
+ro.com.android.dataroaming=true
 ro.telephony.default_network=22,20
 telephony.lteOnCdmaDevice=1
-keyguard.no_require_sim=true
-ro.com.android.dataroaming=true
-persist.sys.oem_smooth=1
-
-persist.radio.VT_CAM_INTERFACE=2
-persist.radio.apm_sim_not_pwdn=1
-persist.radio.sib16_support=1
-persist.radio.custom_ecc=1
-persist.radio.multisim.config=dsds
-persist.radio.ignore_dom_time=10
-persist.radio.rat_on=combine
-persist.radio.data_ltd_sys_ind=1
-persist.radio.data_con_rprt=1
-persist.radio.enhance_ecall=true
-persist.radio.hw_mbn_update=0
-persist.radio.sw_mbn_update=0
-persist.radio.start_ota_daemon=0
-keyguard.no_require_sim=true
-persist.sys.ssr.restart_level=3
-persist.sys.ap.restart_level=0
 
 # RmNet Data
-persist.rmnet.data.enable=true
-persist.data.wda.enable=true
-persist.data.df.dl_mode=5
-persist.data.df.ul_mode=5
 persist.data.df.agg.dl_pkt=10
 persist.data.df.agg.dl_size=4096
-persist.data.df.mux_count=8
-persist.data.df.iwlan_mux=9
 persist.data.df.dev_name=rmnet_usb0
+persist.data.df.dl_mode=5
+persist.data.df.iwlan_mux=9
+persist.data.df.mux_count=8
+persist.data.df.ul_mode=5
 persist.data.iwlan.enable=true
+persist.data.wda.enable=true
+persist.rmnet.data.enable=true
 
 # Sensors
 ro.qti.sensors.dev_ori=true
+ro.qti.sensors.dpc=true
+ro.qti.sensors.iod=false
+ro.qti.sensors.mot_detect=true
+ro.qti.sensors.multishake=true
 ro.qti.sensors.pmd=true
 ro.qti.sensors.sta_detect=true
-ro.qti.sensors.mot_detect=true
-ro.qti.sensors.dpc=true
-ro.qti.sensors.multishake=true
-ro.qti.sensors.iod=false
 
 # SDCard
 persist.fuse_sdcard=true
@@ -220,25 +226,3 @@ sys.usb.rmnet.func.name=gsi
 
 # Wi-Fi
 wifi.interface=wlan0
-
-
-#NUBIA:added for adb authority
-persist.adb.secure=1
-
-#Enable stm events
-persist.debug.coresight.config=stm-events
-
-#nubia:set charger detect
-persist.sys.standard_charger=USB_HVDCP_3
-
-#thermal product config
-ro.thermal.product=0
-#thermal product perf config
-persist.product.perf=1
-
-persist.sys.switch_se=2
-persist.sys.remove_beam=0
-persist.sys.nfc_reader_twinkle=true
-persist.sys.lcd.anim.scale=1.0
-persist.sys.lcd.colortmp=127
-persist.sys.image.enhance=w
