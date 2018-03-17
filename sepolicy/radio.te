@@ -1,1 +1,1 @@
-allow radio system_app_data_file:dir getattr;
+allow radio sms_secure_service:service_manager { add };
