@@ -151,6 +151,7 @@ QCOM_BT_USE_SMD_TTY := true
 # 32-bit or 64-bit), the following line should be deleted
 BOARD_QTI_CAMERA_32BIT_ONLY := true
 TARGET_USES_MEDIA_EXTENSIONS := true
+TARGET_USES_QTI_CAMERA_DEVICE := true
 USE_DEVICE_SPECIFIC_CAMERA := true
 
 # Charger
