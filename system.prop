@@ -8,7 +8,6 @@ audio.deep_buffer.media=true
 audio.dolby.ds2.enabled=true
 audio.dolby.ds2.hardbypass=true
 audio.ds1.metainfo.key=273
-audio.effect.name=dolby
 audio.heap.size.multiplier=7
 audio.noisy.broadcast.delay=600
 audio.offload.buffer.size.kb=32
@@ -25,8 +24,6 @@ audio.offload.video=true
 audio.parser.ip.buffer.size=0
 audio.safx.pbe.enabled=true
 audio_hal.period_size=192
-dmid=3067269873
-dolby.monospeaker=false
 flac.sw.decoder.24bit.support=true
 fm.a2dp.conc.disabled=true
 persist.audio.fluence.speaker=false
@@ -70,9 +67,6 @@ persist.sys.standard_charger=USB_HVDCP_3
 
 # CNE
 persist.cne.feature=1
-
-# Data cache
-ro.device.cache_dir=/data/cache
 
 # Data
 persist.data.mode=concurrent
