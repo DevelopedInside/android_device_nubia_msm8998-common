@@ -202,10 +202,11 @@ enum SCHEDULER_MSM8998 {
 int power_hint_override(__unused struct power_module *module,
         power_hint_t hint, void *data)
 {
-    int duration, duration_hint;
     static struct timespec s_previous_boost_timespec;
     struct timespec cur_boost_timespec;
     long long elapsed_time;
+    static int s_previous_duration = 0;
+    int duration;
 
     int resources_launch[] = {
         SCHED_BOOST_ON_V3, 0x3,
@@ -238,26 +239,23 @@ int power_hint_override(__unused struct power_module *module,
 
     switch (hint) {
         case POWER_HINT_INTERACTION:
-            duration = 500;
-            duration_hint = 0;
-
+            duration = 500; // 500ms by default
             if (data) {
-                duration_hint = *((int *)data);
+                int input_duration = *((int*)data);
+                if (input_duration > duration) {
+                    duration = (input_duration > 5000) ? 5000 : input_duration;
+                }
             }
 
-            duration = duration_hint > 0 ? duration_hint : 500;
-
             clock_gettime(CLOCK_MONOTONIC, &cur_boost_timespec);
+
             elapsed_time = calc_timespan_us(s_previous_boost_timespec, cur_boost_timespec);
-            if (elapsed_time > 750000)
-                elapsed_time = 750000;
-            /**
-             * Don't hint if it's been less than 250ms since last boost
-             * also detect if we're doing anything resembling a fling
-             * support additional boosting in case of flings
-             */
-            else if (elapsed_time < 250000 && duration <= 750)
+            // don't hint if previous hint's duration covers this hint's duration
+            if ((s_previous_duration * 1000) > (elapsed_time + duration * 1000)) {
                 return HINT_HANDLED;
+            }
+            s_previous_boost_timespec = cur_boost_timespec;
+            s_previous_duration = duration;
 
             s_previous_boost_timespec = cur_boost_timespec;
 
