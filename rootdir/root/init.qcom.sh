@@ -81,12 +81,7 @@ start_vm_bms()
 start_msm_irqbalance()
 {
     if [ -f /system/bin/msm_irqbalance ]; then
-        case "$platformid" in
-            "317" | "324" | "325" | "326")
-            start msm_irqbalance;;
-            "318" | "327")
-            start msm_irqbl_sdm630;;
-        esac
+        start msm_irqbalance
     fi
 }
 
