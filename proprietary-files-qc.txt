@@ -286,7 +286,7 @@ vendor/lib64/libsdm-color.so
 vendor/lib64/libsdm-diag.so
 -vendor/lib64/libsdm-disp-apis.so
 vendor/lib64/libsdmextension.so
-#vendor/lib64/libuiblur.so
+vendor/lib64/libuiblur.so
 
 # Graphics firmware
 etc/firmware/leia_pfp_470.fw
