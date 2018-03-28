@@ -22,4 +22,13 @@
 <resources>
     <!-- HDR needs 1x frame -->
     <string name="pref_camera_hdr_need_1x_default" translatable="false">false</string>
+
+    <!-- Default auto scene detection setting. -->
+    <string name="pref_camera_scenedetect_default" translatable="false">on</string>
+
+    <!-- Default cds mode setting-->
+    <string name="pref_camera_cds_default" translatable="false">off</string>
+
+    <!-- Default DIS setting -->
+    <string name="pref_camera_dis_default" translatable="false">enable</string>
 </resources>
