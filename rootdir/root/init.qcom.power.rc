@@ -205,6 +205,7 @@ on property:init.svc.recovery=running
     trigger enable-low-power
 
 on property:dev.bootcomplete=1
+    setprop sys.io.scheduler "bfq"
     # update cpusets now that boot is complete and we want better load balancing
     write /dev/cpuset/top-app/cpus 0-7
     write /dev/cpuset/foreground/boost/cpus 0-2
