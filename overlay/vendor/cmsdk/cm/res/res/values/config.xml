@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-     Copyright (C) 2015-2016 The CyanogenMod Project
+     Copyright (C) 2015 The CyanogenMod Project
+                   2017-2018 The LineageOS Project
 
      Licensed under the Apache License, Version 2.0 (the "License");
      you may not use this file except in compliance with the License.
@@ -15,12 +16,31 @@
      limitations under the License.
 -->
 <resources>
-    <!-- Should we filter any display modes which are unampped? -->
-    <bool name="config_filterDisplayModes">true</bool>
-
     <!-- Default value for proximity check on screen wake
      NOTE ! - Enable for devices that have a fast response proximity sensor (ideally < 300ms)-->
     <bool name="config_proximityCheckOnWake">true</bool>
-    <integer name="config_proximityCheckTimeout">200</integer>
+    <integer name="config_proximityCheckTimeout">100</integer>
     <bool name="config_proximityCheckOnWakeEnabledByDefault">true</bool>
+
+    <!-- Default values for LiveDisplay -->
+    <integer name="config_nightColorTemperature">5000</integer>
+    <integer name="config_outdoorAmbientLux">20000</integer>
+
+    <!-- These values should map to the true min and max
+         that the backend is capable of adjusting to. This
+         is more important when using the ColorBalance mode,
+         as the discrete adjustment is interpolated between
+         this range (with config_dayColorTemperature at zero) -->
+    <integer name="config_minColorTemperature">2500</integer>
+    <integer name="config_maxColorTemperature">25000</integer>
+
+    <!-- Disable this by default, since it's actually using the QC FOSS algorithm for
+         OLED displays and can cause a bit of discoloration. Reinvestigate after tuning -->
+    <bool name="config_defaultCABC">false</bool>
+
+    <!-- Use default display mode -->
+    <integer name="config_defaultLiveDisplayMode">0</integer>
+
+    <!-- Should we filter any display modes which are unampped? -->
+    <bool name="config_filterDisplayModes">false</bool>
 </resources>
