@@ -198,10 +198,6 @@ ro.qti.sensors.multishake=true
 ro.qti.sensors.pmd=true
 ro.qti.sensors.sta_detect=true
 
-# SDCard
-persist.fuse_sdcard=true
-ro.sys.sdcardfs=true
-
 # Timeservice
 persist.timed.enable=true
 
