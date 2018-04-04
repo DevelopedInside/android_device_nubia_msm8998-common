@@ -208,5 +208,5 @@ on property:dev.bootcomplete=1
     write /dev/cpuset/camera-daemon/cpus 0-3
 
     # Start perfd after all properties have been properly set
-    #rm /data/system/perfd/default_values
-    #start perfd - reason for the touch boost for a big cluster
+    rm /data/system/perfd/default_values
+    start perfd
