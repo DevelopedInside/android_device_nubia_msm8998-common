@@ -1,3 +1,7 @@
+on early-init
+    # Enable sched boost in order to schedule tasks on perf cluster
+    write /proc/sys/kernel/sched_boost 1
+
 on init
     write /dev/stune/foreground/schedtune.sched_boost_no_override 1
     write /dev/stune/top-app/schedtune.sched_boost_no_override 1
@@ -23,9 +27,6 @@ on boot
     chown system system /dev/cpuset/camera-daemon
     chown system system /dev/cpuset/camera-daemon/tasks
     chmod 0664 /dev/cpuset/camera-daemon/tasks
-
-    # Enable sched boost in order to schedule tasks on perf cluster
-    write /proc/sys/kernel/sched_boost 1
 
 on enable-low-power
     # Apply Scheduler and Governor settings for 8998
