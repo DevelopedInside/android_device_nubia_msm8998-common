@@ -179,16 +179,18 @@ on late-fs
     write /sys/block/sda/queue/iostats 0
     write /sys/block/sda/queue/read_ahead_kb 2048
     write /sys/block/sda/queue/nr_requests 256
-    write /sys/block/dm-0/queue/read_ahead_kb 2048
-    write /sys/block/dm-1/queue/read_ahead_kb 2048
+    write /sys/block/sde/queue/iostats 0
+    write /sys/block/sde/queue/read_ahead_kb 2048
+    write /sys/block/sde/queue/nr_requests 256
 
 on property:sys.boot_completed=1
     # end boot time fs tune
     write /sys/block/sda/queue/iostats 1
     write /sys/block/sda/queue/read_ahead_kb 128
     write /sys/block/sda/queue/nr_requests 128
-    write /sys/block/dm-0/queue/read_ahead_kb 512
-    write /sys/block/dm-1/queue/read_ahead_kb 512
+    write /sys/block/sde/queue/iostats 1
+    write /sys/block/sde/queue/read_ahead_kb 128
+    write /sys/block/sde/queue/nr_requests 128
 
 on class_start:late_start
     trigger enable-low-power
