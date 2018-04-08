@@ -19,5 +19,7 @@ PRODUCT_PACKAGES += \
     init.nubia.touch.lcd.rc
 
 # Etc scripts
-PRODUCT_PACKAGES += \
-    init.qcom.bt.sh
+PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/rootdir/bin/init.qti.qseecomd.sh:system/bin/init.qti.qseecomd.sh \
+    $(LOCAL_PATH)/rootdir/etc/init.qcom.bt.sh:system/etc/init.qcom.bt.sh
+    
