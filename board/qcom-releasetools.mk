@@ -1,2 +1,3 @@
 # Releasetools
-TARGET_RELEASETOOLS_EXTENSIONS := device/qcom/common
+TARGET_RECOVERY_UPDATER_LIBS := librecovery_updater_nubia
+TARGET_RELEASETOOLS_EXTENSIONS := $(PLATFORM_PATH)
