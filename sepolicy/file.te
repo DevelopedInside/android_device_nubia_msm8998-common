@@ -6,11 +6,27 @@ type sysfs_fingerprint, sysfs_type, fs_type;
 type sysfs_fpc_irq, sysfs_type, fs_type;
 type sysfs_fpc_wakeup, sysfs_type, fs_type;
 
-# NV
-type nv_data_file, file_type;
-
+# DEBUG
 type debugfs_msm_core, debugfs_type, fs_type;
 type debugfs_rmts, debugfs_type, fs_type;
 
+# Nubia breathlight
+type sysfs_nubia_breathlight, sysfs_type, fs_type;
+
+# Nubia proximity
+type sysfs_prox_cal, sysfs_type, fs_type;
+
+# Nubia light
+type sysfs_rgb_cal, sysfs_type, fs_type;
+
+# tp & lcd
+type sysfs_tp_lcd, sysfs_type, fs_type;
+
+# IR remote
+type sysfs_ir_remote, sysfs_type, fs_type;
+
+# Touchpanel
+type sysfs_touchpanel, fs_type, sysfs_type;
+
 # Vibrator
-type sysfs_vibrator, fs_type, sysfs_type;
+type sysfs_vibrator, sysfs_type, file_type;

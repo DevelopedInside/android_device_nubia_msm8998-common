@@ -1,27 +1,120 @@
+# executables
+/system/bin/init.qti.qseecomd.sh                                       u:object_r:init-qti-fbe-sh_exec:s0
+
+# TAS2555 Amplifier
+/dev/tas2555                                                           u:object_r:audio_device:s0
+/dev/tiload_node                                                       u:object_r:audio_device:s0
+
 # Amplifier persist files
-/persist/tas2555_cal.bin                                        u:object_r:persist_amp_cal_file:s0
+/persist/tas2555_cal.bin                                               u:object_r:persist_amp_cal_file:s0
 
 # FRP partition
-/dev/block/bootdevice/by-name/frp                               u:object_r:frp_block_device:s0
+/dev/block/bootdevice/by-name/frp                                      u:object_r:frp_block_device:s0
 
 # Fingerprint
-/sys/devices/soc/1.fpc_fpc1020(/.*)?                            u:object_r:sysfs_fingerprint:s0
-/sys/devices/soc/1.fpc_fpc1020/irq                              u:object_r:sysfs_fpc_irq:s0
-/sys/devices/soc/1.fpc_fpc1020/enable_wakeup                    u:object_r:sysfs_fpc_wakeup:s0
+/dev/fpc                                                               u:object_r:fingerprint_device:s0
+/sys/devices/soc/1.fpc_fpc1020(/.*)?                                   u:object_r:sysfs_fingerprint:s0
+/sys/devices/soc/1.fpc_fpc1020/irq                                     u:object_r:sysfs_fpc_irq:s0
+/sys/devices/soc/1.fpc_fpc1020/enable_wakeup                           u:object_r:sysfs_fpc_wakeup:s0
 
 # NFC
-/dev/bcm2079x                                                   u:object_r:nfc_device:s0
+/dev/bcm2079x                                                          u:object_r:nfc_device:s0
+
+# Haptic
+/dev/drv2605                                                           u:object_r:haptics_device:s0
+
+# Nubia led
+/sys/devices/soc/800f000.qcom,spmi/spmi-0/spmi0-03/800f000.qcom,spmi:qcom,pmi8998@3:qcom,leds@d000/leds/nubia_led/outn	u:object_r:sysfs_nubia_breathlight:s0
+/sys/devices/soc/800f000.qcom,spmi/spmi-0/spmi0-03/800f000.qcom,spmi:qcom,pmi8998@3:qcom,leds@d000/leds/nubia_led/blink_mode	u:object_r:sysfs_nubia_breathlight:s0
+/sys/devices/soc/800f000.qcom,spmi/spmi-0/spmi0-03/800f000.qcom,spmi:qcom,pmi8998@3:qcom,leds@d000/leds/nubia_led/brightness	u:object_r:sysfs_nubia_breathlight:s0
+/sys/devices/soc/800f000.qcom,spmi/spmi-0/spmi0-03/800f000.qcom,spmi:qcom,pmi8998@3:qcom,leds@d000/leds/nubia_led/fade_parameter	u:object_r:sysfs_nubia_breathlight:s0
+/sys/devices/soc/800f000.qcom,spmi/spmi-0/spmi0-03/800f000.qcom,spmi:qcom,pmi8998@3:qcom,leds@d000/leds/nubia_led/grade_parameter	u:object_r:sysfs_nubia_breathlight:s0
+/sys/class/leds/nubia_led/outn	                                       u:object_r:sysfs_nubia_breathlight:s0
+/sys/class/leds/nubia_led/blink_mode                                   u:object_r:sysfs_nubia_breathlight:s0
+/sys/class/leds/nubia_led/brightness                                   u:object_r:sysfs_nubia_breathlight:s0
+/sys/class/leds/nubia_led/fade_parameter                               u:object_r:sysfs_nubia_breathlight:s0
+/sys/class/leds/nubia_led/grade_parameter                              u:object_r:sysfs_nubia_breathlight:s0
+
+# Nubia light
+/sys/class/light/light/chip_name                                       u:object_r:sysfs_rgb_cal:s0
+/sys/class/light/light/calibrate                                       u:object_r:sysfs_rgb_cal:s0
+/sys/class/light/light/tp_cfg                                          u:object_r:sysfs_rgb_cal:s0
+/sys/class/light/light/fac_calibrate                                   u:object_r:sysfs_rgb_cal:s0
+/sys/class/light/light/light_value                                     u:object_r:sysfs_rgb_cal:s0
+/sys/class/light/light/flush                                           u:object_r:sysfs_rgb_cal:s0
+/sys/devices/virtual/light/light/tp_cfg                                u:object_r:sysfs_rgb_cal:s0
+/sys/devices/virtual/light/light/chip_name	                           u:object_r:sysfs_rgb_cal:s0
+/sys/devices/virtual/light/light/fac_calibrate	                       u:object_r:sysfs_rgb_cal:s0
+/sys/devices/virtual/light/light/calibrate	                           u:object_r:sysfs_rgb_cal:s0
+/sys/devices/virtual/light/light/light_value                           u:object_r:sysfs_rgb_cal:s0
+/sys/devices/virtual/light/light/flush                                 u:object_r:sysfs_rgb_cal:s0
+
+# Nubia proximity
+/sys/class/proximity/proximity/chip_name                               u:object_r:sysfs_prox_cal:s0
+/sys/class/proximity/proximity/prox_uncover_max                        u:object_r:sysfs_prox_cal:s0
+/sys/class/proximity/proximity/prox_uncover_min                        u:object_r:sysfs_prox_cal:s0
+/sys/class/proximity/proximity/prox_debug                              u:object_r:sysfs_prox_cal:s0
+/sys/class/proximity/proximity/prox_init                               u:object_r:sysfs_prox_cal:s0
+/sys/class/proximity/proximity/reg                                     u:object_r:sysfs_prox_cal:s0
+/sys/class/proximity/proximity/prox_value                              u:object_r:sysfs_prox_cal:s0
+/sys/class/proximity/proximity/prox_offset_cal_start                   u:object_r:sysfs_prox_cal:s0
+/sys/class/proximity/proximity/prox_data_safe_range_min                u:object_r:sysfs_prox_cal:s0
+/sys/class/proximity/proximity/prox_data_safe_range_max                u:object_r:sysfs_prox_cal:s0
+/sys/class/proximity/proximity/prox_data_max                           u:object_r:sysfs_prox_cal:s0
+/sys/class/proximity/proximity/prox_offset_cal                         u:object_r:sysfs_prox_cal:s0
+/sys/class/proximity/proximity/prox_offset_cal_verify                  u:object_r:sysfs_prox_cal:s0
+/sys/class/proximity/proximity/prox_thres_min                          u:object_r:sysfs_prox_cal:s0
+/sys/class/proximity/proximity/prox_thres_max                          u:object_r:sysfs_prox_cal:s0
+/sys/class/proximity/proximity/threshold                               u:object_r:sysfs_prox_cal:s0
+/sys/class/proximity/proximity/prox_thres                              u:object_r:sysfs_prox_cal:s0
+/sys/class/proximity/proximity/prox_calibrate_start                    u:object_r:sysfs_prox_cal:s0
+/sys/class/proximity/proximity/prox_calibrate_verify                   u:object_r:sysfs_prox_cal:s0
+/sys/devices/virtual/proximity/proximity/prox_offset_cal_start         u:object_r:sysfs_prox_cal:s0
+/sys/devices/virtual/proximity/proximity/prox_data_safe_range_min      u:object_r:sysfs_prox_cal:s0
+/sys/devices/virtual/proximity/proximity/prox_data_safe_range_max      u:object_r:sysfs_prox_cal:s0
+/sys/devices/virtual/proximity/proximity/prox_data_max                 u:object_r:sysfs_prox_cal:s0
+/sys/devices/virtual/proximity/proximity/prox_offset_cal               u:object_r:sysfs_prox_cal:s0
+/sys/devices/virtual/proximity/proximity/prox_offset_cal_verify        u:object_r:sysfs_prox_cal:s0
+/sys/devices/virtual/proximity/proximity/prox_thres_min                u:object_r:sysfs_prox_cal:s0
+/sys/devices/virtual/proximity/proximity/prox_thres_max                u:object_r:sysfs_prox_cal:s0
+/sys/devices/virtual/proximity/proximity/threshold                     u:object_r:sysfs_prox_cal:s0
+/sys/devices/virtual/proximity/proximity/prox_thres                    u:object_r:sysfs_prox_cal:s0
+/sys/devices/virtual/proximity/proximity/prox_calibrate_start          u:object_r:sysfs_prox_cal:s0
+/sys/devices/virtual/proximity/proximity/prox_calibrate_verify         u:object_r:sysfs_prox_cal:s0
+/sys/devices/virtual/proximity/proximity/chip_name                     u:object_r:sysfs_prox_cal:s0
+/sys/devices/virtual/proximity/proximity/prox_uncover_max              u:object_r:sysfs_prox_cal:s0
+/sys/devices/virtual/proximity/proximity/prox_uncover_min              u:object_r:sysfs_prox_cal:s0
+/sys/devices/virtual/proximity/proximity/prox_debug                    u:object_r:sysfs_prox_cal:s0
+/sys/devices/virtual/proximity/proximity/prox_init                     u:object_r:sysfs_prox_cal:s0
+/sys/devices/virtual/proximity/proximity/reg                           u:object_r:sysfs_prox_cal:s0
+/sys/devices/virtual/proximity/proximity/prox_value                    u:object_r:sysfs_prox_cal:s0
+
+#tp&lcd sysfs
+/sys/kernel/lcd_enhance/colortmp                                       u:object_r:sysfs_tp_lcd:s0
+
+#ir remote sysfs
+/sys/class/ir_reomte/ir_remote/enable                                  u:object_r:sysfs_ir_remote:s0
+/sys/devices/virtual/ir_remote/ir_remote/enable                        u:object_r:sysfs_ir_remote:s0
+
+# Touch Panel
+/sys/class/tpnode/tpnode/synaptics/0dbutton                            u:object_r:sysfs_touchpanel:s0
+/sys/class/tpnode/tpnode/synaptics/wake_gesture                        u:object_r:sysfs_touchpanel:s0
+/sys/devices/soc/c179000.i2c/i2c-5/5-0020/input/input4/0dbutton        u:object_r:sysfs_touchpanel:s0
+/sys/devices/soc/c179000.i2c/i2c-5/5-0020/input/input4/wake_gesture    u:object_r:sysfs_touchpanel:s0
 
 # Persist partition
-/dev/block/bootdevice/by-name/persist                           u:object_r:persist_block_device:s0
+/dev/block/bootdevice/by-name/persist                                  u:object_r:persist_block_device:s0
 
 # data
-/data/misc/netmgr(/.*)?                                         u:object_r:net_data_file:s0
-/data/oemnvitems(/.*)?                                          u:object_r:nv_data_file:s0
+/data/misc/netmgr(/.*)?                                                u:object_r:net_data_file:s0
 
 # sys
-/sys/kernel/debug/msm_core(/.*)?                                u:object_r:debugfs_msm_core:s0
-/sys/kernel/debug/rmt_storage/rmts                              u:object_r:debugfs_rmts:s0
+/sys/kernel/debug/msm_core(/.*)?                                       u:object_r:debugfs_msm_core:s0
+/sys/kernel/debug/rmt_storage/rmts                                     u:object_r:debugfs_rmts:s0
 
 # Vibrator
-/sys/devices/virtual/timed_output/vibrator/vmax_mv              u:object_r:sysfs_vibrator:s0
+/sys/devices/virtual/timed_output/vibrator(/.*)?                       u:object_r:sysfs_vibrator:s0
+/sys/devices/virtual/timed_output/vibrator/vtg_level                   u:object_r:sysfs_vibrator:s0
+/sys/devices/virtual/timed_output/vibrator/vtg_max                     u:object_r:sysfs_vibrator:s0
+/sys/devices/virtual/timed_output/vibrator/vtg_min                     u:object_r:sysfs_vibrator:s0
+/sys/devices/virtual/timed_output/vibrator/vtg_default                 u:object_r:sysfs_vibrator:s0

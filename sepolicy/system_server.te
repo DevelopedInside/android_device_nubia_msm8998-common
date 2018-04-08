@@ -1,2 +1,8 @@
 allow system_server sensors_persist_file:file write;
-allow system_server sysfs_vibrator:file rw_file_perms;
+allow system_server sysfs_nubia_breathlight:file { open read write };
+allow system_server sysfs_prox_cal:file { open write };
+allow system_server sysfs_touchpanel:dir search;
+allow system_server sysfs_touchpanel:file read;
+allow system_server sysfs_touchpanel:file { getattr open write };
+allow system_server sysfs_vibrator:dir search;
+allow system_server sysfs_vibrator:file { getattr open read write };

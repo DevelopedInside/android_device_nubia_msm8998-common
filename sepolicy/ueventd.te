@@ -1,0 +1,1 @@
+allow ueventd sysfs_vibrator:file { open write };
