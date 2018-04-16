@@ -335,16 +335,9 @@ vendor/lib/libmiracast.so
 vendor/lib/libmm-color-convertor.so
 vendor/lib/libmmosal.so
 vendor/lib/libOmxAacDec.so
-#vendor/lib/libOmxAlacDec.so
-#vendor/lib/libOmxAlacDecSw.so
-#vendor/lib/libOmxAmrwbplusDec.so
-#vendor/lib/libOmxApeDec.so
-#vendor/lib/libOmxApeDecSw.so
 vendor/lib/libOmxEvrcDec.so
-#vendor/lib/libOmxMux.so
 vendor/lib/libOmxVideoDSMode.so
 vendor/lib/libOmxQcelp13Dec.so
-#vendor/lib/libOmxWmaDec.so
 vendor/lib/libvpphvx.so
 vendor/lib/libvqzip.so
 
@@ -353,15 +346,8 @@ vendor/lib64/libmiracast.so
 vendor/lib64/libmm-color-convertor.so
 vendor/lib64/libmmosal.so
 vendor/lib64/libOmxAacDec.so
-#vendor/lib64/libOmxAlacDec.so
-#vendor/lib64/libOmxAlacDecSw.so
-#vendor/lib64/libOmxAmrwbplusDec.so
-#vendor/lib64/libOmxApeDec.so
-#vendor/lib64/libOmxApeDecSw.so
 vendor/lib64/libOmxEvrcDec.so
-#vendor/lib64/libOmxMux.so
 vendor/lib64/libOmxQcelp13Dec.so
-#vendor/lib64/libOmxWmaDec.so
 vendor/lib64/libvpphvx.so
 
 # Network
@@ -384,9 +370,6 @@ vendor/lib64/libperipheral_client.so
 # Postprocessing
 vendor/bin/mm-pp-dpps
 vendor/lib64/libdisp-aba.so
-
-# Powerhint
-etc/powerhint.xml
 
 # QMI
 bin/irsc_util

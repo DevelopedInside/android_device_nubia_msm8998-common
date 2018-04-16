@@ -14,29 +14,20 @@ PRODUCT_PACKAGES += \
 
 # Individual audio configs
 PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/audio/audio_effects.conf:system/vendor/etc/audio_effects.conf \
     $(LOCAL_PATH)/audio/audio_policy_configuration.xml:system/etc/audio_policy_configuration.xml \
-    $(LOCAL_PATH)/audio/audio_policy_volumes.xml:system/etc/audio_policy_volumes.xml \
-    $(LOCAL_PATH)/audio/default_volume_tables.xml:system/etc/default_volume_tables.xml \
     $(LOCAL_PATH)/audio/sound_trigger_mixer_paths.xml:system/etc/sound_trigger_mixer_paths.xml \
-    $(LOCAL_PATH)/audio/sound_trigger_mixer_paths_wcd9330.xml:system/etc/sound_trigger_mixer_paths_wcd9330.xml \
     $(LOCAL_PATH)/audio/sound_trigger_mixer_paths_wcd9340.xml:system/etc/sound_trigger_mixer_paths_wcd9340.xml \
     $(LOCAL_PATH)/audio/sound_trigger_platform_info.xml:system/etc/sound_trigger_platform_info.xml
 
-# Files 2 Vendor
 PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/audio/audio_effects.conf:system/vendor/etc/audio_effects.conf
+    $(LOCAL_PATH)/audio/audio_policy_volumes.xml:system/etc/audio_policy_volumes.xml \
+    $(LOCAL_PATH)/audio/default_volume_tables.xml:system/etc/default_volume_tables.xml
 
 # CAF
 PRODUCT_COPY_FILES += \
-    hardware/qcom/audio-caf/msm8998/configs/msm8998/audio_policy.conf:system/etc/audio_policy.conf \
-    hardware/qcom/audio-caf/msm8998/configs/msm8998/mixer_paths_i2s.xml:system/etc/mixer_paths_i2s.xml \
     hardware/qcom/audio-caf/msm8998/configs/msm8998/audio_tuning_mixer.txt:system/etc/audio_tuning_mixer.txt \
-    hardware/qcom/audio-caf/msm8998/configs/msm8998/audio_tuning_mixer_tavil.txt:system/etc/audio_tuning_mixer_tavil.txt \
-    hardware/qcom/audio-caf/msm8998/configs/msm8998/audio_platform_info_i2s.xml:system/etc/audio_platform_info_i2s.xml \
-    hardware/qcom/audio-caf/msm8998/configs/msm8998/graphite_ipc_platform_info.xml:system/etc/graphite_ipc_platform_info.xml
-
-# Listen configuration file
-PRODUCT_COPY_FILES += \
+    hardware/qcom/audio-caf/msm8998/configs/msm8998/audio_tuning_mixer.txt:system/etc/aanc_tuning_mixer.txt \
     hardware/qcom/audio-caf/msm8998/configs/msm8998/listen_platform_info.xml:system/etc/listen_platform_info.xml
 
 #XML Audio configuration files
