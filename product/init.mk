@@ -11,6 +11,7 @@ PRODUCT_PACKAGES += \
     init.qcom.usb.rc \
     init.qcom.usb.sh \
     init.recovery.qcom.rc \
+    init.target.rc \
     ueventd.qcom.rc
 
 # Nubia scripts
