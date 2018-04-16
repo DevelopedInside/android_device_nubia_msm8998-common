@@ -43,8 +43,6 @@ on post-fs-data
 	symlink /sys/class/tpnode/tpnode/synaptics/start_update /data/tp/start_update
 	chown system system /sys/class/tpnode/tpnode/synaptics/wake_gesture
 	symlink /sys/class/tpnode/tpnode/synaptics/wake_gesture /data/tp/easy_wakeup_gesture
-    chown system system /sys/class/tpnode/tpnode/synaptics/0dbutton
-    symlink /sys/class/tpnode/tpnode/synaptics/0dbutton /data/tp/keypad_enable
 	chown system system /sys/class/tpnode/tpnode/synaptics/palm_sleep
 	symlink /sys/class/tpnode/tpnode/synaptics/palm_sleep /data/tp/easy_sleep_palm
 	chown system system /sys/class/tpnode/tpnode/synaptics/f54/read_rt2
