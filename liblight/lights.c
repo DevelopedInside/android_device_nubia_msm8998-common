@@ -45,20 +45,65 @@ static struct light_state_t g_notification;
 static struct light_state_t g_battery;
 static struct light_state_t g_buttons;
 
-#define BLINK_MODE_ON "1"
-#define BLINK_MODE_OFF "2"
-#define BLINK_MODE_BREATH "3"
-#define BLINK_MODE_BREATH_ONCE "6"
-#define BLINK_MODE_UNKNOWN "0xff"
-
 #define BREATH_SOURCE_NOTIFICATION 0x01
 #define BREATH_SOURCE_BATTERY 0x02
 #define BREATH_SOURCE_BUTTONS 0x04
 #define BREATH_SOURCE_ATTENTION 0x08
-#define BREATH_SOURCE_NONE 0xFF
+#define BREATH_SOURCE_NONE 0x00
 
-#define CHANNEL_BUTTONS 8
-#define CHANNEL_HOME 16
+char const* const LCD_FILE = "/sys/class/leds/lcd-backlight/brightness";
+
+/*
+enum led_control_mode {
+    RGB_LED_MODE_CLOSED = 0,
+    RGB_LED_MODE_CONSTANT_ON,
+    RGB_LED_MODE_OFF,
+    RGB_LED_MODE_AUTO_BLINK,
+    RGB_LED_MODE_POWER_ON,
+    RGB_LED_MODE_POWER_OFF,
+    RGB_LED_MODE_ONCE_BLINK,
+};
+*/
+#define BLINK_MODE_ON 1
+#define BLINK_MODE_OFF 2
+#define BLINK_MODE_BREATH 3
+#define BLINK_MODE_BREATH_ONCE 6
+#define BLINK_MODE_UNKNOWN 0xff
+
+/*
+red_led: qcom,rgb_0		//home
+        qcom,id = <3>;
+        qcom,led_channel = <0x10>;
+        qcom,is_auto_breath = <1>;
+        nubia,fade_time = <3>;
+        nubia,fullon_time = <0>;
+        nubia,fulloff_time = <4>;
+        nubia,onceblink_max_grade = <70>;
+        nubia,autoblink_max_grade = <100>;
+        nubia,grade_percentage = <100>;
+        nubia,grade_scale_offset = <10> ;
+blue_led: qcom,rgb_2	//button1?
+        qcom,id = <4>;
+        qcom,led_channel = <8>;
+        qcom,is_auto_breath = <0>;
+        nubia,grade_percentage = <30>;
+        nubia,grade_scale_offset = <0> ;
+blue_led: qcom,rgb_2	//button2?
+        qcom,id = <5>;
+        qcom,led_channel = <8>;
+        qcom,is_auto_breath = <0>;
+        nubia,grade_percentage = <30>;
+        nubia,grade_scale_offset = <0> ;
+all:
+        qcom,pause-lo = <0>;
+        qcom,pause-hi = <0>;
+        qcom,pwm-us = <1000>;
+        qcom,duty-pcts= [02 04 06 08 09 0a 0c 0e 10 11 12 14 16 18 19 1a 1b 1c 1e 20 22 24 26 28
+                19 2a 2c 2e 2f 30 32 34 36 38 39 3a 3b 3c 3d 3e 40 42 44 46 48 49 4a 4b 4c 4e 50 52
+54 56 58 59 5a 5b 5c 5e 60 62 64];
+*/
+#define LED_CHANNEL_HOME 16
+#define LED_CHANNEL_BUTTON 8
 
 #define LED_GRADE_BUTTON 8
 #define LED_GRADE_HOME 8
@@ -66,40 +111,139 @@ static struct light_state_t g_buttons;
 #define LED_GRADE_HOME_NOTIFICATION 6
 #define LED_GRADE_HOME_BATTERY 6
 
-static int active_states = 0;
+char const* const LED_IN_MODE_BLINK = "/sys/class/leds/nubia_led/blink_mode";
 
-static int last_state = BREATH_SOURCE_NONE;
-
-char const* const LCD_FILE = "/sys/class/leds/lcd-backlight/brightness";
+char const* const LED_IN_SWITCH = "/sys/class/leds/nubia_led/outn";
 
 
-char const* const BREATH_LED_BLINK = "sys/class/leds/nubia_led/blink_mode";
+/*
+#define CONST_MIN_GRADE  1
+#define CONST_MAX_GRADE  255
 
-char const* const BREATH_LED_OUTN = "/sys/class/leds/nubia_led/outn";
+static int grade_parameter_convert(struct qpnp_led_data *led,int led_grade_temp)
+{
+        if(led_grade_temp){
+                if((led_grade_temp*led->rgb_cfg->grade_percentage) < 100)		//if
+grade_temp * qcom,grade_percentage < 100 set 1
+                        led_grade_temp = CONST_MIN_GRADE;
+                else
+//else set grade_temp * qcom,grade_percentage / 100 + qcom,grade_scale_offset
+                        led_grade_temp = led_grade_temp*led->rgb_cfg->grade_percentage/100 +
+led->rgb_cfg->grade_scale_offset;
+                if(led_grade_temp > CONST_MAX_GRADE)
+//if grade_temp > 255 set 255
+                        led_grade_temp = CONST_MAX_GRADE;
+        }
 
-char const* const BREATH_LED_FADE = "/sys/class/leds/nubia_led/fade_parameter";
+         return led_grade_temp;
+}
 
-char const* const BREATH_LED_GRADE = "/sys/class/leds/nubia_led/grade_parameter";
+switch (led_param->ztemt_mode){
+        case RGB_LED_MODE_CLOSED:
+        case RGB_LED_MODE_OFF:
+                [...]
+                 break;
+        case RGB_LED_MODE_CONSTANT_ON:				//grade_temp = min_grade ,
+brightness = convert(temp_grade)
+                //            *  when led constant on, keep five multiple of min grade
+                led_grade_temp=led_param->min_grade;
+                pwm_cfg->blinking = true;
+                        pwm_cfg->mode = PWM_MODE;
+                led->cdev.brightness = grade_parameter_convert(led,led_grade_temp);
+                 break;
+        case RGB_LED_MODE_ONCE_BLINK:				//not auto_breath (button):
+temp_grade = min_grade, brightness = convert(temp_grade); else (home): max_grade =
+qcom,onceblink_max_grade, blink once
+                if (!led->rgb_cfg->is_auto_breath)
+                {
+                        led_grade_temp=led_param->min_grade;
+                        pwm_cfg->blinking = true;
+                        pwm_cfg->mode = PWM_MODE;
+                        led->cdev.brightness = grade_parameter_convert(led,led_grade_temp);
+                }
+                else
+                {
+                        led_param->max_grade = led->rgb_cfg->onceblink_max_grade;
+                        qpnp_led_fill_parameter_breath_blink(led_param,pwm_cfg,loop);
+                        led->cdev.brightness=led->cdev.max_brightness;
+                }
+                break;
+        case RGB_LED_MODE_AUTO_BLINK:				//set fade, brightness =
+qcom,max_brightness, blink loop
+                loop = true;
+                led_param->fade_time= led->rgb_cfg->autoblink_fade_time;
+                led_param->fullon_time= led->rgb_cfg->autoblink_fullon_time;
+                led_param->fulloff_time = led->rgb_cfg->autoblink_fulloff_time;
+                led_param->max_grade = led->rgb_cfg->autoblink_max_grade;
+                qpnp_led_fill_parameter_breath_blink(led_param, pwm_cfg,loop);
+                led->cdev.brightness=led->cdev.max_brightness;
+                break;
+                default:
+                return -EINVAL;
+}
 
-char const* const BREATH_LED_DUTY_PCTS = "/sys/class/leds/nubia_led/duty_pcts";
+ *args=	mingrade maxgrade
+ maxgrade always be filled by kernel with onceblink_max_grade/autoblink_max_grade when set to blink
+mode and connot be commited, so just set mingrade
+ after set, set blink_mode to commit
+*/
+char const* const LED_IN_GRADE_PARA = "/sys/class/leds/nubia_led/grade_parameter";
 
-char const* const BREATH_LED_START_IDX = "/sys/class/leds/nubia_led/start_idx";
 
-char const* const BREATH_LED_PAUSE_LO = "/sys/class/leds/nubia_led/pause_lo";
+/*
+pwm_cfg->lut_params.ramp_step_ms = (fade_parameter_convert(led_param->fade_time) /
+pwm_cfg->duty_cycles->num_duty_pcts);
+pwm_cfg->lut_params.lut_pause_hi = fade_parameter_convert(led_param->fullon_time);
+pwm_cfg->lut_params.lut_pause_lo = fade_parameter_convert(led_param->fulloff_time);
 
-char const* const BREATH_LED_PAUSE_HI = "/sys/class/leds/nubia_led/pause_hi";
+#define FADE_PARAM_CONVERT 400
 
-char const* const BREATH_LED_RAMP_STEP_MS = "/sys/class/leds/nubia_led/ramp_step_ms";
+static int fade_parameter_convert(int temp_start)	// 2^(n-1) *400
+{
+         int temp_end;
 
+         if(temp_start<=0)
+             temp_end=0;
+         else
+             temp_end=(1<<(temp_start-1))*FADE_PARAM_CONVERT;
+
+         return temp_end;
+}
+
+- qcom,pause-lo: pause at low end of cycle
+- qcom,pause-hi: pause at high end of cycle
+- qcom,ramp-step-ms: step between each cycle (ms)
+
+ *args=	fadetime ontime offtime
+        eg: 3 0 4
+ these settings will be filled by kernel when set to auto_blink and cannot be commited druing blink
+loop
+*/
+char const* const LED_IN_FADE_PARA = "/sys/class/leds/nubia_led/fade_parameter";
 
 char const* const BATTERY_CAPACITY = "/sys/class/power_supply/battery/capacity";
 
 char const* const BATTERY_CHARGING_STATUS = "/sys/class/power_supply/battery/status";
 
 
-#define RAMP_SIZE 8
-static int BRIGHTNESS_RAMP[RAMP_SIZE] = { 0, 12, 25, 37, 50, 72, 85, 100 };
-#define RAMP_STEP_DURATION 50
+struct led_data
+{
+    int status;
+    int min_grade;
+    int fade_time;
+    int fade_on_time;
+    int fade_off_time;
+};
+
+static int active_status = 0;
+
+static struct led_data current_home_led_status
+    = { BLINK_MODE_UNKNOWN, -1, -1, -1, -1 }; // status=BLINK_MODE_UNKNOWN, force write data on boot
+static struct led_data current_button_led_status
+    = { BLINK_MODE_UNKNOWN, -1, -1, -1, -1 }; // status=BLINK_MODE_UNKNOWN, force write data on boot
+
+#define true 1
+#define false 0
 
 /**
  * Device methods
@@ -186,36 +330,188 @@ static int write_str(char const* path, char* value)
     }
 }
 
-static int is_lit(struct light_state_t const* state)
-{
-    return state->color & 0x00ffffff;
-}
-
 static int rgb_to_brightness(struct light_state_t const* state)
 {
     int color = state->color & 0x00ffffff;
-    return ((77 * ((color >> 16) & 0x00ff)) + (150 * ((color >> 8) & 0x00ff))
-               + (29 * (color & 0x00ff)))
-        >> 8;
+    return (((color >> 16) & 0xff) + ((color >> 8) & 0xff) + (color & 0xff)) / 3;
 }
 
-static char* get_scaled_duty_pcts(int brightness)
+inline int get_max(int a, int b)
 {
-    char* buf = malloc(5 * RAMP_SIZE * sizeof(char));
-    char* pad = "";
-    int i = 0;
+    return a > b ? a : b;
+}
 
-    memset(buf, 0, 5 * RAMP_SIZE * sizeof(char));
+/*
+ * select a led
+ * args:
+ *	id: identify of led
+ */
+static void set_led_selected(int id)
+{
+    write_int(LED_IN_SWITCH, id);
+}
 
-    for (i = 0; i < RAMP_SIZE; i++)
+/*
+ * set min grade of a led
+ * need to select a led using set_led_selected(id)
+ * args:
+ * 	min_grade: min grade of this led (brightness/min brightness in breath)
+ */
+static void set_led_current_grade(int min_grade)
+{
+    write_int(LED_IN_GRADE_PARA, min_grade);
+}
+
+/*
+ * set fade of a led
+ * need to select a led using select_led_selected(id)
+ * Warning: these args only take effect in mode BREATH_ONCE
+ * args:
+ *	fade_time
+ *	on_time
+ *	off_time
+ */
+static void set_led_current_fade(int fade_time, int on_time, int off_time)
+{
+    char str[20];
+    sprintf(str, "%d %d %d", fade_time, on_time, off_time);
+    write_str(LED_IN_FADE_PARA, str);
+}
+
+/*
+ * set mode of a led
+ * need to select a led using select_led_selected(id)
+ * args:
+ *	mode: mode of this led
+ */
+static void set_led_current_mode(int mode)
+{
+    write_int(LED_IN_MODE_BLINK, mode);
+}
+
+/*
+ * compare two led status
+ * args:
+ *	*led1, *led2: led_data
+ * return:
+ *	1: equal
+ *	0: not equal
+ */
+static int compare_led_status(struct led_data* led1, struct led_data* led2)
+{
+    if (led1 == NULL || led2 == NULL)
+        return false;
+    if (led1->status != led2->status)
+        return false;
+    if (led1->min_grade != led2->min_grade)
+        return false;
+    if (led1->fade_time != led2->fade_time)
+        return false;
+    if (led1->fade_on_time != led2->fade_on_time)
+        return false;
+    if (led1->fade_off_time != led2->fade_off_time)
+        return false;
+    return true;
+}
+
+/*
+ * copy led status
+ * args:
+ *	*to: copy to
+ *	*from: copy from
+ *	taken: is this status already be taken? affect status when status is BREATH_ONCE
+ */
+static void copy_led_status(struct led_data* to, struct led_data* from, int taken)
+{
+    if (to == NULL || from == NULL)
+        return;
+    if (taken && from->status == BLINK_MODE_BREATH_ONCE) // after BREATH_ONCE, LED will always on
+        to->status = BLINK_MODE_ON;
+    else
+        to->status = from->status;
+    to->min_grade = from->min_grade;
+    to->fade_time = from->fade_time;
+    to->fade_on_time = from->fade_on_time;
+    to->fade_off_time = from->fade_off_time;
+}
+
+/*
+ * set home led status
+ * args:
+ *	*mode: led mode
+ */
+static void set_led_home_status(struct led_data* mode)
+{
+    if (mode == NULL)
+        return;
+    if (!compare_led_status(mode, &current_home_led_status))
     {
-        char temp[5] = "";
-        snprintf(temp, sizeof(temp), "%s%d", pad, (BRIGHTNESS_RAMP[i] * brightness / 255));
-        strcat(buf, temp);
-        pad = ",";
+        ALOGE("Write Home Status");
+        set_led_selected(LED_CHANNEL_HOME);
+        if (mode->min_grade >= 0)
+            set_led_current_grade(mode->min_grade);
+        if (mode->fade_time >= 0)
+            set_led_current_fade(mode->fade_time, mode->fade_on_time, mode->fade_off_time);
+        set_led_current_mode(mode->status);
+        copy_led_status(&current_home_led_status, mode, true);
     }
-    ALOGV("%s: brightness=%d duty=%s", __func__, brightness, buf);
-    return buf;
+}
+
+/*
+ * set button led status
+ * args:
+ *	*mode: led mode
+ */
+static void set_led_button_status(struct led_data* mode)
+{
+    if (mode == NULL)
+        return;
+    if (!compare_led_status(mode, &current_button_led_status))
+    {
+        ALOGE("Write Button Status");
+        set_led_selected(LED_CHANNEL_BUTTON);
+        if (mode->min_grade >= 0)
+            set_led_current_grade(mode->min_grade);
+        // button led not support fade
+        set_led_current_mode(mode->status);
+        copy_led_status(&current_button_led_status, mode, true);
+    }
+}
+
+/*
+ * get led status string
+ * args:
+ *	*mode: led_data
+ *	*string: string buffer
+ */
+static char* get_led_status_string(struct led_data* mode, char* string)
+{
+    switch (mode->status)
+    {
+        case BLINK_MODE_ON:
+            sprintf(string, "On,Grade=%d", mode->min_grade);
+            break;
+        case BLINK_MODE_OFF:
+            sprintf(string, "Off");
+            break;
+        case BLINK_MODE_BREATH:
+            sprintf(string, "Breath,Grade=%d,Fade=%d,OnTime=%d,OffTime=%d", mode->min_grade,
+                mode->fade_time, mode->fade_on_time, mode->fade_off_time);
+            break;
+        default:
+            sprintf(string, "Unknown");
+            break;
+    }
+    return string;
+}
+
+static void log_led_status(struct led_data* home_mode, struct led_data* button_mode)
+{
+    char string1[48], string2[48];
+    if (home_mode == NULL || button_mode == NULL)
+        return;
+    ALOGE("Home LED [%s] / Button LED [%s]\n", get_led_status_string(home_mode, string1),
+        get_led_status_string(button_mode, string2));
 }
 
 static int set_light_backlight(struct light_device_t* dev, struct light_state_t const* state)
@@ -230,66 +526,40 @@ static int set_light_backlight(struct light_device_t* dev, struct light_state_t 
 
 static int set_breath_light_locked(int event_source, struct light_state_t const* state)
 {
-    int brightness, blink;
-    int onMS, offMS, stepDuration, pauseHi;
-    unsigned int colorRGB;
-    char* duty;
+    char* blink_mode;
 
-    int grade_value;
-    char* blink_mode_value;
-    char buffer[25];
-
-    switch (state->flashMode)
-    {
-        case LIGHT_FLASH_TIMED:
-            onMS = state->flashOnMS;
-            offMS = state->flashOffMS;
-            break;
-        case LIGHT_FLASH_NONE:
-        default:
-            onMS = 0;
-            offMS = 0;
-            break;
-    }
-
-    colorRGB = state->color;
-
-    brightness = (colorRGB >> 16) & 0xFF;
+    int brightness = rgb_to_brightness(state);
+    struct led_data home_status = { BLINK_MODE_OFF, -1, -1, -1, -1 };
+    struct led_data button_status = { BLINK_MODE_OFF, -1, -1, -1, -1 };
 
     if (brightness > 0)
     {
-        active_states |= event_source;
+        active_status |= event_source;
     }
     else
     {
-        active_states &= ~event_source;
-
-        ALOGE(" Disable LED");
-        write_int(BREATH_LED_OUTN, CHANNEL_BUTTONS);
-        write_str(BREATH_LED_FADE, "1 0 0");
-        write_str(BREATH_LED_BLINK, BLINK_MODE_OFF);
-
-        write_int(BREATH_LED_OUTN, CHANNEL_HOME);
-        write_str(BREATH_LED_FADE, "1 0 0");
-        write_str(BREATH_LED_BLINK, BLINK_MODE_OFF);
-
-        if (active_states == 0)
-        {
-            last_state = BREATH_SOURCE_NONE;
-            return 0;
-        }
+        active_status &= ~event_source;
     }
 
-    if (active_states & BREATH_SOURCE_NOTIFICATION)
+    if (active_status == 0) // nothing, close all
     {
-        state = &g_notification;
-        last_state = BREATH_SOURCE_NOTIFICATION;
-        grade_value = LED_GRADE_HOME_NOTIFICATION;
-        blink_mode_value = BLINK_MODE_BREATH;
+        set_led_home_status(&home_status);
+        set_led_button_status(&button_status);
+        log_led_status(&home_status, &button_status);
+
+        return 0;
     }
-    else if (active_states & BREATH_SOURCE_BATTERY)
+    if (active_status & BREATH_SOURCE_BUTTONS) // button backlight, turn all on
     {
-        state = &g_battery;
+        home_status.status = BLINK_MODE_ON;
+        home_status.min_grade = LED_GRADE_HOME;
+
+        button_status.status = BLINK_MODE_ON;
+        button_status.min_grade = LED_GRADE_BUTTON;
+    }
+
+    if (active_status & BREATH_SOURCE_BATTERY) // battery status, set home on
+    {
         // can't get battery info from state, getting it from sysfs
         int is_charging = 0;
         int capacity = 0;
@@ -297,170 +567,54 @@ static int set_breath_light_locked(int event_source, struct light_state_t const*
         FILE* fp = fopen(BATTERY_CHARGING_STATUS, "rb");
         fgets(charging_status, 14, fp);
         fclose(fp);
-        if (strstr(charging_status, "Charging") != NULL)
-        {
+        if (strstr(charging_status, "Discharging") != NULL)
+            is_charging = 0;
+        else
             is_charging = 1;
-        }
         read_int(BATTERY_CAPACITY, &capacity);
         if (is_charging == 0)
         {
             // battery low
-            grade_value = LED_GRADE_HOME_BATTERY_LOW;
-            onMS = 300;
-            offMS = 1500;
+            home_status.status = BLINK_MODE_BREATH;
+            home_status.min_grade = get_max(home_status.min_grade, LED_GRADE_HOME_BATTERY_LOW);
         }
         else
         {
-            grade_value = LED_GRADE_HOME_BATTERY;
             if (capacity < 90)
-            {
+            { // see batteryService.java:978
                 // battery chagring
-                onMS = 500;
-                offMS = 500;
-                blink_mode_value = BLINK_MODE_BREATH;
+                home_status.status = BLINK_MODE_BREATH;
+                home_status.min_grade = get_max(home_status.min_grade, LED_GRADE_HOME_BATTERY);
             }
             else
             {
                 // battery full
-                onMS = 0;
-                offMS = 0;
-                blink_mode_value = BLINK_MODE_BREATH_ONCE;
+                home_status.status = BLINK_MODE_ON;
+                home_status.min_grade = get_max(home_status.min_grade, LED_GRADE_HOME_BATTERY);
             }
         }
-        last_state = BREATH_SOURCE_BATTERY;
     }
-    else if (active_states & BREATH_SOURCE_BUTTONS)
+
+    if ((active_status & BREATH_SOURCE_NOTIFICATION)
+        || (active_status & BREATH_SOURCE_ATTENTION)) // notification, set home breath
     {
-        if (last_state == BREATH_SOURCE_BUTTONS)
-            return 0;
-
-        state = &g_buttons;
-        last_state = BREATH_SOURCE_BUTTONS;
-        grade_value = LED_GRADE_BUTTON;
-        blink_mode_value = BLINK_MODE_BREATH_ONCE;
-    }
-    else if (active_states & BREATH_SOURCE_ATTENTION)
-    {
-        state = &g_attention;
-        last_state = BREATH_SOURCE_ATTENTION;
-        grade_value = LED_GRADE_HOME_NOTIFICATION;
-        blink_mode_value = BLINK_MODE_BREATH;
-    }
-    else
-    {
-        last_state = BREATH_SOURCE_NONE;
-        blink_mode_value = BLINK_MODE_UNKNOWN;
-        ALOGE(" Unknown state");
-        return 0;
+        home_status.status = BLINK_MODE_BREATH;
+        home_status.min_grade = get_max(home_status.min_grade, LED_GRADE_HOME_NOTIFICATION);
     }
 
-    blink = onMS > 0 && offMS > 0;
-
-    if ((active_states & BREATH_SOURCE_BUTTONS) == 0)
-    {
-        ALOGE(" Home LED on");
-
-        switch (onMS)
-        {
-            case 5000:
-                onMS = 5;
-                break;
-            case 2000:
-                onMS = 4;
-                break;
-            case 1000:
-                onMS = 3;
-                break;
-            case 500:
-                onMS = 2;
-                break;
-            case 250:
-                onMS = 1;
-                break;
-            default:
-                onMS = 1;
-        }
-
-        switch (offMS)
-        {
-            case 5000:
-                offMS = 5;
-                break;
-            case 2000:
-                offMS = 4;
-                break;
-            case 1000:
-                offMS = 3;
-                break;
-            case 500:
-                offMS = 2;
-                break;
-            case 250:
-                offMS = 1;
-                break;
-            case 1:
-                offMS = 0;
-                break;
-            default:
-                offMS = 0;
-        }
-        snprintf(buffer, sizeof(buffer), "%d %d %d\n", offMS, onMS, onMS);
-        ALOGD(" offMS=%d onMS=%d onMS=%d\n", offMS, onMS, onMS);
-        write_int(BREATH_LED_OUTN, CHANNEL_HOME);
-        write_str(BREATH_LED_FADE, buffer);
-        write_int(BREATH_LED_GRADE, grade_value);
-        write_str(BREATH_LED_BLINK, blink_mode_value);
-
-        if (blink)
-        {
-            duty = get_scaled_duty_pcts(brightness);
-            stepDuration = RAMP_STEP_DURATION;
-            pauseHi = onMS - (stepDuration * RAMP_SIZE * 2);
-            if (stepDuration * RAMP_SIZE * 2 > onMS)
-            {
-                stepDuration = onMS / (RAMP_SIZE * 2);
-                pauseHi = 0;
-            }
-
-            write_int(BREATH_LED_START_IDX, 0);
-            write_str(BREATH_LED_DUTY_PCTS, duty);
-            write_int(BREATH_LED_PAUSE_LO, offMS);
-            write_int(BREATH_LED_PAUSE_HI, pauseHi);
-            write_int(BREATH_LED_RAMP_STEP_MS, stepDuration);
-
-            free(duty);
-        }
-        else
-        {
-            write_int(BREATH_LED_GRADE, brightness);
-        }
-    }
-    else
-    {
-        ALOGE(" Buttons LED on");
-        write_int(BREATH_LED_OUTN, CHANNEL_BUTTONS);
-        write_str(BREATH_LED_FADE, "1 0 0");
-        write_int(BREATH_LED_GRADE, grade_value);
-        write_str(BREATH_LED_BLINK, blink_mode_value);
-
-        write_int(BREATH_LED_OUTN, CHANNEL_HOME);
-        write_str(BREATH_LED_FADE, "1 0 0");
-        write_int(BREATH_LED_GRADE, grade_value);
-        write_str(BREATH_LED_BLINK, blink_mode_value);
-    }
-
+    set_led_home_status(&home_status);
+    set_led_button_status(&button_status);
+    log_led_status(&home_status, &button_status);
     return 0;
 }
 
 static int set_light_buttons(struct light_device_t* dev, struct light_state_t const* state)
 {
-    int err = 0;
-    int brightness = rgb_to_brightness(state);
     pthread_mutex_lock(&g_lock);
     g_buttons = *state;
     set_breath_light_locked(BREATH_SOURCE_BUTTONS, &g_buttons);
     pthread_mutex_unlock(&g_lock);
-    return err;
+    return 0;
 }
 
 static int set_light_battery(struct light_device_t* dev, struct light_state_t const* state)
@@ -501,8 +655,6 @@ static int close_lights(struct light_device_t* dev)
 }
 
 
-/******************************************************************************/
-
 /**
  * Module methods
  */
@@ -529,10 +681,6 @@ static int open_lights(
     pthread_once(&g_init, init_globals);
 
     struct light_device_t* dev = malloc(sizeof(struct light_device_t));
-
-    if (!dev)
-        return -ENOMEM;
-
     memset(dev, 0, sizeof(*dev));
 
     dev->common.tag = HARDWARE_DEVICE_TAG;
@@ -557,8 +705,8 @@ struct hw_module_t HAL_MODULE_INFO_SYM = {
     .version_major = 1,
     .version_minor = 0,
     .id = LIGHTS_HARDWARE_MODULE_ID,
-    .name = "Lights Module for Nubia Z17",
-    .author = "Parheliamm, XiNGRZ, BeYkeRYkt",
+    .name = "Lights Module for Nubia Z11",
+    .author = "Parheliamm, XiNGRZ, RichardTung",
     .methods = &lights_module_methods,
 };
 
