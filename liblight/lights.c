@@ -70,14 +70,12 @@ char const *const BATTERY_CHARGING_STATUS =
 #define BLINK_MODE_OFF 2
 #define BLINK_MODE_BREATH 3
 #define BLINK_MODE_BREATH_ONCE 6
-#define BLINK_MODE_UNKNOWN 0xff
 
 // Events
 #define BREATH_SOURCE_NOTIFICATION 0x01
 #define BREATH_SOURCE_BATTERY 0x02
 #define BREATH_SOURCE_BUTTONS 0x04
 #define BREATH_SOURCE_ATTENTION 0x08
-#define BREATH_SOURCE_NONE 0x00
 
 // Outn channels
 #define LED_CHANNEL_HOME 16
@@ -271,8 +269,8 @@ static int set_breathing_light_locked(int event_source,
     if (brightness <= 0) {
       // Disable Home LED
       write_int(LED_CHANNEL, LED_CHANNEL_HOME);
-      write_str(LED_FADE, "1 0 0");
       write_int(LED_BLINK_MODE, BLINK_MODE_OFF);
+      write_str(LED_FADE, "1 0 0");
     } else {
       if (event_source == BREATH_SOURCE_BUTTONS) {
         write_int(LED_CHANNEL, LED_CHANNEL_HOME);
@@ -291,7 +289,8 @@ static int set_breathing_light_locked(int event_source,
         FILE *fp = fopen(BATTERY_CHARGING_STATUS, "rb");
         fgets(charging_status, 14, fp);
         fclose(fp);
-        if (strstr(charging_status, "Charging") != NULL || strstr(charging_status, "Full") != NULL) {
+        if (strstr(charging_status, "Charging") != NULL || 
+            strstr(charging_status, "Full") != NULL) {
           is_charging = 1;
         }
         read_int(BATTERY_CAPACITY, &capacity);
@@ -365,6 +364,7 @@ static int set_light_buttons(struct light_device_t *dev,
 
     // Set buttons
     write_int(LED_CHANNEL, LED_CHANNEL_BUTTON);
+    write_int(LED_BRIGHTNESS, brightness);
     write_int(LED_BLINK_MODE, BLINK_MODE_BREATH_ONCE);
   }
   pthread_mutex_unlock(&g_lock);
