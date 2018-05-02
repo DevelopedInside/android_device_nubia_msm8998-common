@@ -609,6 +609,7 @@ framework/qcrilhook.jar
 framework/qti-telephony-common.jar
 framework/QtiTelephonyServicelibrary.jar
 -priv-app/qcrilmsgtunnel/qcrilmsgtunnel.apk
+vendor/bin/ATFWD-daemon
 vendor/bin/qti
 vendor/lib/libmdmdetect.so
 vendor/lib/vendor.qti.hardware.radio.uim_remote_client@1.0_vendor.so

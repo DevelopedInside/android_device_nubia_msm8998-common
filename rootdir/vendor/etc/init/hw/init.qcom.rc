@@ -1104,6 +1104,7 @@ service atfwd /vendor/bin/ATFWD-daemon
     user system
     group system radio
     disabled
+    writepid /dev/cpuset/system-background/tasks
 
 on property:persist.radio.atfwd.start=true
     start atfwd
