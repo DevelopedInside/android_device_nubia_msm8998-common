@@ -159,6 +159,7 @@ vendor/lib/libqisl.so
 vendor/lib/librpmb.so
 vendor/lib/libspl.so
 vendor/lib/libssd.so
+vendor/lib/libtzdrmgenprov.so
 vendor/lib64/lib-sec-disp.so
 vendor/lib64/libdrmfs.so
 vendor/lib64/libdrmtime.so
@@ -173,6 +174,14 @@ vendor/lib64/libSecureUILib.so
 vendor/lib64/libssd.so
 vendor/lib64/libspl.so
 vendor/lib64/libStDrvInt.so
+vendor/lib64/libtzdrmgenprov.so
+
+# DRM - Playready
+vendor/lib/qcdrm/playready/lib/drm/libdrmprplugin_customer.so
+vendor/lib/qcdrm/playready/lib/libprdrmdecrypt_customer.so
+vendor/lib/qcdrm/playready/lib/libtzplayready_customer.so
+vendor/lib/qcdrm/playready/lib/mediadrm/libprmediadrmdecrypt_customer.so
+vendor/lib/qcdrm/playready/lib/mediadrm/libprmediadrmplugin_customer.so
 
 # Gatekeeper
 vendor/lib/hw/gatekeeper.msm8998.so
