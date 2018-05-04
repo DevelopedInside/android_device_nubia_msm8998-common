@@ -3,7 +3,8 @@
 #
 
 # Audio
-af.fast_track_multiplier=2
+af.fast_track_multiplier=1
+audio.adm.buffering.ms=3
 audio.deep_buffer.media=true
 audio.dolby.ds2.enabled=true
 audio.dolby.ds2.hardbypass=true
@@ -25,7 +26,7 @@ audio.safx.pbe.enabled=true
 audio_hal.period_size=192
 flac.sw.decoder.24bit.support=true
 fm.a2dp.conc.disabled=true
-persist.audio.fluence.speaker=false
+persist.audio.fluence.speaker=true
 persist.audio.fluence.voicecall=true
 persist.audio.fluence.voicerec=false
 persist.audio.ras.enabled=false
@@ -43,7 +44,7 @@ ro.cutoff_voltage_mv=3200
 # Bluetooth
 bt.max.hfpclient.connections=1
 persist.bt.a2dp.aac_disable=true
-persist.bt.a2dp_offload_cap=sbc
+persist.bt.a2dp_offload_cap=sbc-aptx-aptxhd
 qcom.bluetooth.soc=cherokee
 ro.bluetooth.a4wp=false
 ro.bluetooth.emb_wp_mode=false
@@ -71,11 +72,13 @@ ro.frp.pst=/dev/block/bootdevice/by-name/frp
 
 # Graphics
 debug.gralloc.enable_fb_ubwc=1
+debug.gralloc.gfx_ubwc_disable=0
 debug.sf.hw=1
 dev.pm.dyn_samplingrate=1
 persist.debug.wfd.enable=1
 persist.demo.hdmirotationlock=false
 persist.hwc.enable_vds=1
+persist.sys.force_sw_gles=0
 persist.sys.image.enhance=w
 persist.sys.lcd.anim.scale=1.0
 persist.sys.lcd.colortmp=127
@@ -162,6 +165,7 @@ persist.sys.ssr.restart_level=3
 ril.subscription.types=NV,RUIM
 rild.libpath=/system/vendor/lib64/libril-qc-qmi-1.so
 ro.com.android.dataroaming=true
+ro.telephony.default_cdma_sub=0
 ro.telephony.default_network=22,20
 telephony.lteOnCdmaDevice=1
 
@@ -191,11 +195,6 @@ ro.qti.sensors.sta_detect=true
 
 # Timeservice
 persist.timed.enable=true
-
-# USB
-sys.usb.controller=a800000.dwc3
-sys.usb.rndis.func.name=gsi
-sys.usb.rmnet.func.name=gsi
 
 # Wi-Fi
 wifi.interface=wlan0
