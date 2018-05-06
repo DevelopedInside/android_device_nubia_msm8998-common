@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2016, The Linux Foundation. All rights reserved.
+ * Copyright (c) 2015-2017, The Linux Foundation. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
@@ -150,11 +150,11 @@ static int process_video_encode_hint(void *metadata)
             /* 1. cpufreq params
              *    -above_hispeed_delay for LVT - 40ms
              *    -go hispeed load for LVT - 95
-             *    -hispeed freq for LVT - 556 MHz
+             *    -hispeed freq for LVT - 806 MHz
              *    -target load for LVT - 90
              *    -above hispeed delay for sLVT - 40ms
              *    -go hispeed load for sLVT - 95
-             *    -hispeed freq for sLVT - 806 MHz
+             *    -hispeed freq for sLVT - 556 MHz
              *    -target load for sLVT - 90
              * 2. bus DCVS set to V2 config:
              *    -low power ceil mpbs - 2500
@@ -290,32 +290,4 @@ int power_hint_override(__unused struct power_module *module,
 int set_interactive_override(__unused struct power_module *module, int on)
 {
     return HINT_HANDLED; /* Don't excecute this code path, not in use */
-    char governor[80];
-
-    if (get_scaling_governor(governor, sizeof(governor)) == -1) {
-        ALOGE("Can't obtain scaling governor.");
-
-        return HINT_NONE;
-    }
-
-    if (!on) {
-        /* Display off */
-        if ((strncmp(governor, INTERACTIVE_GOVERNOR, strlen(INTERACTIVE_GOVERNOR)) == 0) &&
-            (strlen(governor) == strlen(INTERACTIVE_GOVERNOR))) {
-            int resource_values[] = {}; /* dummy node */
-            perform_hint_action(DISPLAY_STATE_HINT_ID,
-                    resource_values, ARRAY_SIZE(resource_values));
-            ALOGI("Display Off hint start");
-            return HINT_HANDLED;
-        }
-    } else {
-        /* Display on */
-        if ((strncmp(governor, INTERACTIVE_GOVERNOR, strlen(INTERACTIVE_GOVERNOR)) == 0) &&
-            (strlen(governor) == strlen(INTERACTIVE_GOVERNOR))) {
-            undo_hint_action(DISPLAY_STATE_HINT_ID);
-            ALOGI("Display Off hint stop");
-            return HINT_HANDLED;
-        }
-    }
-    return HINT_NONE;
 }
