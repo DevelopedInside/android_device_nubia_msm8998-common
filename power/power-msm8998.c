@@ -58,8 +58,8 @@ int get_number_of_profiles() {
 static int profile_high_performance[] = {
     SCHED_BOOST_ON_V3, 0x1,
     ALL_CPUS_PWR_CLPS_DIS_V3, 0x1,
-    CPUS_ONLINE_MIN_BIG, 0x2,
-    CPUS_ONLINE_MIN_LITTLE, 0x2,
+    CPUS_ONLINE_MIN_BIG, 0x4,
+    CPUS_ONLINE_MIN_LITTLE, 0x4,
     MIN_FREQ_BIG_CORE_0, 0xFFF,
     MIN_FREQ_LITTLE_CORE_0, 0xFFF,
 };
@@ -76,8 +76,8 @@ static int profile_bias_power[] = {
 };
 
 static int profile_bias_performance[] = {
-    CPUS_ONLINE_MAX_LIMIT_BIG, 0x2,
-    CPUS_ONLINE_MAX_LIMIT_LITTLE, 0x2,
+    CPUS_ONLINE_MAX_LIMIT_BIG, 0x4,
+    CPUS_ONLINE_MAX_LIMIT_LITTLE, 0x4,
     MIN_FREQ_BIG_CORE_0, 0x578,
 };
 
@@ -203,14 +203,9 @@ int power_hint_override(__unused struct power_module *module,
     int duration;
 
     int resources_launch[] = {
-        SCHED_BOOST_ON_V3, 0x1,
-        MAX_FREQ_BIG_CORE_0, 0x939,
-        MAX_FREQ_LITTLE_CORE_0, 0xFFF,
-        MIN_FREQ_BIG_CORE_0, 0xFFF,
-        MIN_FREQ_LITTLE_CORE_0, 0xFFF,
-        CPUBW_HWMON_MIN_FREQ, 0x8C,
-        ALL_CPUS_PWR_CLPS_DIS_V3, 0x1,
-        STOR_CLK_SCALE_DIS, 0x1,
+        SCHED_BOOST_ON_V3, 0x3,
+        0x40C58000, 0x5A,
+        0x40C54000, 0x5F,
     };
 
     int resources_cpu_boost[] = {
