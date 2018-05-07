@@ -222,6 +222,10 @@ int power_hint_override(__unused struct power_module *module,
         SCHED_BOOST_ON_V3, 0x2,
     };
 
+    int resources_interaction_boost[] = {
+        CPUBW_HWMON_MIN_FREQ, 0x33,
+    };
+
     if (hint == POWER_HINT_SET_PROFILE) {
         set_power_profile(*(int32_t *)data);
         return HINT_HANDLED;
@@ -259,6 +263,9 @@ int power_hint_override(__unused struct power_module *module,
 
             if (duration >= 1500) {
                 interaction(duration, ARRAY_SIZE(resources_interaction_fling_boost),
+                        resources_interaction_fling_boost);
+            } else {
+                interaction(duration, ARRAY_SIZE(resources_interaction_boost),
                         resources_interaction_fling_boost);
             }
             return HINT_HANDLED;
