@@ -202,10 +202,10 @@ enum SCHEDULER_MSM8998 {
 int power_hint_override(__unused struct power_module *module,
         power_hint_t hint, void *data)
 {
+    int duration, duration_hint;
     static struct timespec s_previous_boost_timespec;
     struct timespec cur_boost_timespec;
     long long elapsed_time;
-    int duration;
 
     int resources_launch[] = {
         SCHED_BOOST_ON_V3, 0x3,
