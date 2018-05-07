@@ -228,53 +228,58 @@ int power_hint_override(__unused struct power_module *module,
     }
 
     /* Skip other hints in power save mode */
-    if (current_power_profile == PROFILE_POWER_SAVE)
+    if (current_power_profile == PROFILE_POWER_SAVE) {
         return HINT_HANDLED;
+    }
 
-    if (hint == POWER_HINT_INTERACTION) {
-        duration = data ? *((int *)data) : 500;
+    switch (hint) {
+        case POWER_HINT_INTERACTION:
+            duration = 500;
+            duration_hint = 0;
 
-        clock_gettime(CLOCK_MONOTONIC, &cur_boost_timespec);
-        elapsed_time = calc_timespan_us(s_previous_boost_timespec, cur_boost_timespec);
-        if (elapsed_time > 750000)
-            elapsed_time = 750000;
-        /**
-         * Don't hint if it's been less than 250ms since last boost
-         * also detect if we're doing anything resembling a fling
-         * support additional boosting in case of flings
-         */
-        else if (elapsed_time < 250000 && duration <= 750)
+            if (data) {
+                duration_hint = *((int *)data);
+            }
+
+            duration = duration_hint > 0 ? duration_hint : 500;
+
+            clock_gettime(CLOCK_MONOTONIC, &cur_boost_timespec);
+            elapsed_time = calc_timespan_us(s_previous_boost_timespec, cur_boost_timespec);
+            if (elapsed_time > 750000)
+                elapsed_time = 750000;
+            /**
+             * Don't hint if it's been less than 250ms since last boost
+             * also detect if we're doing anything resembling a fling
+             * support additional boosting in case of flings
+             */
+            else if (elapsed_time < 250000 && duration <= 750)
+                return HINT_HANDLED;
+
+            s_previous_boost_timespec = cur_boost_timespec;
+
+            if (duration >= 1500) {
+                interaction(duration, ARRAY_SIZE(resources_interaction_fling_boost),
+                        resources_interaction_fling_boost);
+            }
             return HINT_HANDLED;
-
-        s_previous_boost_timespec = cur_boost_timespec;
-
-        if (duration >= 1500) {
-            interaction(duration, ARRAY_SIZE(resources_interaction_fling_boost),
-                    resources_interaction_fling_boost);
-        }
-        return HINT_HANDLED;
-    }
-
-    if (hint == POWER_HINT_LAUNCH) {
-        duration = 2000;
-
-        interaction(duration, ARRAY_SIZE(resources_launch),
-                resources_launch);
-        return HINT_HANDLED;
-    }
-
-    if (hint == POWER_HINT_CPU_BOOST) {
-        duration = *(int32_t *)data / 1000;
-        if (duration > 0) {
-            interaction(duration, ARRAY_SIZE(resources_cpu_boost),
-                    resources_cpu_boost);
+        case POWER_HINT_LAUNCH:
+            duration = 2000;
+            interaction(duration, ARRAY_SIZE(resources_launch),
+                    resources_launch);
             return HINT_HANDLED;
-        }
+        case POWER_HINT_CPU_BOOST:
+            duration = *(int32_t *)data / 1000;
+            if (duration > 0) {
+                interaction(duration, ARRAY_SIZE(resources_cpu_boost),
+                        resources_cpu_boost);
+            }
+            return HINT_HANDLED;
+        case POWER_HINT_VIDEO_ENCODE:
+            process_video_encode_hint(data);
+            return HINT_HANDLED;
+        default:
+            break;
     }
-
-    if (hint == POWER_HINT_VIDEO_ENCODE)
-        return process_video_encode_hint(data);
-
     return HINT_NONE;
 }
 
