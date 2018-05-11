@@ -316,6 +316,7 @@ etc/firmware/a540_zap.elf
 etc/firmware/a540_zap.mdt
 
 # IPA
+bin/ipacm-diag
 etc/firmware/ipa_fws.b00
 etc/firmware/ipa_fws.b01
 etc/firmware/ipa_fws.b02
