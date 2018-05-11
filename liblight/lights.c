@@ -46,23 +46,23 @@ static struct light_state_t g_battery;
 static struct light_state_t g_buttons;
 
 // Display
-char const *const LCD_FILE = "/sys/class/leds/lcd-backlight/brightness";
+char const* const LCD_FILE = "/sys/class/leds/lcd-backlight/brightness";
 
 // Nubia LED
-char const *const LED_BRIGHTNESS = "/sys/class/leds/nubia_led/brightness";
+char const* const LED_BRIGHTNESS = "/sys/class/leds/nubia_led/brightness";
 
-char const *const LED_BLINK_MODE = "/sys/class/leds/nubia_led/blink_mode";
+char const* const LED_BLINK_MODE = "/sys/class/leds/nubia_led/blink_mode";
 
-char const *const LED_CHANNEL = "/sys/class/leds/nubia_led/outn";
+char const* const LED_CHANNEL = "/sys/class/leds/nubia_led/outn";
 
-char const *const LED_GRADE = "/sys/class/leds/nubia_led/grade_parameter";
+char const* const LED_GRADE = "/sys/class/leds/nubia_led/grade_parameter";
 
-char const *const LED_FADE = "/sys/class/leds/nubia_led/fade_parameter";
+char const* const LED_FADE = "/sys/class/leds/nubia_led/fade_parameter";
 
 // Battery
-char const *const BATTERY_CAPACITY = "/sys/class/power_supply/battery/capacity";
+char const* const BATTERY_CAPACITY = "/sys/class/power_supply/battery/capacity";
 
-char const *const BATTERY_CHARGING_STATUS =
+char const* const BATTERY_CHARGING_STATUS =
     "/sys/class/power_supply/battery/status";
 
 // Blink mode
@@ -99,7 +99,7 @@ void init_globals(void) {
   pthread_mutex_init(&g_lock, NULL);
 }
 
-static int read_int(char const *path, int *value) {
+static int read_int(char const* path, int* value) {
   int fd;
   static int already_warned = 0;
 
@@ -119,7 +119,7 @@ static int read_int(char const *path, int *value) {
   }
 }
 
-static int write_int(char const *path, int value) {
+static int write_int(char const* path, int value) {
   int fd;
   static int already_warned = 0;
 
@@ -139,7 +139,7 @@ static int write_int(char const *path, int value) {
   }
 }
 
-static int write_str(char const *path, char *value) {
+static int write_str(char const* path, char* value) {
   int fd;
   static int already_warned = 0;
 
@@ -159,19 +159,19 @@ static int write_str(char const *path, char *value) {
   }
 }
 
-static int is_lit(struct light_state_t const *state) {
+static int is_lit(struct light_state_t const* state) {
   return state->color & 0x00ffffff;
 }
 
-static int rgb_to_brightness(struct light_state_t const *state) {
+static int rgb_to_brightness(struct light_state_t const* state) {
   int color = state->color & 0x00ffffff;
   return ((77 * ((color >> 16) & 0x00ff)) + (150 * ((color >> 8) & 0x00ff)) +
           (29 * (color & 0x00ff))) >>
          8;
 }
 
-static int set_light_backlight(struct light_device_t *dev,
-                               struct light_state_t const *state) {
+static int set_light_backlight(struct light_device_t* dev,
+                               struct light_state_t const* state) {
   int err = 0;
   int brightness = rgb_to_brightness(state);
   if (!dev) {
@@ -184,8 +184,8 @@ static int set_light_backlight(struct light_device_t *dev,
 }
 
 static int set_breathing_light_locked(int event_source,
-                                      struct light_device_t *dev,
-                                      struct light_state_t const *state) {
+                                      struct light_device_t* dev,
+                                      struct light_state_t const* state) {
   int brightness, blink;
   int onMS, offMS;
 
@@ -194,18 +194,18 @@ static int set_breathing_light_locked(int event_source,
   }
 
   switch (state->flashMode) {
-  case LIGHT_FLASH_TIMED:
-    onMS = state->flashOnMS;
-    offMS = state->flashOffMS;
-    break;
-  case LIGHT_FLASH_NONE:
-  default:
-    onMS = 0;
-    offMS = 0;
-    break;
+    case LIGHT_FLASH_TIMED:
+      onMS = state->flashOnMS;
+      offMS = state->flashOffMS;
+      break;
+    case LIGHT_FLASH_NONE:
+    default:
+      onMS = 0;
+      offMS = 0;
+      break;
   }
 
-  ALOGV(
+  ALOGD(
       "set_breathing_light_locked mode %d, colorRGB=%08X, onMS=%d, offMS=%d\n",
       state->flashMode, state->color, onMS, offMS);
 
@@ -213,69 +213,65 @@ static int set_breathing_light_locked(int event_source,
   blink = onMS > 0 && offMS > 0;
 
   if (blink) {
-    if (event_source == BREATH_SOURCE_NOTIFICATION ||
-        event_source == BREATH_SOURCE_ATTENTION) {
+    if ((event_source == BREATH_SOURCE_NOTIFICATION ||
+         event_source == BREATH_SOURCE_ATTENTION) &
+        brightness > 0) {
       char buffer[25];
-      switch (onMS) {
-      case 5000:
-        onMS = 5;
-        break;
-      case 2000:
-        onMS = 4;
-        break;
-      case 1000:
-        onMS = 3;
-        break;
-      case 500:
+      if (onMS == 1) {  // Always
+        onMS = 0;
+      } else if (onMS > 1 && onMS <= 250) {  // Very fast
+        onMS = 1;
+      } else if (onMS > 250 && onMS <= 500) {  // Fast
         onMS = 2;
-        break;
-      case 250:
-        onMS = 1;
-        break;
-      default:
-        onMS = 1;
+      } else if (onMS > 500 && onMS <= 1000) {  // Normal
+        onMS = 3;
+      } else if (onMS > 1000 && onMS <= 2000) {  // Long
+        onMS = 4;
+      } else if (onMS > 2000 && onMS <= 5000) {  // Very long
+        onMS = 5;
+      } else {
+        onMS = 0;
       }
 
-      switch (offMS) {
-      case 5000:
-        offMS = 5;
-        break;
-      case 2000:
-        offMS = 4;
-        break;
-      case 1000:
-        offMS = 3;
-        break;
-      case 500:
-        offMS = 2;
-        break;
-      case 250:
-        offMS = 1;
-        break;
-      case 1:
-        offMS = 0;
-        break;
-      default:
+      // We can not keep the notification button is constantly
+      // illuminated. Therefore, disable it.
+      if (onMS > 0) {
+        if (offMS > 1 && offMS <= 250) {  // Very fast
+          offMS = 1;
+        } else if (offMS > 250 && offMS <= 500) {  // Fast
+          offMS = 2;
+        } else if (offMS > 500 && offMS <= 1000) {  // Normal
+          offMS = 3;
+        } else if (offMS > 1000 && offMS <= 2000) {  // Long
+          offMS = 4;
+        } else if (offMS > 2000 && offMS <= 5000) {  // Very long
+          offMS = 5;
+        } else {
+          offMS = 0;
+        }
+      } else {
         offMS = 0;
       }
+
       snprintf(buffer, sizeof(buffer), "%d %d %d\n", offMS, onMS, onMS);
-      ALOGD("offMS=%d onMS=%d onMS=%d\n", offMS, onMS, onMS);
+      ALOGD("fade_time(offMS)=%d fullon_time(onMS)=%d fulloff_time(onMS)=%d\n",
+            offMS, onMS, onMS);
       write_int(LED_CHANNEL, LED_CHANNEL_HOME);
       write_int(LED_GRADE, LED_GRADE_HOME_NOTIFICATION);
-      write_int(LED_BLINK_MODE, BLINK_MODE_BREATH);
       write_str(LED_FADE, buffer);
+      write_int(LED_BLINK_MODE, BLINK_MODE_BREATH);
     }
   } else {
     if (brightness <= 0) {
       // Disable Home LED
       write_int(LED_CHANNEL, LED_CHANNEL_HOME);
+      write_int(LED_GRADE, 0);
+      write_str(LED_FADE, "0 0 0");
       write_int(LED_BLINK_MODE, BLINK_MODE_OFF);
-      write_str(LED_FADE, "1 0 0");
     } else {
       if (event_source == BREATH_SOURCE_BUTTONS) {
         write_int(LED_CHANNEL, LED_CHANNEL_HOME);
         write_int(LED_GRADE, LED_GRADE_BUTTON);
-        write_int(LED_BLINK_MODE, BLINK_MODE_BREATH);
         write_str(LED_FADE, "1 0 0");
         write_int(LED_BLINK_MODE, BLINK_MODE_BREATH_ONCE);
       } else if (event_source == BREATH_SOURCE_BATTERY) {
@@ -286,10 +282,10 @@ static int set_breathing_light_locked(int event_source,
         int is_charging = 0;
         int capacity = 0;
         char charging_status[15];
-        FILE *fp = fopen(BATTERY_CHARGING_STATUS, "rb");
+        FILE* fp = fopen(BATTERY_CHARGING_STATUS, "rb");
         fgets(charging_status, 14, fp);
         fclose(fp);
-        if (strstr(charging_status, "Charging") != NULL || 
+        if (strstr(charging_status, "Charging") != NULL ||
             strstr(charging_status, "Full") != NULL) {
           is_charging = 1;
         }
@@ -308,9 +304,9 @@ static int set_breathing_light_locked(int event_source,
             blink_mode = BLINK_MODE_BREATH_ONCE;
           }
         }
-
         write_int(LED_CHANNEL, LED_CHANNEL_HOME);
         write_int(LED_GRADE, grade);
+        write_str(LED_FADE, "3 0 4");
         write_int(LED_BLINK_MODE, blink_mode);
       }
     }
@@ -318,7 +314,7 @@ static int set_breathing_light_locked(int event_source,
   return 0;
 }
 
-static void handle_breathing_light_locked(struct light_device_t *dev) {
+static void handle_breathing_light_locked(struct light_device_t* dev) {
   if (is_lit(&g_attention)) {
     set_breathing_light_locked(BREATH_SOURCE_ATTENTION, dev, &g_attention);
   } else if (is_lit(&g_notification)) {
@@ -331,8 +327,8 @@ static void handle_breathing_light_locked(struct light_device_t *dev) {
   }
 }
 
-static int set_light_buttons(struct light_device_t *dev,
-                             struct light_state_t const *state) {
+static int set_light_buttons(struct light_device_t* dev,
+                             struct light_state_t const* state) {
   int brightness = rgb_to_brightness(state);
 
   if (!dev) {
@@ -353,9 +349,10 @@ static int set_light_buttons(struct light_device_t *dev,
     if (initialized == 0) {
       // Kill buttons
       write_int(LED_CHANNEL, LED_CHANNEL_BUTTON);
+      write_str(LED_FADE, "0 0 0");
       write_int(LED_BLINK_MODE,
-                BLINK_MODE_BREATH); // Disable all buttons keys (?)
-      write_int(LED_BRIGHTNESS, 0); // Disable left key
+                BLINK_MODE_BREATH);  // Disable all buttons keys (?)
+      write_int(LED_BRIGHTNESS, 0);  // Disable left key
       initialized = 1;
     }
 
@@ -371,8 +368,8 @@ static int set_light_buttons(struct light_device_t *dev,
   return 0;
 }
 
-static int set_light_battery(struct light_device_t *dev,
-                             struct light_state_t const *state) {
+static int set_light_battery(struct light_device_t* dev,
+                             struct light_state_t const* state) {
   pthread_mutex_lock(&g_lock);
   g_battery = *state;
   handle_breathing_light_locked(dev);
@@ -380,8 +377,8 @@ static int set_light_battery(struct light_device_t *dev,
   return 0;
 }
 
-static int set_light_notifications(struct light_device_t *dev,
-                                   struct light_state_t const *state) {
+static int set_light_notifications(struct light_device_t* dev,
+                                   struct light_state_t const* state) {
   pthread_mutex_lock(&g_lock);
 
   unsigned int brightness;
@@ -400,12 +397,9 @@ static int set_light_notifications(struct light_device_t *dev,
     rgb[2] = color & 0xFF;
 
     // Apply the brightness level
-    if (rgb[0] > 0)
-      rgb[0] = (rgb[0] * brightness) / 0xFF;
-    if (rgb[1] > 0)
-      rgb[1] = (rgb[1] * brightness) / 0xFF;
-    if (rgb[2] > 0)
-      rgb[2] = (rgb[2] * brightness) / 0xFF;
+    if (rgb[0] > 0) rgb[0] = (rgb[0] * brightness) / 0xFF;
+    if (rgb[1] > 0) rgb[1] = (rgb[1] * brightness) / 0xFF;
+    if (rgb[2] > 0) rgb[2] = (rgb[2] * brightness) / 0xFF;
 
     // Update with the new color
     g_notification.color = (rgb[0] << 16) + (rgb[1] << 8) + rgb[2];
@@ -416,8 +410,8 @@ static int set_light_notifications(struct light_device_t *dev,
   return 0;
 }
 
-static int set_light_attention(struct light_device_t *dev,
-                               struct light_state_t const *state) {
+static int set_light_attention(struct light_device_t* dev,
+                               struct light_state_t const* state) {
   pthread_mutex_lock(&g_lock);
   g_attention = *state;
   handle_breathing_light_locked(dev);
@@ -426,7 +420,7 @@ static int set_light_attention(struct light_device_t *dev,
 }
 
 /** Close the lights device */
-static int close_lights(struct light_device_t *dev) {
+static int close_lights(struct light_device_t* dev) {
   if (dev) {
     free(dev);
   }
@@ -440,10 +434,10 @@ static int close_lights(struct light_device_t *dev) {
  */
 
 /** Open a new instance of a lights device using name */
-static int open_lights(const struct hw_module_t *module, char const *name,
-                       struct hw_device_t **device) {
-  int (*set_light)(struct light_device_t *dev,
-                   struct light_state_t const *state);
+static int open_lights(const struct hw_module_t* module, char const* name,
+                       struct hw_device_t** device) {
+  int (*set_light)(struct light_device_t* dev,
+                   struct light_state_t const* state);
 
   if (0 == strcmp(LIGHT_ID_BACKLIGHT, name))
     set_light = set_light_backlight;
@@ -460,20 +454,19 @@ static int open_lights(const struct hw_module_t *module, char const *name,
 
   pthread_once(&g_init, init_globals);
 
-  struct light_device_t *dev = malloc(sizeof(struct light_device_t));
+  struct light_device_t* dev = malloc(sizeof(struct light_device_t));
 
-  if (!dev)
-    return -ENOMEM;
+  if (!dev) return -ENOMEM;
 
   memset(dev, 0, sizeof(*dev));
 
   dev->common.tag = HARDWARE_DEVICE_TAG;
   dev->common.version = 0;
-  dev->common.module = (struct hw_module_t *)module;
-  dev->common.close = (int (*)(struct hw_device_t *))close_lights;
+  dev->common.module = (struct hw_module_t*)module;
+  dev->common.close = (int (*)(struct hw_device_t*))close_lights;
   dev->set_light = set_light;
 
-  *device = (struct hw_device_t *)dev;
+  *device = (struct hw_device_t*)dev;
   return 0;
 }
 
@@ -493,4 +486,3 @@ struct hw_module_t HAL_MODULE_INFO_SYM = {
     .author = "The LineageOS Project, BeYkeRYkt",
     .methods = &lights_module_methods,
 };
-
