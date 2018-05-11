@@ -14,7 +14,7 @@ audio.offload.buffer.size.kb=32
 audio.offload.disable=false
 audio.offload.gapless.enabled=true
 audio.offload.multiaac.enable=true
-audio.offload.multiple.enabled=false
+audio.offload.multiple.enabled=true
 audio.offload.passthrough=false
 audio.offload.pcm.16bit.enable=true
 audio.offload.pcm.24bit.enable=true
@@ -196,6 +196,11 @@ ro.qti.sensors.sta_detect=true
 
 # Timeservice
 persist.timed.enable=true
+
+# USB
+sys.usb.controller=a800000.dwc3
+sys.usb.rndis.func.name=gsi
+sys.usb.rmnet.func.name=gsi
 
 # Wi-Fi
 wifi.interface=wlan0
