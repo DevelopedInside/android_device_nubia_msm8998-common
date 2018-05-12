@@ -213,9 +213,8 @@ static int set_breathing_light_locked(int event_source,
   blink = onMS > 0 && offMS > 0;
 
   if (blink) {
-    if ((event_source == BREATH_SOURCE_NOTIFICATION ||
-         event_source == BREATH_SOURCE_ATTENTION) &
-        brightness > 0) {
+    if (event_source == BREATH_SOURCE_NOTIFICATION ||
+         event_source == BREATH_SOURCE_ATTENTION) {
       char buffer[25];
       if (onMS == 1) {  // Always
         onMS = 0;
