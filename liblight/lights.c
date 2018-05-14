@@ -213,8 +213,6 @@ static int set_breathing_light_locked(int event_source,
   blink = onMS > 0 && offMS > 0;
 
   if (blink) {
-    if (event_source == BREATH_SOURCE_NOTIFICATION ||
-         event_source == BREATH_SOURCE_ATTENTION) {
       char buffer[25];
       if (onMS == 1) {  // Always
         onMS = 0;
@@ -259,7 +257,6 @@ static int set_breathing_light_locked(int event_source,
       write_int(LED_GRADE, LED_GRADE_HOME_NOTIFICATION);
       write_str(LED_FADE, buffer);
       write_int(LED_BLINK_MODE, BLINK_MODE_BREATH);
-    }
   } else {
     if (brightness <= 0) {
       // Disable Home LED
