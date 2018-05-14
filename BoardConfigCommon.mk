@@ -28,9 +28,6 @@ TARGET_SPECIFIC_HEADER_PATH := $(PLATFORM_PATH)/include
 
 BOARD_VENDOR := nubia
 
-# Use Snapdragon LLVM, if available
-TARGET_USE_SDCLANG := true
-
 # Bootloader
 TARGET_BOOTLOADER_BOARD_NAME := msm8998
 TARGET_NO_BOOTLOADER := true
