@@ -215,24 +215,24 @@ static int set_breathing_light_locked(int event_source,
   if (blink) {
       char buffer[25];
       if (onMS == 1) {  // Always
-        onMS = 0;
+        onMS = -1;
       } else if (onMS > 1 && onMS <= 250) {  // Very fast
-        onMS = 1;
-      } else if (onMS > 250 && onMS <= 500) {  // Fast
-        onMS = 2;
-      } else if (onMS > 500 && onMS <= 1000) {  // Normal
-        onMS = 3;
-      } else if (onMS > 1000 && onMS <= 2000) {  // Long
-        onMS = 4;
-      } else if (onMS > 2000 && onMS <= 5000) {  // Very long
-        onMS = 5;
-      } else {
         onMS = 0;
+      } else if (onMS > 250 && onMS <= 500) {  // Fast
+        onMS = 1;
+      } else if (onMS > 500 && onMS <= 1000) {  // Normal
+        onMS = 2;
+      } else if(onMS > 1000 && onMS <= 2000) {  // Long
+        onMS = 3;
+      } else if (onMS > 2000 && onMS <= 5000) {  // Very long
+        onMS = 4;
+      } else if (onMS > 5000){
+        onMS = 5;
       }
 
       // We can not keep the notification button is constantly
       // illuminated. Therefore, disable it.
-      if (onMS > 0) {
+      if (onMS != -1) {
         if (offMS > 1 && offMS <= 250) {  // Very fast
           offMS = 1;
         } else if (offMS > 250 && offMS <= 500) {  // Fast
@@ -243,8 +243,8 @@ static int set_breathing_light_locked(int event_source,
           offMS = 4;
         } else if (offMS > 2000 && offMS <= 5000) {  // Very long
           offMS = 5;
-        } else {
-          offMS = 0;
+        } else if (onMS > 5000){
+          offMS = 6;
         }
       } else {
         offMS = 0;
