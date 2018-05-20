@@ -188,6 +188,7 @@ vendor/lib/hw/gatekeeper.msm8998.so
 vendor/lib64/hw/gatekeeper.msm8998.so
 
 # GPS
+bin/garden_app
 bin/loc_launcher
 bin/lowi-server
 bin/xtwifi-client
@@ -331,6 +332,7 @@ vendor/lib64/hw/keystore.msm8998.so
 # Listen
 vendor/lib/hw/sound_trigger.primary.msm8998.so
 vendor/lib/libsmwrapper.so
+vendor/lib64/hw/sound_trigger.primary.msm8998.so
 
 # Media
 -vendor/lib/libgpustats.so
@@ -339,25 +341,42 @@ lib/libOmxVpp.so
 lib/libvpplibrary.so
 lib64/libOmxVpp.so
 lib64/libvpplibrary.so
-
+vendor/lib/libAlacSwDec.so
+vendor/lib/libApeSwDec.so
+vendor/lib/libFileMux.so
 vendor/lib/libI420colorconvert.so
 vendor/lib/libmiracast.so
 vendor/lib/libmm-color-convertor.so
 vendor/lib/libmmosal.so
 vendor/lib/libOmxAacDec.so
+vendor/lib/libOmxAlacDec.so
+vendor/lib/libOmxAlacDecSw.so
+vendor/lib/libOmxAmrwbplusDec.so
+vendor/lib/libOmxApeDec.so
+vendor/lib/libOmxApeDecSw.so
+vendor/lib/libOmxDsdDec.so
 vendor/lib/libOmxEvrcDec.so
 vendor/lib/libOmxVideoDSMode.so
 vendor/lib/libOmxQcelp13Dec.so
 vendor/lib/libvpphvx.so
+vendor/lib/libOmxWmaDec.so
 vendor/lib/libvqzip.so
-
+vendor/lib64/libAlacSwDec.so
+vendor/lib64/libApeSwDec.so
+vendor/lib64/libFileMux.so
 vendor/lib64/libI420colorconvert.so
 vendor/lib64/libmiracast.so
 vendor/lib64/libmm-color-convertor.so
 vendor/lib64/libmmosal.so
 vendor/lib64/libOmxAacDec.so
+vendor/lib64/libOmxAlacDec.so
+vendor/lib64/libOmxAlacDecSw.so
+vendor/lib64/libOmxAmrwbplusDec.so
+vendor/lib64/libOmxApeDec.so
+vendor/lib64/libOmxApeDecSw.so
 vendor/lib64/libOmxEvrcDec.so
 vendor/lib64/libOmxQcelp13Dec.so
+vendor/lib64/libOmxWmaDec.so
 vendor/lib64/libvpphvx.so
 
 # Network
@@ -423,7 +442,9 @@ vendor/lib64/libsmemlog.so
 -app/embms/embms.apk
 -app/QtiTelephonyService/QtiTelephonyService.apk
 -app/shutdownlistener/shutdownlistener.apk
+bin/ATFWD-daemon
 bin/netmgrd
+bin/port-bridge
 bin/radish
 bin/rmt_storage
 bin/tftp_server
@@ -495,19 +516,18 @@ vendor/lib64/libvoice-svc.so
 
 # Sensors
 bin/sensors.qcom
-lib/sensors.hal.tof.so
-vendor/lib/hw/activity_recognition.msm8998.so
-vendor/lib/libsensor1.so
-vendor/lib/libsensor_reg.so
-vendor/lib/sensor_calibrate.so
-vendor/lib/sensors.ssc.so
-
-lib64/sensors.hal.tof.so
 lib64/sensors.oem.so
+lib/sensors.hal.tof.so
+lib64/sensors.hal.tof.so
+vendor/lib/hw/activity_recognition.msm8998.so
 vendor/lib64/hw/activity_recognition.msm8998.so
+vendor/lib/libsensor1.so
 vendor/lib64/libsensor1.so
+vendor/lib/libsensor_reg.so
 vendor/lib64/libsensor_reg.so
+vendor/lib/sensor_calibrate.so
 vendor/lib64/sensor_calibrate.so
+vendor/lib/sensors.ssc.so
 vendor/lib64/sensors.ssc.so
 
 # Thermal
