@@ -1,3 +1,4 @@
+allow system_server user_profile_data_file:dir r_dir_perms;
 allow system_server sensors_persist_file:file write;
 allow system_server sysfs_nubia_breathlight:file { open read write };
 allow system_server sysfs_prox_cal:file { open write };
