@@ -10,21 +10,6 @@ type sysfs_fpc_wakeup, sysfs_type, fs_type;
 type debugfs_msm_core, debugfs_type, fs_type;
 type debugfs_rmts, debugfs_type, fs_type;
 
-# Nubia breathlight
-type sysfs_nubia_breathlight, sysfs_type, fs_type;
-
-# Nubia proximity
-type sysfs_prox_cal, sysfs_type, fs_type;
-
-# Nubia light
-type sysfs_rgb_cal, sysfs_type, fs_type;
-
-# tp & lcd
-type sysfs_tp_lcd, sysfs_type, fs_type;
-
-# IR remote
-type sysfs_ir_remote, sysfs_type, fs_type;
-
 # Touchpanel
 type sysfs_touchpanel, fs_type, sysfs_type;
 
