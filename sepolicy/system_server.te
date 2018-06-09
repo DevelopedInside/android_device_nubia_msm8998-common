@@ -6,12 +6,7 @@ allow system_server sensors_persist_file:file write;
 allow system_server sysfs_battery_supply:dir search;
 allow system_server sysfs_battery_supply:file { getattr open read };
 
-#allow system_server sysfs_battery_supply:file read;
-#allow system_server sysfs_battery_supply:file open;
-#allow system_server sysfs_battery_supply:file getattr;
-
 allow system_server sysfs_touchpanel:dir search;
-allow system_server sysfs_touchpanel:file read;
-allow system_server sysfs_touchpanel:file { getattr open write };
+allow system_server sysfs_touchpanel:file { getattr open read write };
 allow system_server sysfs_vibrator:dir search;
 allow system_server sysfs_vibrator:file { getattr open read write };

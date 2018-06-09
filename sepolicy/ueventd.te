@@ -1,2 +1,2 @@
-allow ueventd sysfs_vibrator:file { open write };
 allow ueventd ir_remote_device:chr_file { create setattr };
+allow ueventd sysfs_vibrator:file { open write };
