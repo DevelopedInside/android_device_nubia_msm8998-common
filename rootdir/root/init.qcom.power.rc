@@ -149,9 +149,6 @@ on enable-low-power
     write /sys/module/lpm_levels/system/perf/perf-l2-ret/idle_enabled N
     write /sys/module/lpm_levels/parameters/sleep_disabled N
 
-    # Disable sched_boost
-    write /proc/sys/kernel/sched_boost 0
-
 on charger
     mount ext4 /dev/block/bootdevice/by-name/system /system ro
 
@@ -203,6 +200,9 @@ on property:dev.bootcomplete=1
     # update cpusets now that boot is complete and we want better load balancing
     write /dev/cpuset/background/cpus 0-3
     write /dev/cpuset/system-background/cpus 0-3
+
+    # Disable sched_boost
+    write /proc/sys/kernel/sched_boost 0
 
     # Set perfd properties
     setprop sys.post_boot.parsed 1
