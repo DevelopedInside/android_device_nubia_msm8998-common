@@ -5,4 +5,4 @@ type fingerprint_device, dev_type;
 type haptics_device, dev_type;
 
 # IR Remote
-type ir_remote_device, file_type;
+type ir_remote_device, dev_type;
