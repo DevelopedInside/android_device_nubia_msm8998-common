@@ -265,7 +265,7 @@ int power_hint_override(__unused struct power_module *module,
                         resources_interaction_fling_boost);
             } else {
                 interaction(duration, ARRAY_SIZE(resources_interaction_boost),
-                        resources_interaction_fling_boost);
+                        resources_interaction_boost);
             }
             return HINT_HANDLED;
         case POWER_HINT_LAUNCH:
