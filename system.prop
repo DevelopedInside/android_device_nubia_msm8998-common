@@ -73,24 +73,14 @@ ro.frp.pst=/dev/block/bootdevice/by-name/frp
 
 # Graphics
 debug.gralloc.enable_fb_ubwc=1
-debug.gralloc.gfx_ubwc_disable=0
 debug.sf.hw=1
 dev.pm.dyn_samplingrate=1
 persist.debug.wfd.enable=1
 persist.demo.hdmirotationlock=false
 persist.hwc.enable_vds=1
-persist.sys.force_sw_gles=0
-persist.sys.image.enhance=w
-persist.sys.lcd.anim.scale=1.0
-persist.sys.lcd.colortmp=127
 persist.sys.wfd.virtual=0
 ro.opengles.version=196610
 sdm.debug.disable_partial_split=1
-
-# GPS
-persist.gps.qc_nlp_in_use=1
-persist.loc.nlp_name=com.qualcomm.location
-ro.gps.agps_provider=1
 
 # Media
 media.aac_51_output_enabled=true
@@ -106,9 +96,6 @@ vidc.enc.dcvs.extra-buff-count=2
 
 # NFC
 persist.nfc.smartcard.config=SIM1,eSE1
-persist.sys.nfc_reader_twinkle=true
-persist.sys.remove_beam=0
-persist.sys.switch_se=2
 ro.nfc.port=I2C
 
 # Perf
@@ -121,24 +108,17 @@ ro.vendor.extension_library=libqti-perfd-client.so
 
 # IMS
 persist.activate_mbn.enabled=false
-persist.data.iwlan.enable=true
 persist.dbg.ims_volte_enable=1
 persist.dbg.volte_avail_ovr=1
 persist.dbg.vt_avail_ovr=1
 persist.dbg.wfc_avail_ovr=1
-persist.device.type=omt
-persist.radio.hw_mbn_update=0
-persist.radio.sw_mbn_update=0
-persist.radio.trigger.silence=true
-persist.radio.trigger.supportux=true
 persist.radio.videopause.mode=1
-persist.regional.wipedata.level=all
+service.qti.ims.enabled=1
 
 # RIL
 DEVICE_PROVISIONED=1
 keyguard.no_require_sim=true
 persist.radio.apm_sim_not_pwdn=1
-persist.radio.calls.on.ims=0
 persist.radio.csvt.enabled=false
 persist.radio.custom_ecc=1
 persist.radio.data_con_rprt=1
@@ -146,9 +126,7 @@ persist.radio.data_ltd_sys_ind=1
 persist.radio.enhance_ecall=true
 persist.radio.hw_mbn_update=0
 persist.radio.ignore_dom_time=10
-persist.radio.jbims=0
 persist.radio.multisim.config=dsds
-persist.radio.primarycard=true
 persist.radio.rat_on=combine
 persist.radio.sib16_support=1
 persist.radio.start_ota_daemon=0
@@ -172,7 +150,6 @@ ro.com.android.dataroaming=true
 ro.telephony.call_ring.multiple=false
 ro.telephony.default_cdma_sub=0
 ro.telephony.default_network=22
-service.qti.ims.enabled=1
 telephony.lteOnCdmaDevice=1
 
 # RmNet Data
