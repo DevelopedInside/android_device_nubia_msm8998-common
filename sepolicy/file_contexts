@@ -3,7 +3,7 @@
 
 # TAS2555 Amplifier
 /dev/tas2555                                                           u:object_r:audio_device:s0
-/dev/tiload_node                                                       u:object_r:audio_device:s0
+/dev/tiload_node                                                       u:object_r:alarm_device:s0
 
 # Amplifier persist files
 /persist/tas2555_cal.bin                                               u:object_r:persist_amp_cal_file:s0
@@ -31,7 +31,10 @@
 /dev/drv2605                                                           u:object_r:haptics_device:s0
 
 # IR Remote
+/dev/ttyMSM1                                                           u:object_r:ir_remote_device:s0
 /dev/ir_remote                                                         u:object_r:ir_remote_device:s0
+/sys/class/ir_remote/ir_remote/enable                                  u:object_r:sysfs_ir_remote:s0
+/sys/devices/virtual/ir_remote/ir_remote/enable                        u:object_r:sysfs_ir_remote:s0
 
 # Touch Panel
 /sys/class/tpnode/tpnode/synaptics/0dbutton                            u:object_r:sysfs_touchpanel:s0

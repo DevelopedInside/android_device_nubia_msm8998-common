@@ -10,6 +10,9 @@ type sysfs_fpc_wakeup, sysfs_type, fs_type;
 type debugfs_msm_core, debugfs_type, fs_type;
 type debugfs_rmts, debugfs_type, fs_type;
 
+# IR Remote
+type sysfs_ir_remote, sysfs_type, fs_type;
+
 # Touchpanel
 type sysfs_touchpanel, fs_type, sysfs_type;
 
