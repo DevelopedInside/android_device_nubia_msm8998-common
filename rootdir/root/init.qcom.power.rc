@@ -45,7 +45,6 @@ on enable-low-power
     write /sys/devices/system/cpu/cpu4/core_ctl/task_thres 4
 
     # Setting b.L scheduler parameters
-    write /proc/sys/kernel/sched_migration_fixup 1
     write /proc/sys/kernel/sched_upmigrate 95
     write /proc/sys/kernel/sched_downmigrate 90
     write /proc/sys/kernel/sched_group_upmigrate 100
