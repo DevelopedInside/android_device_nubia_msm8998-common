@@ -304,7 +304,6 @@
 /dev/ts0710mux*           0640   radio      radio
 /dev/ppp                  0660   radio      vpn
 
-# NFC
 /dev/bcm2079x             0660   nfc        nfc
 
 # sysfs properties
@@ -323,7 +322,6 @@
 #added by nubia, end
 
 # Add device block for FRP
-/dev/block/bootdevice/by-name/frp                       0660   system     system
 /dev/block/platform/soc/7824900.sdhci/by-name/config    0600   system     system
 /dev/block/platform/soc/7464900.sdhci/by-name/frp       0600   system     system
 /dev/block/platform/soc/624000.ufshc/by-name/frp        0600   system     system
@@ -336,9 +334,3 @@
 # touchscreen
 /sys/devices/soc/c179000.i2c/i2c-5/5-0020/input/input4       wake_gesture     0644    system  system
 /sys/devices/soc/c179000.i2c/i2c-5/5-0020/input/input4       0dbutton         0644    system  system
-
-# IR Remote
-/dev/ir_remote             0666   system       system
-
-# Hall device
-/dev/hall_device           0660   system       system

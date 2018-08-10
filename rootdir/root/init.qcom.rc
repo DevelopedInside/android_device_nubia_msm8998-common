@@ -305,11 +305,13 @@ on boot
     mkdir /persist/alarm 0770 system system
     mkdir /persist/time 0770 system system
 
-    # Create directory used for display
-    mkdir /persist/display 0770 system graphics
-
     #Create NETMGR daemon socket area
     mkdir /dev/socket/netmgr 0750 radio radio
+
+    setprop wifi.interface wlan0
+
+
+    setprop ro.telephony.call_ring.multiple false
 
     #enable camera read sensors data
     setprop persist.camera.gyro.disable 0
@@ -783,7 +785,7 @@ service bt_logger /system/bin/bt_logger
 service ftmd /system/bin/ftmdaemon -n
     class late_start
     user root
-    group bluetooth net_bt_admin misc diag net_bt
+    group bluetooth net_bt_admin misc net_bt_stack qcom_diag net_bt
     disabled
     oneshot
 

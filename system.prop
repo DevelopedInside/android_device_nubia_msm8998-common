@@ -14,19 +14,19 @@ audio.offload.buffer.size.kb=32
 audio.offload.disable=false
 audio.offload.gapless.enabled=true
 audio.offload.multiaac.enable=true
-audio.offload.multiple.enabled=true
+audio.offload.multiple.enabled=false
 audio.offload.passthrough=false
 audio.offload.pcm.16bit.enable=true
 audio.offload.pcm.24bit.enable=true
 audio.offload.pstimeout.secs=3
-audio.offload.track.enable=true
+audio.offload.track.enable=false
 audio.offload.video=true
 audio.parser.ip.buffer.size=0
 audio.safx.pbe.enabled=true
 audio_hal.period_size=192
 flac.sw.decoder.24bit.support=true
 fm.a2dp.conc.disabled=true
-persist.audio.fluence.speaker=false
+persist.audio.fluence.speaker=true
 persist.audio.fluence.voicecall=true
 persist.audio.fluence.voicerec=false
 persist.audio.ras.enabled=false
@@ -52,7 +52,7 @@ ro.bluetooth.emb_wp_mode=false
 ro.bluetooth.wipower=false
 
 # Camera
-camera.aux.packagelist=com.android.camera,cn.nubia.factory,org.codeaurora.snapcam,org.cyanogenmod.snap
+camera.aux.packagelist=com.android.camera,cn.nubia.factory,org.codeaurora.snapcam
 persist.camera.depth.focus.cb=0
 persist.camera.vdbea.switch=1
 persist.ts.rtmakeup=false
@@ -73,14 +73,24 @@ ro.frp.pst=/dev/block/bootdevice/by-name/frp
 
 # Graphics
 debug.gralloc.enable_fb_ubwc=1
+debug.gralloc.gfx_ubwc_disable=0
 debug.sf.hw=1
 dev.pm.dyn_samplingrate=1
 persist.debug.wfd.enable=1
 persist.demo.hdmirotationlock=false
 persist.hwc.enable_vds=1
+persist.sys.force_sw_gles=0
+persist.sys.image.enhance=w
+persist.sys.lcd.anim.scale=1.0
+persist.sys.lcd.colortmp=127
 persist.sys.wfd.virtual=0
 ro.opengles.version=196610
 sdm.debug.disable_partial_split=1
+
+# GPS
+persist.gps.qc_nlp_in_use=1
+persist.loc.nlp_name=com.qualcomm.location
+ro.gps.agps_provider=1
 
 # Media
 media.aac_51_output_enabled=true
@@ -89,6 +99,7 @@ media.stagefright.enable-http=true
 media.stagefright.enable-player=true
 media.stagefright.enable-qcp=true
 media.stagefright.enable-scan=true
+mm.enable.qcom_parser=13631231
 mm.enable.smoothstreaming=true
 mmp.enable.3g2=true
 persist.mm.enable.prefetch=true
@@ -96,6 +107,9 @@ vidc.enc.dcvs.extra-buff-count=2
 
 # NFC
 persist.nfc.smartcard.config=SIM1,eSE1
+persist.sys.nfc_reader_twinkle=true
+persist.sys.remove_beam=0
+persist.sys.switch_se=2
 ro.nfc.port=I2C
 
 # Perf
@@ -108,18 +122,23 @@ ro.vendor.extension_library=libqti-perfd-client.so
 
 # IMS
 persist.activate_mbn.enabled=false
+persist.data.iwlan.enable=true
 persist.dbg.ims_volte_enable=1
 persist.dbg.volte_avail_ovr=1
 persist.dbg.vt_avail_ovr=1
 persist.dbg.wfc_avail_ovr=1
+persist.device.type=omt
+persist.radio.hw_mbn_update=0
+persist.radio.sw_mbn_update=0
+persist.radio.trigger.silence=true
+persist.radio.trigger.supportux=true
 persist.radio.videopause.mode=1
-service.qti.ims.enabled=1
+persist.regional.wipedata.level=all
 
 # RIL
 DEVICE_PROVISIONED=1
 keyguard.no_require_sim=true
 persist.radio.apm_sim_not_pwdn=1
-persist.radio.csvt.enabled=false
 persist.radio.custom_ecc=1
 persist.radio.data_con_rprt=1
 persist.radio.data_ltd_sys_ind=1
@@ -147,9 +166,8 @@ persist.sys.ssr.restart_level=3
 ril.subscription.types=NV,RUIM
 rild.libpath=/system/vendor/lib64/libril-qc-qmi-1.so
 ro.com.android.dataroaming=true
-ro.telephony.call_ring.multiple=false
 ro.telephony.default_cdma_sub=0
-ro.telephony.default_network=22
+ro.telephony.default_network=22,20
 telephony.lteOnCdmaDevice=1
 
 # RmNet Data
