@@ -415,6 +415,10 @@ PRODUCT_PACKAGES += \
 
 # VNDK-SP
 PRODUCT_PACKAGES += \
+    vndk_package
+
+# VNDK-SP
+PRODUCT_PACKAGES += \
     vndk-sp
 
 # VR
