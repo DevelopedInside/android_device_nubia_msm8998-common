@@ -255,6 +255,9 @@ TARGET_RELEASETOOLS_EXTENSIONS := $(PLATFORM_PATH)
 PROTOBUF_SUPPORTED := true
 TARGET_RIL_VARIANT := caf
 
+# Root
+BOARD_ROOT_EXTRA_FOLDERS := bt_firmware dsp firmware persist
+
 # SELinux
 include device/qcom/sepolicy/sepolicy.mk
 BOARD_SEPOLICY_DIRS += $(PLATFORM_PATH)/sepolicy
