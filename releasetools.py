@@ -22,11 +22,19 @@ import common
 import re
 
 def FullOTA_Assertions(info):
+  AddVendorAssertion(info)
   AddModemAssertion(info)
   return
 
 def IncrementalOTA_Assertions(info):
+  AddVendorAssertion(info)
   AddModemAssertion(info)
+  return
+
+def AddVendorAssertion(info):
+  cmd = 'assert(nubia.file_exists("/dev/block/bootdevice/by-name/vendor") == "1" || \
+abort("Error: Vendor partition doesn\'t exist!"););'
+  info.script.AppendExtra(cmd)
   return
 
 def AddModemAssertion(info):
