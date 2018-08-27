@@ -54,7 +54,6 @@
     <!-- Boolean indicating whether the wifi chipset has dual frequency band support -->
     <bool translatable="false" name="config_wifi_dual_band_support">true</bool>
 
-
     <!-- Boolean indicating whether Hotspot 2.0/Passpoint and ANQP queries is enabled -->
     <bool translatable="false" name="config_wifi_hotspot2_enabled">true</bool>
 
@@ -111,15 +110,15 @@
     <string-array translatable="false" name="networkAttributes">
         <item>wifi,1,1,1,-1,true</item>
         <item>mobile,0,0,0,-1,true</item>
-        <item>mobile_mms,2,0,4,300000,true</item>
-        <item>mobile_supl,3,0,2,300000,true</item>
-        <item>mobile_dun,4,0,2,300000,true</item>
-        <item>mobile_hipri,5,0,3,300000,true</item>
-        <item>mobile_fota,10,0,2,300000,true</item>
-        <item>mobile_ims,11,0,2,300000,true</item>
-        <item>mobile_cbs,12,0,2,300000,true</item>
+        <item>mobile_mms,2,0,4,60000,true</item>
+        <item>mobile_supl,3,0,2,60000,true</item>
+        <item>mobile_dun,4,0,2,60000,true</item>
+        <item>mobile_hipri,5,0,3,60000,true</item>
+        <item>mobile_fota,10,0,2,60000,true</item>
+        <item>mobile_ims,11,0,2,60000,true</item>
+        <item>mobile_cbs,12,0,2,60000,true</item>
         <item>bluetooth,7,7,2,-1,true</item>
-        <item>ethernet,9,9,4,-1,true</item>
+        <item>mobile_emergency,15,0,5,-1,true</item>
     </string-array>
 
     <!-- This string array should be overridden by the device to present a list of radio
@@ -131,7 +130,6 @@
        <item>"1,1"</item>
        <item>"0,1"</item>
        <item>"7,1"</item>
-       <item>"9,1"</item>
     </string-array>
 
     <!-- List of regexpressions describing the interface (if any) that represent tetherable
@@ -345,7 +343,6 @@
     <!-- Enable overlay for all location components. -->
     <string name="config_networkLocationProviderPackageName" translatable="false">com.qualcomm.location</string>
     <string name="config_fusedLocationProviderPackageName" translatable="false">com.qualcomm.location</string>
-
 
     <!-- Support in Surfaceflinger for blur layers.
          NOTE: This requires additional hardware-specific code. -->
