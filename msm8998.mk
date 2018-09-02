@@ -399,10 +399,6 @@ $(call inherit-product, build/target/product/verity.mk)
 PRODUCT_PACKAGES += \
     android.hardware.vibrator@1.1-service.nubia
 
-# VNDK
-PRODUCT_PACKAGES += \
-    vndk_package
-
 # VR
 PRODUCT_PACKAGES += \
     android.hardware.vr@1.0-impl \
