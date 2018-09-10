@@ -192,7 +192,7 @@
     <hal format="hidl">
         <name>android.hardware.power</name>
         <transport>hwbinder</transport>
-        <version>1.1</version>
+        <version>1.0</version>
         <interface>
             <name>IPower</name>
             <instance>default</instance>
@@ -296,9 +296,18 @@
         </interface>
     </hal>
     <hal format="hidl">
+        <name>android.hardware.vr</name>
+        <transport>hwbinder</transport>
+        <version>1.0</version>
+        <interface>
+            <name>IVr</name>
+            <instance>default</instance>
+        </interface>
+    </hal>
+    <hal format="hidl">
         <name>android.hardware.wifi</name>
         <transport>hwbinder</transport>
-        <version>1.1</version>
+        <version>1.0</version>
         <interface>
             <name>IWifi</name>
             <instance>default</instance>
@@ -310,6 +319,24 @@
         <version>1.0</version>
         <interface>
             <name>ISupplicant</name>
+            <instance>default</instance>
+        </interface>
+    </hal>
+    <hal format="hidl">
+        <name>com.qualcomm.qti.ant</name>
+        <transport>hwbinder</transport>
+        <version>1.0</version>
+        <interface>
+            <name>IAntHci</name>
+            <instance>default</instance>
+        </interface>
+    </hal>
+    <hal format="hidl">
+        <name>com.qualcomm.qti.bluetooth_audio</name>
+        <transport>hwbinder</transport>
+        <version>1.0</version>
+        <interface>
+            <name>IBluetoothAudio</name>
             <instance>default</instance>
         </interface>
     </hal>
@@ -408,20 +435,20 @@
         </interface>
     </hal>
     <hal format="hidl">
-        <name>vendor.mokee.livedisplay</name>
+        <name>vendor.goodix.hardware.fingerprint</name>
         <transport>hwbinder</transport>
         <version>1.0</version>
         <interface>
-            <name>IColor</name>
+            <name>IGoodixBiometricsFingerprint</name>
             <instance>default</instance>
         </interface>
     </hal>
     <hal format="hidl">
-        <name>vendor.mokee.power</name>
+        <name>vendor.nxp.hardware.nfc</name>
         <transport>hwbinder</transport>
         <version>1.0</version>
         <interface>
-            <name>IMokeePower</name>
+            <name>INqNfc</name>
             <instance>default</instance>
         </interface>
     </hal>
@@ -450,6 +477,51 @@
         <interface>
             <name>IAlarm</name>
             <instance>default</instance>
+        </interface>
+    </hal>
+    <hal format="hidl">
+        <name>vendor.qti.hardware.factory</name>
+        <transport>hwbinder</transport>
+        <version>1.0</version>
+        <interface>
+            <name>IFactory</name>
+            <instance>default</instance>
+        </interface>
+    </hal>
+    <hal format="hidl">
+        <name>vendor.qti.hardware.fm</name>
+        <transport>hwbinder</transport>
+        <version>1.0</version>
+        <interface>
+            <name>IFmHci</name>
+            <instance>default</instance>
+        </interface>
+    </hal>
+    <hal format="hidl">
+        <name>vendor.qti.hardware.improvetouch.blobmanager</name>
+        <transport>hwbinder</transport>
+        <version>1.0</version>
+        <interface>
+            <name>IBlobManager</name>
+            <instance>BlobManagerService</instance>
+        </interface>
+    </hal>
+    <hal format="hidl">
+        <name>vendor.qti.hardware.improvetouch.gesturemanager</name>
+        <transport>hwbinder</transport>
+        <version>1.0</version>
+        <interface>
+            <name>IGestureManager</name>
+            <instance>GestureManagerService</instance>
+        </interface>
+    </hal>
+    <hal format="hidl">
+        <name>vendor.qti.hardware.improvetouch.touchcompanion</name>
+        <transport>hwbinder</transport>
+        <version>1.0</version>
+        <interface>
+            <name>ITouchCompanion</name>
+            <instance>TouchCompanionService</instance>
         </interface>
     </hal>
     <hal format="hidl">
@@ -592,12 +664,48 @@
         </interface>
     </hal>
     <hal format="hidl">
+        <name>vendor.qti.hardware.wifi.keystore</name>
+        <transport>hwbinder</transport>
+        <version>1.0</version>
+        <interface>
+            <name>IKeystoreExt</name>
+            <instance>default</instance>
+        </interface>
+    </hal>
+    <hal format="hidl">
+        <name>vendor.qti.hardware.wigig.netperftuner</name>
+        <transport>hwbinder</transport>
+        <version>1.0</version>
+        <interface>
+            <name>INetPerfTuner</name>
+            <instance>default</instance>
+        </interface>
+    </hal>
+    <hal format="hidl">
+        <name>vendor.qti.hardware.wigig.supptunnel</name>
+        <transport>hwbinder</transport>
+        <version>1.0</version>
+        <interface>
+            <name>ISuppTunnelProvider</name>
+            <instance>default</instance>
+        </interface>
+    </hal>
+    <hal format="hidl">
         <name>vendor.qti.imsrtpservice</name>
         <transport>hwbinder</transport>
         <version>1.0</version>
         <interface>
             <name>IRTPService</name>
             <instance>imsrtpservice</instance>
+        </interface>
+    </hal>
+    <hal format="hidl">
+        <name>vendor.qti.voiceprint</name>
+        <transport>hwbinder</transport>
+        <version>1.0</version>
+        <interface>
+            <name>IQtiVoicePrintService</name>
+            <instance>default</instance>
         </interface>
     </hal>
     <sepolicy>
