@@ -29,6 +29,20 @@
 
 import init.nubia.touch.lcd.rc
 
+#add for systrace
+on post-fs-data
+    mkdir /data/anr 0775 system system
+    mkdir /data/anr/systrace 0775 system system
+    setprop persist.sys.systrace.success 1
+
+service systrace /system/bin/systrace
+    class core
+    user root
+    group root
+    critical
+    socket systrace seqpacket 0660 system system
+#add for systrace end
+
 # nubia Disable SSR to SoC restart
 on property:persist.sys.ssr.restart_level=1
     write /sys/bus/msm_subsys/devices/subsys0/restart_level system
@@ -51,4 +65,8 @@ on property:persist.sys.ssr.restart_level=3
 
 on property:persist.sys.ap.restart_level=*
     write /sys/module/msm_poweroff/parameters/download_mode ${persist.sys.ap.restart_level}
+
+
+on property:persist.sys.nubia_pwrkey_dump=*
+    write /sys/nubia_pwrkey_dump/dump_enable ${persist.sys.nubia_pwrkey_dump}
 

@@ -337,27 +337,32 @@ PRODUCT_PACKAGES += \
 
 # Ramdisk scripts
 PRODUCT_PACKAGES += \
-    fstab.qcom \
-    init.class_main.sh \
-    init.msm.usb.configfs.rc \
-    init.qcom.early_boot.sh \
-    init.qcom.power.rc \
-    init.qcom.rc \
-    init.qcom.sensors.sh \
-    init.qcom.sh \
-    init.qcom.usb.rc \
-    init.qcom.usb.sh \
-    init.recovery.qcom.rc \
-    init.target.rc \
-    ueventd.qcom.rc
+    init.nubia.rc \
+    init.nubia.touch.lcd.rc \
+    init.recovery.qcom.rc
 
 PRODUCT_PACKAGES += \
-    init.nubia.rc \
-    init.nubia.touch.lcd.rc
+    ueventd.rc
 
-PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/rootdir/bin/init.qti.qseecomd.sh:$(TARGET_COPY_OUT_VENDOR)/bin/init.qti.qseecomd.sh \
-    $(LOCAL_PATH)/rootdir/etc/init.qcom.bt.sh:$(TARGET_COPY_OUT_VENDOR)/etc/init.qcom.bt.sh
+PRODUCT_PACKAGES += \
+    init.class_main.sh \
+    init.qcom.early_boot.sh \
+    init.qcom.post_boot.sh \
+    init.qcom.sensors.sh \
+    init.qcom.sh \
+    init.qcom.usb.sh \
+    init.qti.qseecomd.sh
+
+PRODUCT_PACKAGES += \
+    fstab.qcom
+
+PRODUCT_PACKAGES += \
+    init.msm.usb.configfs.rc \
+    init.qcom.rc \
+    init.qcom.factory.rc \
+    init.qcom.power.rc \
+    init.qcom.usb.rc \
+    init.target.rc
 
 # RCS
 PRODUCT_PACKAGES += \

@@ -1,4 +1,4 @@
-# Copyright (c) 2012-2015, The Linux Foundation. All rights reserved.
+# Copyright (c) 2012-2015, 2017, The Linux Foundation. All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions are met:
@@ -26,10 +26,10 @@
 #
 
 # the DIAG device node is not world writable/readable.
-/dev/diag                 0660   system     qcom_diag
+/dev/diag                 0660   system     oem_2901
 
 /dev/genlock              0666   system     system
-/dev/wlan                 0660   system     system
+/dev/wlan                 0660   wifi       wifi
 /dev/kgsl                 0666   system     system
 /dev/kgsl-3d0             0666   system     system
 /dev/kgsl-2d0             0666   root       root
@@ -43,9 +43,9 @@
 /dev/smd6                 0660   system     system
 /dev/smd7                 0660   bluetooth  bluetooth
 /dev/ccid_bridge          0660   system     system
-/dev/ipa                  0660   system     net_admin
-/dev/wwan_ioctl           0660   system     net_admin
-/dev/ipaNatTable          0660   net_admin  net_admin
+/dev/ipa                  0660   radio      radio
+/dev/wwan_ioctl           0660   radio      radio
+/dev/ipaNatTable          0660   radio      radio
 /dev/rmnet_ctrl           0660   usb        usb
 /dev/dpl_ctrl             0660   usb        usb
 
@@ -56,6 +56,8 @@
 /dev/smd11                0660   radio      radio
 
 #permsissions for BT/FM
+/dev/smd2                 0660   bluetooth  bluetooth
+/dev/smd3                 0660   bluetooth  bluetooth
 /dev/btpower              0660   bluetooth  system
 
 #permissions for pta
@@ -124,11 +126,8 @@
 /dev/seemplog             0660   system     system
 /dev/pft                  0660   system     drmrpc
 /dev/spcom                0660   system     system
-/dev/splog                0660   system     system
 /dev/sp_kernel            0660   system     system
 /dev/sp_ssr               0660   system     system
-/dev/sec_nvm_sampleapp    0660   system     system
-/dev/sec_nvm_jcos         0660   system     system
 /dev/sp_keymaster         0660   system     system
 /dev/cryptoapp            0660   system     system
 /dev/gemini0              0660   system     camera
@@ -144,9 +143,7 @@
 /dev/wcnss_ctrl           0660   system     system
 /sys/devices/soc/a000000.qcom,wcnss-wlan/net/wlan0/queues/rx-* rps_cpus           0660   system     system
 /sys/devices/soc/a000000.qcom,wcnss-wlan/net/p2p0/queues/rx-* rps_cpus            0660   system     system
-/sys/devices/soc/18800000.qcom,icnss/net/wlan0/queues/rx-* rps_cpus   0660   system     system
-/sys/devices/soc/18800000.qcom,icnss/net/p2p0/queues/rx-* rps_cpus    0660   system     system
-/sys/devices/soc/18800000.qcom,icnss/net/softap0/queues/rx-* rps_cpus 0660   system     system
+/dev/spidev0.0            0660   system     audio
 /dev/msm_camera/*         0660   system     camera
 /dev/gemini/              0660   system     camera
 /dev/mercury0             0660   system     camera
@@ -177,7 +174,8 @@
 /dev/msm_aac_in           0660   system     audio
 /dev/msm_qcelp_in         0660   system     audio
 /dev/msm_evrc_in          0660   system     audio
-/dev/msm_amrnb_in         0640   system     audio
+/dev/msm_amrnb_in         0660   system     audio
+/dev/msm_amrwb_in         0660   system     audio
 /dev/msm_a2dp_in          0660   system     audio
 /dev/msm_ac3              0660   system     audio
 /dev/msm_audio_cal        0660   system     audio
@@ -189,8 +187,6 @@
 /dev/msm_preproc_ctl      0660   system     audio
 /dev/msm_rtac             0660   system     audio
 /dev/msm_voicememo        0660   system     audio
-/dev/smd3                 0660   bluetooth  net_bt_stack
-/dev/smd2                 0660   bluetooth  net_bt_stack
 /dev/ttyHSL1              0660   system     system
 /dev/ttyHS1               0660   system     system
 /dev/mdm                  0660   system     radio
@@ -199,7 +195,6 @@
 /dev/tty_sdio_00          0660   system     system
 /dev/ttyGS0               0660   system     system
 /dev/i2c-5                0660   media       media
-/dev/voice_svc            0660   system     audio
 /dev/avtimer              0660   system     audio
 
 # DVB devices
@@ -241,13 +236,11 @@
 /sys/devices/soc/78b7000.i2c/i2c-3/3-004b/input/input*    secure_touch_enable  0660   system  drmrpc
 /sys/devices/soc/c179000.i2c/i2c-5/5-0020/input/input*    secure_touch         0440   system  drmrpc
 /sys/devices/soc/c179000.i2c/i2c-5/5-0020/input/input*    secure_touch_enable  0660   system  drmrpc
-/sys/devices/soc/c178000.i2c/i2c-4/4-0020/input/input*    secure_touch         0440   system  drmrpc
-/sys/devices/soc/c178000.i2c/i2c-4/4-0020/input/input*    secure_touch_enable  0660   system  drmrpc
 
 # laser sensor access
-/sys/devices/virtual/input/input*                   enable_ps_sensor 0660  system   system
-/sys/devices/virtual/input/input*                   set_delay_ms     0660  system   system
-/sys/devices/virtual/input/input*                   do_flush         0660  system   system
+/sys/devices/virtual/input/input*                   enable_ps_sensor 0660  system   input
+/sys/devices/virtual/input/input*                   set_delay_ms     0660  system   input
+/sys/devices/virtual/input/input*                   do_flush         0660  system   input
 
 # vm_bms
 /dev/vm_bms               0660   system     system
@@ -262,10 +255,9 @@
 # wigig
 /sys/bus/pci/drivers/wil6210* 0000:01:00.0/wil6210/fst_link_loss 0660 wifi wifi
 /sys/bus/pci/drivers/wil6210* 0000:01:00.0/wil6210/thermal_throttling 0660 system system
+/sys/bus/pci/drivers/wil6210* 0000:01:00.0/wil6210/snr_thresh 0660 wifi wifi
 /sys/bus/pci/drivers/wil6210* 0000:01:00.0/net/wigig0/queues/rx-0/rps_cpus 0660 system system
-/sys/bus/pci/drivers/wil6210* 0000:01:00.0/net/wlan1/queues/rx-0/rps_cpus 0660 system system
 /sys/bus/pci/drivers/wil6210* 0000:01:00.0/net/wigig0/gro_flush_timeout 0660 system system
-/sys/bus/pci/drivers/wil6210* 0000:01:00.0/net/wlan1/gro_flush_timeout 0660 system system
 /sys/devices/virtual/net/bond0 queues/rx-0/rps_cpus 0660 system system
 
 #nfc permissions
@@ -294,11 +286,24 @@
 /dev/hbtp_input           0660   system     system
 /dev/hbtp_vm              0660   system     system
 
-# nubia add start
+# Add device block for FRP
+/dev/block/platform/soc/7824900.sdhci/by-name/config    0600   system     system
+/dev/block/platform/soc/7464900.sdhci/by-name/frp       0600   system     system
+/dev/block/platform/soc/624000.ufshc/by-name/frp        0600   system     system
+/dev/block/platform/soc/1da4000.ufshc/by-name/config    0600   system     system
+/dev/block/platform/soc/1da4000.ufshc/by-name/frp       0600   system     system
+/dev/block/platform/soc/c0c4000.sdhci/by-name/frp       0600   system     system
+/dev/block/platform/soc/1d84000.ufshc/by-name/frp       0600   system     system
+
+# Add device block for FRP with soc.0
+/dev/block/platform/soc.0/7824900.sdhci/by-name/config    0600   system     system
+
+# Kmsg device
+/dev/kmsg                                               0620   root       system
+
 # goodix fingerprint device point
 /dev/goodix_fp            0660   system     system
 /dev/fpc		          0660   system     system
-# nubia add end
 
 # CDMA radio interface MUX
 /dev/ts0710mux*           0640   radio      radio
@@ -318,27 +323,15 @@
 # DVB API device nodes
 /dev/dvb*                 0660   root       system
 
-#added by nubia, begin
+# Amplifier
 /dev/tas2555              0666   root       root
-#added by nubia, end
-
-# Add device block for FRP
-/dev/block/bootdevice/by-name/frp                       0660   system     system
-/dev/block/platform/soc/7824900.sdhci/by-name/config    0600   system     system
-/dev/block/platform/soc/7464900.sdhci/by-name/frp       0600   system     system
-/dev/block/platform/soc/624000.ufshc/by-name/frp        0600   system     system
-/dev/block/platform/soc/1da4000.ufshc/by-name/frp       0600   system     system
-/dev/block/platform/soc/c0c4000.sdhci/by-name/frp       0600   system     system
-
-# Kmsg device
-/dev/kmsg                                               0620   root       system
 
 # touchscreen
 /sys/devices/soc/c179000.i2c/i2c-5/5-0020/input/input4       wake_gesture     0644    system  system
 /sys/devices/soc/c179000.i2c/i2c-5/5-0020/input/input4       0dbutton         0644    system  system
 
 # IR Remote
-/dev/ir_remote             0666   system       system
+/dev/ir_remote            0666   system     system
 
 # Hall device
-/dev/hall_device           0660   system       system
+/dev/hall_device          0660   system     system

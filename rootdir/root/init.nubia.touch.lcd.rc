@@ -30,53 +30,57 @@
 
 #nubia, tp&lcd node start
 on post-fs-data
-	rm /data/tp/ic_ver
-	rm /data/tp/reset
-	rm /data/tp/ic_detect
-	rm /data/tp/start_update
-	rm /data/tp/easy_wakeup_gesture
-	rm /data/tp/easy_sleep_palm
-	mkdir /data/tp 0775 system system
-	symlink /sys/class/tpnode/tpnode/synaptics/ic_ver /data/tp/ic_ver
-	symlink /sys/class/tpnode/tpnode/synaptics/reset /data/tp/reset
-	symlink /sys/class/tpnode/tpnode/synaptics/f54/ic_detect /data/tp/ic_detect
-	symlink /sys/class/tpnode/tpnode/synaptics/start_update /data/tp/start_update
-	chown system system /sys/class/tpnode/tpnode/synaptics/wake_gesture
-	symlink /sys/class/tpnode/tpnode/synaptics/wake_gesture /data/tp/easy_wakeup_gesture
-	chown system system /sys/class/tpnode/tpnode/synaptics/palm_sleep
-	symlink /sys/class/tpnode/tpnode/synaptics/palm_sleep /data/tp/easy_sleep_palm
-	chown system system /sys/class/tpnode/tpnode/synaptics/f54/read_rt2
-	chown system system /sys/class/tpnode/tpnode/synaptics/f54/read_rt3
-	symlink /sys/class/tpnode/tpnode/synaptics/f54/read_rt2 /data/tp/read_rt2
-	symlink /sys/class/tpnode/tpnode/synaptics/f54/read_rt3 /data/tp/read_rt3
-	write /sys/class/tpnode/tpnode/synaptics/start_update 1
-	chown system system /sys/class/tpnode/tpnode/synaptics/start_user_update
-	symlink /sys/class/tpnode/tpnode/synaptics/start_user_update /data/tp/start_user_update
-	chown system system /sys/kernel/lcd_enhance/colortmp
-	chown system system /sys/kernel/lcd_enhance/saturation
-	chown system system /sys/kernel/lcd_enhance/cabc
-	chown system system /sys/kernel/lcd_enhance/lcd_power_on
-	chown system system /sys/kernel/lcd_enhance/lcd_power_off
-	
+    mkdir /data/tp 0775 system system
+    rm /data/tp/ic_ver
+    rm /data/tp/reset
+    rm /data/tp/ic_detect
+    rm /data/tp/start_update
+    rm /data/tp/easy_wakeup_gesture
+    rm /data/tp/easy_sleep_palm
+    rm /data/tp/read_rt2
+    rm /data/tp/read_rt3
+    rm /data/tp/start_user_update
+
+    symlink /sys/bus/i2c/devices/5-0020/ic_ver /data/tp/ic_ver
+    symlink /sys/bus/i2c/devices/5-0020/reset /data/tp/reset
+    symlink /sys/bus/i2c/devices/5-0020/ic_detect /data/tp/ic_detect
+    symlink /sys/bus/i2c/devices/5-0020/start_update /data/tp/start_update
+    chown system system /sys/bus/i2c/devices/5-0020/wake_gesture
+    symlink /sys/bus/i2c/devices/5-0020/wake_gesture /data/tp/easy_wakeup_gesture
+    chown system system /sys/bus/i2c/devices/5-0020/palm_sleep
+    symlink /sys/bus/i2c/devices/5-0020/palm_sleep /data/tp/easy_sleep_palm
+    write /sys/bus/i2c/devices/5-0020/start_update 1
+    chown system system /sys/kernel/lcd_enhance/colortmp
+    chown system system /sys/kernel/lcd_enhance/saturation
+    chown system system /sys/kernel/lcd_enhance/cabc
+    chown system system /sys/kernel/lcd_enhance/lcd_power_on
+    chown system system /sys/kernel/lcd_enhance/lcd_power_off
+    chown system system /sys/bus/i2c/devices/5-0020/read_rt2
+    chown system system /sys/bus/i2c/devices/5-0020/read_rt3
+    symlink /sys/bus/i2c/devices/5-0020/read_rt2 /data/tp/read_rt2
+    symlink /sys/bus/i2c/devices/5-0020/read_rt3 /data/tp/read_rt3
+    chown system system /sys/bus/i2c/devices/5-0020/start_user_update
+    symlink /sys/bus/i2c/devices/5-0020/start_user_update /data/tp/start_user_update
+
 #nubia, tp&lcd node end
 
 on property:gsm.call.other_to_gsm=1
-	write /sys/class/tpnode/tpnode/synaptics/home 194
-	write /sys/class/tpnode/tpnode/synaptics/menu 194
-	write /sys/class/tpnode/tpnode/synaptics/back 194
+    write /sys/bus/i2c/devices/5-0020/home 194
+    write /sys/bus/i2c/devices/5-0020/menu 194
+    write /sys/bus/i2c/devices/5-0020/back 194
 
 on property:gsm.call.other_to_gsm=2
-	write /sys/class/tpnode/tpnode/synaptics/home 147
-	write /sys/class/tpnode/tpnode/synaptics/menu 147
-	write /sys/class/tpnode/tpnode/synaptics/back 166
+    write /sys/bus/i2c/devices/5-0020/home 147
+    write /sys/bus/i2c/devices/5-0020/menu 147
+    write /sys/bus/i2c/devices/5-0020/back 166
 
 #nubia for 8064test, donot use this for blanking
 #on property:sys.lcd.blank=*
 #    write /sys/class/graphics/fb0/blank ${sys.lcd.blank}
 
 on property:sys.tp.wakeup=*
-	write /sys/class/tpnode/tpnode/synaptics/wake_gesture ${sys.tp.wakeup}
+    write /sys/bus/i2c/devices/5-0020/wake_gesture ${sys.tp.wakeup}
 
 on property:sys.tp.palmsleep=*
-	write /sys/class/tpnode/tpnode/synaptics/palm_sleep ${sys.tp.palmsleep}
+    write /sys/bus/i2c/devices/5-0020/palm_sleep ${sys.tp.palmsleep}
 #nubia end

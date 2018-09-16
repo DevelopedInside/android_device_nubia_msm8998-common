@@ -1,5 +1,6 @@
-#!/system/bin/sh
-# Copyright (c) 2015, The Linux Foundation. All rights reserved.
+#! /vendor/bin/sh
+
+# Copyright (c) 2012-2013, 2016, The Linux Foundation. All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions are met:
@@ -26,21 +27,23 @@
 # ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #
 
-#
-# Function to start sensors for SSC enabled platforms
-#
-start_sensors()
-{
-    if [ -c /dev/msm_dsps -o -c /dev/sensors ]; then
-        chmod 777 /persist/sensors
-        chmod 664 /persist/sensors/sensors_settings
-        chown system.root /persist/sensors/sensors_settings
+# Let kernel know our image version/variant/crm_version
+if [ -f /sys/devices/soc0/select_image ]; then
+    image_version="10:"
+    image_version+=`getprop ro.build.id`
+    image_version+=":"
+    image_version+=`getprop ro.build.version.incremental`
+    image_variant=`getprop ro.product.name`
+    image_variant+="-"
+    image_variant+=`getprop ro.build.type`
+    oem_version=`getprop ro.build.version.codename`
+    echo 10 > /sys/devices/soc0/select_image
+    echo $image_version > /sys/devices/soc0/image_version
+    echo $image_variant > /sys/devices/soc0/image_variant
+    echo $oem_version > /sys/devices/soc0/image_crm_version
+fi
 
-        mkdir -p /data/misc/sensors
-        chmod 775 /data/misc/sensors
-
-        start sensors
-    fi
-}
-
-start_sensors
+# Parse misc partition path and set property
+misc_link=$(ls -l /dev/block/bootdevice/by-name/misc)
+real_path=${misc_link##*>}
+setprop persist.vendor.mmi.misc_dev_path $real_path
