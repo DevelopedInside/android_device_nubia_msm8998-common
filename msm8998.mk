@@ -431,6 +431,10 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     textclassifier.smartselection.bundle1
 
+# Vendor security patch level
+PRODUCT_PROPERTY_OVERRIDES += \
+    ro.lineage.build.vendor_security_patch=2018-02-01
+
 # Verity
 PRODUCT_SUPPORTS_BOOT_SIGNER := true
 PRODUCT_SUPPORTS_VERITY := true
