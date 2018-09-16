@@ -1,0 +1,20 @@
+# Amplifier TAS2555
+type persist_amp_cal_file, file_type;
+
+# Fingerprint
+type sysfs_fingerprint, sysfs_type, fs_type;
+type sysfs_fpc_irq, sysfs_type, fs_type;
+type sysfs_fpc_wakeup, sysfs_type, fs_type;
+
+# DEBUG
+type debugfs_msm_core, debugfs_type, fs_type;
+type debugfs_rmts, debugfs_type, fs_type;
+
+# IR Remote
+type sysfs_ir_remote, sysfs_type, fs_type;
+
+# Touchpanel
+type sysfs_touchpanel, fs_type, sysfs_type;
+
+# Vibrator
+type sysfs_vibrator, sysfs_type, file_type;

@@ -408,7 +408,7 @@
         </interface>
     </hal>
     <hal format="hidl">
-        <name>vendor.mokee.livedisplay</name>
+        <name>vendor.lineage.livedisplay</name>
         <transport>hwbinder</transport>
         <version>1.0</version>
         <interface>
@@ -417,11 +417,11 @@
         </interface>
     </hal>
     <hal format="hidl">
-        <name>vendor.mokee.power</name>
+        <name>vendor.lineage.power</name>
         <transport>hwbinder</transport>
         <version>1.0</version>
         <interface>
-            <name>IMokeePower</name>
+            <name>ILineagePower</name>
             <instance>default</instance>
         </interface>
     </hal>

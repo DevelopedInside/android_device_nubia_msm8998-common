@@ -14,37 +14,13 @@
 # limitations under the License.
 #
 
-
-$(call inherit-product, $(SRC_TARGET_DIR)/product/languages_full.mk)
-
-$(call inherit-product-if-exists, vendor/apps/GooglePinYin/app-vendor.mk)
-
 $(call inherit-product, vendor/nubia/msm8998-common/msm8998-common-vendor.mk)
 
-# Dalvik
-PRODUCT_PROPERTY_OVERRIDES += \
-    dalvik.vm.heapgrowthlimit=256m \
-    dalvik.vm.heapmaxfree=8m \
-    dalvik.vm.heapminfree=4m \
-    dalvik.vm.heapsize=512m \
-    dalvik.vm.heapstartsize=16m \
-    dalvik.vm.heaptargetutilization=0.75
+# Overlay
+DEVICE_PACKAGE_OVERLAYS += \
+    $(LOCAL_PATH)/overlay \
+    $(LOCAL_PATH)/overlay-lineage
 
-# HWUI
-PRODUCT_PROPERTY_OVERRIDES += \
-    ro.hwui.drop_shadow_cache_size=7 \
-    ro.hwui.gradient_cache_size=1 \
-    ro.hwui.layer_cache_size=64 \
-    ro.hwui.path_cache_size=39 \
-    ro.hwui.r_buffer_cache_size=12 \
-    ro.hwui.text_large_cache_height=2048 \
-    ro.hwui.text_large_cache_width=3072 \
-    ro.hwui.text_small_cache_height=2048 \
-    ro.hwui.text_small_cache_width=2048 \
-    ro.hwui.texture_cache_flushrate=0.4 \
-    ro.hwui.texture_cache_size=96
-# Overlays
-DEVICE_PACKAGE_OVERLAYS += $(LOCAL_PATH)/overlay
 
 # Permissions
 PRODUCT_COPY_FILES += \
@@ -62,14 +38,12 @@ PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.hardware.nfc.xml:system/etc/permissions/android.hardware.nfc.xml \
     frameworks/native/data/etc/android.hardware.opengles.aep.xml:system/etc/permissions/android.hardware.opengles.aep.xml \
     frameworks/native/data/etc/android.hardware.sensor.accelerometer.xml:system/etc/permissions/android.hardware.sensor.accelerometer.xml \
-    frameworks/native/data/etc/android.hardware.sensor.ambient_temperature.xml:system/etc/permissions/android.hardware.sensor.ambient_temperature.xml \
     frameworks/native/data/etc/android.hardware.sensor.barometer.xml:system/etc/permissions/android.hardware.sensor.barometer.xml \
     frameworks/native/data/etc/android.hardware.sensor.compass.xml:system/etc/permissions/android.hardware.sensor.compass.xml \
     frameworks/native/data/etc/android.hardware.sensor.gyroscope.xml:system/etc/permissions/android.hardware.sensor.gyroscope.xml \
     frameworks/native/data/etc/android.hardware.sensor.hifi_sensors.xml:system/etc/permissions/android.hardware.sensor.hifi_sensors.xml \
     frameworks/native/data/etc/android.hardware.sensor.light.xml:system/etc/permissions/android.hardware.sensor.light.xml \
     frameworks/native/data/etc/android.hardware.sensor.proximity.xml:system/etc/permissions/android.hardware.sensor.proximity.xml \
-    frameworks/native/data/etc/android.hardware.sensor.relative_humidity.xml:system/etc/permissions/android.hardware.sensor.relative_humidity.xml \
     frameworks/native/data/etc/android.hardware.sensor.stepcounter.xml:system/etc/permissions/android.hardware.sensor.stepcounter.xml \
     frameworks/native/data/etc/android.hardware.sensor.stepdetector.xml:system/etc/permissions/android.hardware.sensor.stepdetector.xml \
     frameworks/native/data/etc/android.hardware.telephony.cdma.xml:system/etc/permissions/android.hardware.telephony.cdma.xml \
@@ -87,13 +61,32 @@ PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/com.nxp.mifare.xml:system/etc/permissions/com.nxp.mifare.xml \
     frameworks/native/data/etc/handheld_core_hardware.xml:system/etc/permissions/handheld_core_hardware.xml
 
-# Device uses high-density artwork where available
-PRODUCT_AAPT_CONFIG := normal
-PRODUCT_AAPT_PREF_CONFIG := xxhdpi
+# First api level, device has been commercially launched
+PRODUCT_PROPERTY_OVERRIDES += \
+    ro.product.first_api_level=25
 
-# Boot animation
-TARGET_SCREEN_HEIGHT := 1920
-TARGET_SCREEN_WIDTH := 1080
+# Dalvik from Stock
+PRODUCT_PROPERTY_OVERRIDES += \
+    dalvik.vm.heapstartsize=8m \
+    dalvik.vm.heapgrowthlimit=256m \
+    dalvik.vm.heapsize=512m \
+    dalvik.vm.heaptargetutilization=0.75 \
+    dalvik.vm.heapminfree=512k \
+    dalvik.vm.heapmaxfree=8m
+
+# HWUI from Stock
+PRODUCT_PROPERTY_OVERRIDES += \
+    ro.hwui.texture_cache_size=72 \
+    ro.hwui.layer_cache_size=48 \
+    ro.hwui.r_buffer_cache_size=8 \
+    ro.hwui.path_cache_size=32 \
+    ro.hwui.gradient_cache_size=1 \
+    ro.hwui.drop_shadow_cache_size=6 \
+    ro.hwui.texture_cache_flushrate=0.4 \
+    ro.hwui.text_small_cache_width=1024 \
+    ro.hwui.text_small_cache_height=1024 \
+    ro.hwui.text_large_cache_width=2048 \
+    ro.hwui.text_large_cache_height=1024
 
 # Haters gonna hate..
 PRODUCT_CHARACTERISTICS := nosdcard
@@ -113,7 +106,6 @@ PRODUCT_PACKAGES += \
     tinymix
 
 PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/audio/audio_effects.conf:system/vendor/etc/audio_effects.conf \
     $(LOCAL_PATH)/audio/audio_output_policy.conf:system/vendor/etc/audio_output_policy.conf \
     $(LOCAL_PATH)/audio/audio_policy_configuration.xml:system/etc/audio_policy_configuration.xml \
     $(LOCAL_PATH)/audio/sound_trigger_mixer_paths.xml:system/etc/sound_trigger_mixer_paths.xml \
@@ -157,6 +149,7 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     gralloc.msm8998 \
     copybit.msm8998 \
+    hwcomposer.msm8998 \
     memtrack.msm8998 \
     liboverlay \
     libtinyxml 
@@ -169,25 +162,21 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     fs_config_files
 
-# GooglePinYin
-PRODUCT_PACKAGES += \
-    GooglePinYin
-
 # GPS
 PRODUCT_PACKAGES += \
     gps.msm8998 \
+    gps.conf \
     libcurl \
     libgnsspps \
     libvehiclenetwork-native
 
 PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/configs/gps/apdr.conf:system/vendor/etc/apdr.conf \
-    $(LOCAL_PATH)/configs/gps/flp.conf:system/vendor/etc/flp.conf \
-    $(LOCAL_PATH)/configs/gps/gps.conf:system/vendor/etc/gps.conf \
-    $(LOCAL_PATH)/configs/gps/izat.conf:system/vendor/etc/izat.conf \
-    $(LOCAL_PATH)/configs/gps/lowi.conf:system/vendor/etc/lowi.conf \
-    $(LOCAL_PATH)/configs/gps/sap.conf:system/vendor/etc/sap.conf \
-    $(LOCAL_PATH)/configs/gps/xtwifi.conf:system/vendor/etc/xtwifi.conf
+    $(LOCAL_PATH)/gps/etc/apdr.conf:system/vendor/etc/apdr.conf \
+    $(LOCAL_PATH)/gps/etc/flp.conf:system/vendor/etc/flp.conf \
+    $(LOCAL_PATH)/gps/etc/izat.conf:system/vendor/etc/izat.conf \
+    $(LOCAL_PATH)/gps/etc/lowi.conf:system/vendor/etc/lowi.conf \
+    $(LOCAL_PATH)/gps/etc/sap.conf:system/vendor/etc/sap.conf \
+    $(LOCAL_PATH)/gps/etc/xtwifi.conf:system/vendor/etc/xtwifi.conf
 
 # IPv6
 PRODUCT_PACKAGES += \
@@ -239,6 +228,7 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     libc2dcolorconvert \
     libextmedia_jni \
+    libmm-omxcore \
     libOmxAacEnc \
     libOmxAmrEnc \
     libOmxCore \
@@ -300,19 +290,18 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/configs/sensors/sensor_def_qcomdev.conf:system/etc/sensors/sensor_def_qcomdev.conf
 
 # Verity
-#PRODUCT_SUPPORTS_BOOT_SIGNER := true
-#PRODUCT_SUPPORTS_VERITY := true
-#PRODUCT_SUPPORTS_VERITY_FEC := true
+PRODUCT_SUPPORTS_BOOT_SIGNER := true
+PRODUCT_SUPPORTS_VERITY := true
+PRODUCT_SUPPORTS_VERITY_FEC := true
 
-#PRODUCT_VERITY_SIGNING_KEY := build/target/product/security/verity
+PRODUCT_VERITY_SIGNING_KEY := build/target/product/security/verity
 
-#PRODUCT_PACKAGES += \
-#    verity_key
+PRODUCT_PACKAGES += \
+    verity_key
 
 # Wifi
 PRODUCT_PACKAGES += \
     ipacm \
-    ipacm-diag \
     IPACM_cfg.xml \
     libqsap_sdk \
     libQWiFiSoftApCfg \
@@ -329,4 +318,8 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/wifi/p2p_supplicant_overlay.conf:system/etc/wifi/p2p_supplicant_overlay.conf \
     $(LOCAL_PATH)/wifi/wpa_supplicant_overlay.conf:system/etc/wifi/wpa_supplicant_overlay.conf \
     $(LOCAL_PATH)/wifi/WCNSS_qcom_cfg.ini:system/etc/wifi/WCNSS_qcom_cfg.ini
+
+# Doze
+PRODUCT_PACKAGES += \
+    NubiaDoze
 

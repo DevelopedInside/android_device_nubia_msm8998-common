@@ -1,6 +1,6 @@
 /*
-   Copyright (c) 2015, The Linux Foundation. All rights reserved.
-   Copyright (C) 2016 The CyanogenMod Project.
+   Copyright (c) 2016, The CyanogenMod Project
+
    Redistribution and use in source and binary forms, with or without
    modification, are permitted provided that the following conditions are
    met:
@@ -13,6 +13,7 @@
     * Neither the name of The Linux Foundation nor the names of its
       contributors may be used to endorse or promote products derived
       from this software without specific prior written permission.
+
    THIS SOFTWARE IS PROVIDED "AS IS" AND ANY EXPRESS OR IMPLIED
    WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
    MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT
@@ -26,22 +27,16 @@
    IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
+#include <cstdio>
 
-#include <android-base/file.h>
-#include <android-base/properties.h>
 #include <android-base/strings.h>
 
-#include "property_service.h"
 #include "vendor_init.h"
+#include "property_service.h"
+#include "log.h"
+#include "util.h"
 
-using android::base::GetProperty;
-using android::base::ReadFileToString;
 using android::base::Trim;
-using android::init::property_set;
-
 
 static void init_alarm_boot_properties()
 {
@@ -49,10 +44,10 @@ static void init_alarm_boot_properties()
     char const *power_off_alarm_file = "/persist/alarm/powerOffAlarmSet";
     std::string boot_reason;
     std::string power_off_alarm;
-    std::string reboot_reason = GetProperty("ro.boot.alarmboot", "");
+    std::string tmp = property_get("ro.boot.alarmboot");
 
-    if (ReadFileToString(boot_reason_file, &boot_reason)
-            && ReadFileToString(power_off_alarm_file, &power_off_alarm)) {
+    if (read_file(boot_reason_file, &boot_reason)
+            && read_file(power_off_alarm_file, &power_off_alarm)) {
         /*
          * Setup ro.alarm_boot value to true when it is RTC triggered boot up
          * For existing PMIC chips, the following mapping applies
@@ -63,16 +58,20 @@ static void init_alarm_boot_properties()
          * 2 -> sudden momentary power loss (SMPL)
          * 3 -> real time clock (RTC)
          * 4 -> DC charger inserted
-         * 5 -> USB charger inserted
+         * 5 -> USB charger insertd
          * 6 -> PON1 pin toggled (for secondary PMICs)
          * 7 -> CBLPWR_N pin toggled (for external power supply)
          * 8 -> KPDPWR_N pin toggled (power key pressed)
          */
-         if ((Trim(boot_reason) == "3" || reboot_reason == "true")
-                 && Trim(power_off_alarm) == "1") {
-             property_set("ro.alarm_boot", "true");
-         } else {
-             property_set("ro.alarm_boot", "false");
-         }
+        if ((Trim(boot_reason) == "3" || tmp == "true")
+                && Trim(power_off_alarm) == "1")
+            property_set("ro.alarm_boot", "true");
+        else
+            property_set("ro.alarm_boot", "false");
     }
+}
+
+void vendor_load_properties()
+{
+    init_alarm_boot_properties();
 }

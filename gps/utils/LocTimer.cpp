@@ -283,8 +283,7 @@ void LocTimerContainer::updateSoonestTime(LocTimerDelegate* priorTop) {
 
     // check if top has changed
     if (curTop != priorTop) {
-        struct itimerspec delay;
-        memset(&delay, 0, sizeof(struct itimerspec));
+        struct itimerspec delay = {0};
         bool toSetTime = false;
         // if tree is empty now, we remove poll and disarm timer
         if (!curTop) {
@@ -375,8 +374,7 @@ void LocTimerContainer::expire() {
         }
     };
 
-    struct itimerspec delay;
-    memset(&delay, 0, sizeof(struct itimerspec));
+    struct itimerspec delay = {0};
     timerfd_settime(getTimerFd(), TFD_TIMER_ABSTIME, &delay, NULL);
     mPollTask->removePoll(*this);
     mMsgTask->sendMsg(new MsgTimerExpire(*this));

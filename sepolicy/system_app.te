@@ -1,0 +1,12 @@
+# fingerprint
+allow system_app fingerprintd:binder call;
+binder_call(system_app, fingerprintd)
+
+# touchpanel
+allow system_app sysfs_touchpanel:dir { search };
+allow system_app sysfs_touchpanel:file { rw_file_perms };
+
+# vibrator
+allow system_app sysfs_vibrator:file { rw_file_perms };
+
+dontaudit system_app netd_service:service_manager find;
