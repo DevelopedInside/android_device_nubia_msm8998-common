@@ -233,10 +233,6 @@ PRODUCT_PACKAGES += \
     android.hidl.manager@1.0 \
     android.hidl.manager@1.0-java
 
-# IMS
-PRODUCT_PACKAGES += \
-    ims-ext-common
-
 # IPv6
 PRODUCT_PACKAGES += \
     ebtables \
@@ -314,6 +310,7 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     libc2dcolorconvert \
     libextmedia_jni \
+    libhypv_intercept \
     libmm-omxcore \
     libOmxAacEnc \
     libOmxAmrEnc \
@@ -384,9 +381,14 @@ PRODUCT_PACKAGES += \
 
 # RIL
 PRODUCT_PACKAGES += \
+    ims-ext-common
     librmnetctl \
     libxml2 \
-    libprotobuf-cpp-full
+    libprotobuf-cpp-full \
+    telephony-ext
+
+PRODUCT_BOOT_JARS += \
+    telephony-ext
 
 # Seccomp policy
 PRODUCT_COPY_FILES += \
@@ -403,25 +405,9 @@ PRODUCT_PACKAGES += \
     ipacm \
     IPACM_cfg.xml
 
-# Thermal
+# TextClassifier smart selection model files
 PRODUCT_PACKAGES += \
-    android.hardware.thermal@1.0-impl \
-    android.hardware.thermal@1.0-service
-
-# Telephony
-PRODUCT_PACKAGES += \
-    telephony-ext
-
-PRODUCT_BOOT_JARS += \
-    telephony-ext
-
-# USB
-PRODUCT_PACKAGES += \
-    android.hardware.usb@1.0-service
-
-# Weaver
-PRODUCT_PACKAGES += \
-    android.hardware.weaver@1.0
+    textclassifier.smartselection.bundle1
 
 # Thermal
 PRODUCT_PACKAGES += \
@@ -429,9 +415,9 @@ PRODUCT_PACKAGES += \
     android.hardware.thermal@1.0-service \
     thermal.msm8998
 
-# TextClassifier smart selection model files
+# USB
 PRODUCT_PACKAGES += \
-    textclassifier.smartselection.bundle1
+    android.hardware.usb@1.0-service
 
 # Vendor security patch level
 PRODUCT_PROPERTY_OVERRIDES += \
@@ -461,6 +447,10 @@ PRODUCT_PACKAGES += \
     android.hardware.vr@1.0-impl \
     android.hardware.vr@1.0-service \
     vr.msm8998
+
+# Weaver
+PRODUCT_PACKAGES += \
+    android.hardware.weaver@1.0
 
 # Wifi
 PRODUCT_PACKAGES += \
