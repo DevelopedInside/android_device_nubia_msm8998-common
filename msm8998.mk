@@ -398,6 +398,11 @@ PRODUCT_PACKAGES += \
     android.hardware.sensors@1.0-impl \
     android.hardware.sensors@1.0-service
 
+# Tetheroffload
+PRODUCT_PACKAGES += \
+    ipacm \
+    IPACM_cfg.xml
+
 # Thermal
 PRODUCT_PACKAGES += \
     android.hardware.thermal@1.0-impl \
@@ -449,8 +454,6 @@ PRODUCT_PACKAGES += \
 
 # Wifi
 PRODUCT_PACKAGES += \
-    ipacm \
-    IPACM_cfg.xml \
     libqsap_sdk \
     libQWiFiSoftApCfg \
     libwpa_client \
