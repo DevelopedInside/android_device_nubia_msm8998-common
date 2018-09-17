@@ -161,6 +161,7 @@ PRODUCT_PACKAGES += \
     memtrack.msm8998 \
     libdisplayconfig \
     libhwc2on1adapter \
+    libgenlock \
     liboverlay \
     libqdMetaData \
     libqdMetaData.system \
