@@ -175,8 +175,7 @@ PRODUCT_PACKAGES += \
     android.hardware.graphics.mapper@2.0-impl \
     android.hardware.configstore@1.0-service \
     android.hardware.memtrack@1.0-impl \
-    android.hardware.memtrack@1.0-service \
-    android.hardware.renderscript@1.0-impl
+    android.hardware.memtrack@1.0-service
 
 PRODUCT_PACKAGES += \
     vendor.display.config@1.0 \
@@ -378,6 +377,10 @@ PRODUCT_PACKAGES += \
 # Releasetools
 PRODUCT_PACKAGES += \
     librecovery_updater_nubia
+    
+# RenderScript HAL
+PRODUCT_PACKAGES += \
+    android.hardware.renderscript@1.0-impl
 
 # RIL
 PRODUCT_PACKAGES += \
