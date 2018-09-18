@@ -220,8 +220,7 @@ int power_hint_override(__unused struct power_module *module,
     };
 
     int resources_cpu_boost[] = {
-        SCHED_BOOST_ON_V3, 0x1,
-        MIN_FREQ_BIG_CORE_0, 0x3E8,
+        SCHED_BOOST_ON_V3, 0x2,
     };
 
     int resources_interaction_fling_boost[] = {
