@@ -209,9 +209,14 @@ int power_hint_override(__unused struct power_module *module,
     int duration;
 
     int resources_launch[] = {
-        SCHED_BOOST_ON_V3, 0x3,
-        SCHED_GROUP_DOWN_MIGRATE, 0x5A,
-        SCHED_GROUP_UP_MIGRATE, 0x5F,
+        SCHED_BOOST_ON_V3, 0x1,
+        MAX_FREQ_BIG_CORE_0, 0x939,
+        MAX_FREQ_LITTLE_CORE_0, 0xFFF,
+        MIN_FREQ_BIG_CORE_0, 0x939,
+        MIN_FREQ_LITTLE_CORE_0, 0xFFF,
+        CPUBW_HWMON_MIN_FREQ, 0x8C,
+        ALL_CPUS_PWR_CLPS_DIS_V3, 0x1,
+        STOR_CLK_SCALE_DIS, 0x1,
     };
 
     int resources_cpu_boost[] = {
