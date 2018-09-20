@@ -1,2 +1,7 @@
+typeattribute wcnss_service data_between_core_and_vendor_violators;
+
+allow wcnss_service wifi_data_file:dir create_dir_perms;
+allow wcnss_service wifi_data_file:file create_file_perms;
+
 allow wcnss_service sysfs_nubia_hw:file { open read getattr };
 allow wcnss_service sysfs_nubia_hw:dir search;
