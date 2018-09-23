@@ -286,38 +286,6 @@ vendor/lib64/libsdm-diag.so
 vendor/lib64/libsdmextension.so
 vendor/lib64/libuiblur.so|4b3fabf5ded7c4af531abde681676fc5e9248494
 
-# Graphics firmware
-etc/firmware/leia_pfp_470.fw
-etc/firmware/leia_pm4_470.fw
-etc/firmware/a530_gpmu.fw2
-etc/firmware/a530_pfp.fw
-etc/firmware/a530_pm4.fw
-etc/firmware/a530v1_pfp.fw
-etc/firmware/a530v1_pm4.fw
-etc/firmware/a530v2_seq.fw2
-etc/firmware/a530v3_gpmu.fw2
-etc/firmware/a530v3_seq.fw2
-etc/firmware/a530_zap.b00
-etc/firmware/a530_zap.b01
-etc/firmware/a530_zap.b02
-etc/firmware/a530_zap.elf
-etc/firmware/a530_zap.mdt
-etc/firmware/a540_gpmu.fw2
-etc/firmware/a540_zap.b00
-etc/firmware/a540_zap.b01
-etc/firmware/a540_zap.b02
-etc/firmware/a540_zap.elf
-etc/firmware/a540_zap.mdt
-
-# IPA
-bin/ipacm-diag
-etc/firmware/ipa_fws.b00
-etc/firmware/ipa_fws.b01
-etc/firmware/ipa_fws.b02
-etc/firmware/ipa_fws.b03
-etc/firmware/ipa_fws.b04
-etc/firmware/ipa_fws.mdt
-
 # Keystore
 vendor/lib/hw/keystore.msm8998.so
 vendor/lib64/hw/keystore.msm8998.so
@@ -440,7 +408,6 @@ vendor/lib64/libsmemlog.so
 -app/QtiTelephonyService/QtiTelephonyService.apk
 -app/shutdownlistener/shutdownlistener.apk
 bin/netmgrd
-bin/port-bridge
 bin/radish
 bin/rmt_storage
 bin/tftp_server
