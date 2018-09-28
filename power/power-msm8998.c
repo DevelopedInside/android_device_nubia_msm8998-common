@@ -47,10 +47,13 @@
 #include "performance.h"
 #include "power-common.h"
 
+#include "utils_ext.h"
+
 int launch_handle = -1;
 int launch_mode;
 int cpu_boost_handle = -1;
 int cpu_boost_mode;
+#define CHECK_HANDLE(x) (((x)>0) && ((x)!=-1))
 
 static int current_power_profile = PROFILE_BALANCED;
 
