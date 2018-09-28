@@ -200,6 +200,7 @@ int power_hint_override(__unused struct power_module *module,
     static struct timespec s_previous_boost_timespec;
     struct timespec cur_boost_timespec;
     long long elapsed_time;
+	static int s_previous_duration = 0;
     int duration;
 
     int resources_launch[] = {
@@ -238,21 +239,24 @@ int power_hint_override(__unused struct power_module *module,
         return HINT_HANDLED;
 
     if (hint == POWER_HINT_INTERACTION) {
-        duration = data ? *((int *)data) : 500;
+        duration = 1500; // 1.5s by default
+        if (data) {
+            int input_duration = *((int*)data) + 750;
+            if (input_duration > duration) {
+                duration = (input_duration > 5750) ? 5750 : input_duration;
+            }
+        }
 
         clock_gettime(CLOCK_MONOTONIC, &cur_boost_timespec);
+
         elapsed_time = calc_timespan_us(s_previous_boost_timespec, cur_boost_timespec);
-        if (elapsed_time > 750000)
-            elapsed_time = 750000;
-        /**
-         * Don't hint if it's been less than 250ms since last boost
-         * also detect if we're doing anything resembling a fling
-         * support additional boosting in case of flings
-         */
-        else if (elapsed_time < 250000 && duration <= 750)
-            return HINT_HANDLED;
+		// don't hint if previous hint's duration covers this hint's duration
+        if ((s_previous_duration * 1000) > (elapsed_time + duration * 1000)) {
+                return HINT_HANDLED;
+        }
 
         s_previous_boost_timespec = cur_boost_timespec;
+		s_previous_duration = duration;
 
         if (duration >= 1500) {
             interaction(duration, ARRAY_SIZE(resources_interaction_fling_boost),
