@@ -118,6 +118,101 @@ static void set_power_profile(int profile) {
     current_power_profile = profile;
 }
 
+static int resources_interaction_fling_boost[] = {
+    CPUBW_HWMON_MIN_FREQ, 0x33,
+    MIN_FREQ_BIG_CORE_0, 0x3E8,
+    MIN_FREQ_LITTLE_CORE_0, 0x3E8,
+    SCHED_BOOST_ON_V3, 0x2,
+};
+
+static int resources_interaction_boost[] = {
+    MIN_FREQ_BIG_CORE_0, 0x3E8,
+};
+
+static int resources_launch[] = {
+    SCHED_BOOST_ON_V3, 0x1,
+    MAX_FREQ_BIG_CORE_0, 0x939,
+    MAX_FREQ_LITTLE_CORE_0, 0xFFF,
+    MIN_FREQ_BIG_CORE_0, 0xFFF,
+    MIN_FREQ_LITTLE_CORE_0, 0xFFF,
+    CPUBW_HWMON_MIN_FREQ, 0x8C,
+    ALL_CPUS_PWR_CLPS_DIS_V3, 0x1,
+    STOR_CLK_SCALE_DIS, 0x1,
+};
+
+static int resources_cpu_boost[] = {
+    SCHED_BOOST_ON_V3, 0x2,
+};
+
+static int resources_video_encode[] = {
+    ABOVE_HISPEED_DELAY_BIG, 0x4,
+    GO_HISPEED_LOAD_BIG, 0x5F,
+    HISPEED_FREQ_BIG, 0x326,
+    TARGET_LOADS_BIG, 0x5A,
+    ABOVE_HISPEED_DELAY_LITTLE, 0x4,
+    GO_HISPEED_LOAD_LITTLE, 0x5F,
+    HISPEED_FREQ_LITTLE, 0x22C,
+    TARGET_LOADS_LITTLE, 0x5A,
+    LOW_POWER_CEIL_MBPS, 0x9C4,
+    LOW_POWER_IO_PERCENT, 0x32,
+    CPUBW_HWMON_V1, 0x0,
+    CPUBW_HWMON_SAMPLE_MS, 0xA,
+};
+
+static int process_interaction_hint(void *data)
+{
+    static struct timespec s_previous_boost_timespec;
+    struct timespec cur_boost_timespec;
+    static int s_previous_duration = 0;
+    long long elapsed_time;
+    int duration = 1500; // 1.5s by default
+
+    if (data) {
+        int input_duration = *((int*)data) + 750;
+        if (input_duration > duration) {
+            duration = (input_duration > 5750) ? 5750 : input_duration;
+        }
+    }
+
+    clock_gettime(CLOCK_MONOTONIC, &cur_boost_timespec);
+
+    elapsed_time = calc_timespan_us(s_previous_boost_timespec, cur_boost_timespec);
+    // don't hint if previous hint's duration covers this hint's duration
+    if ((s_previous_duration * 1000) > (elapsed_time + duration * 1000)) {
+        return HINT_HANDLED;
+    }
+    s_previous_boost_timespec = cur_boost_timespec;
+    s_previous_duration = duration;
+
+    if (duration >= 1500) {
+        interaction(duration, ARRAY_SIZE(resources_interaction_fling_boost),
+                resources_interaction_fling_boost);
+    } else {
+        interaction(duration, ARRAY_SIZE(resources_interaction_boost),
+                resources_interaction_boost);
+    }
+    return HINT_HANDLED;
+}
+
+static int process_launch_hint(void *data)
+{
+    int duration = 2000;
+    interaction(duration, ARRAY_SIZE(resources_launch),
+            resources_launch);
+    return HINT_HANDLED;
+}
+
+static int process_cpu_boost_hint(void *data)
+{
+    int duration = *(int32_t *)data / 1000;
+    if (duration > 0) {
+        interaction(duration, ARRAY_SIZE(resources_cpu_boost),
+                resources_cpu_boost);
+        return HINT_HANDLED;
+    }
+	return HINT_NONE;
+}
+
 static int process_video_encode_hint(void *metadata)
 {
     char governor[80];
@@ -163,23 +258,8 @@ static int process_video_encode_hint(void *metadata)
              *    -bus dcvs hysteresis tuning
              *    -sample_ms of 10 ms
              */
-            int resource_values[] = {
-                ABOVE_HISPEED_DELAY_BIG, 0x4,
-                GO_HISPEED_LOAD_BIG, 0x5F,
-                HISPEED_FREQ_BIG, 0x326,
-                TARGET_LOADS_BIG, 0x5A,
-                ABOVE_HISPEED_DELAY_LITTLE, 0x4,
-                GO_HISPEED_LOAD_LITTLE, 0x5F,
-                HISPEED_FREQ_LITTLE, 0x22C,
-                TARGET_LOADS_LITTLE, 0x5A,
-                LOW_POWER_CEIL_MBPS, 0x9C4,
-                LOW_POWER_IO_PERCENT, 0x32,
-                CPUBW_HWMON_V1, 0x0,
-                CPUBW_HWMON_SAMPLE_MS, 0xA,
-            };
-
             perform_hint_action(video_encode_metadata.hint_id,
-                    resource_values, ARRAY_SIZE(resource_values));
+                    resources_video_encode, ARRAY_SIZE(resources_video_encode));
             ALOGI("Video Encode hint start");
             return HINT_HANDLED;
         }
@@ -197,38 +277,8 @@ static int process_video_encode_hint(void *metadata)
 int power_hint_override(__unused struct power_module *module,
         power_hint_t hint, void *data)
 {
-    static struct timespec s_previous_boost_timespec;
-    struct timespec cur_boost_timespec;
-    long long elapsed_time;
-	static int s_previous_duration = 0;
-    int duration;
-
-    int resources_launch[] = {
-        SCHED_BOOST_ON_V3, 0x1,
-        MAX_FREQ_BIG_CORE_0, 0x939,
-        MAX_FREQ_LITTLE_CORE_0, 0xFFF,
-        MIN_FREQ_BIG_CORE_0, 0xFFF,
-        MIN_FREQ_LITTLE_CORE_0, 0xFFF,
-        CPUBW_HWMON_MIN_FREQ, 0x8C,
-        ALL_CPUS_PWR_CLPS_DIS_V3, 0x1,
-        STOR_CLK_SCALE_DIS, 0x1,
-    };
-
-    int resources_cpu_boost[] = {
-        SCHED_BOOST_ON_V3, 0x2,
-    };
-
-    int resources_interaction_fling_boost[] = {
-        CPUBW_HWMON_MIN_FREQ, 0x33,
-        MIN_FREQ_BIG_CORE_0, 0x3E8,
-        MIN_FREQ_LITTLE_CORE_0, 0x3E8,
-        SCHED_BOOST_ON_V3, 0x2,
-    };
-
-    int resources_interaction_boost[] = {
-        MIN_FREQ_BIG_CORE_0, 0x3E8,
-    };
-
+	int ret_val = HINT_NONE;
+	
     if (hint == POWER_HINT_SET_PROFILE) {
         set_power_profile(*(int32_t *)data);
         return HINT_HANDLED;
@@ -238,57 +288,23 @@ int power_hint_override(__unused struct power_module *module,
     if (current_power_profile == PROFILE_POWER_SAVE)
         return HINT_HANDLED;
 
-    if (hint == POWER_HINT_INTERACTION) {
-        duration = 1500; // 1.5s by default
-        if (data) {
-            int input_duration = *((int*)data) + 750;
-            if (input_duration > duration) {
-                duration = (input_duration > 5750) ? 5750 : input_duration;
-            }
-        }
-
-        clock_gettime(CLOCK_MONOTONIC, &cur_boost_timespec);
-
-        elapsed_time = calc_timespan_us(s_previous_boost_timespec, cur_boost_timespec);
-		// don't hint if previous hint's duration covers this hint's duration
-        if ((s_previous_duration * 1000) > (elapsed_time + duration * 1000)) {
-                return HINT_HANDLED;
-        }
-
-        s_previous_boost_timespec = cur_boost_timespec;
-		s_previous_duration = duration;
-
-        if (duration >= 1500) {
-            interaction(duration, ARRAY_SIZE(resources_interaction_fling_boost),
-                    resources_interaction_fling_boost);
-        } else {
-            interaction(duration, ARRAY_SIZE(resources_interaction_boost),
-                    resources_interaction_boost);
-        }
-        return HINT_HANDLED;
+    switch(hint) {
+        case POWER_HINT_INTERACTION:
+            ret_val = process_interaction_hint(data);
+            break;
+        case POWER_HINT_LAUNCH:
+            ret_val = process_launch_hint(data);
+            break;
+        case POWER_HINT_CPU_BOOST:
+            ret_val = process_cpu_boost_hint(data);
+            break;
+        case POWER_HINT_VIDEO_ENCODE:
+            ret_val = process_video_encode_hint(data);
+            break;
+        default:
+            break;
     }
-
-    if (hint == POWER_HINT_LAUNCH) {
-        duration = 2000;
-
-        interaction(duration, ARRAY_SIZE(resources_launch),
-                resources_launch);
-        return HINT_HANDLED;
-    }
-
-    if (hint == POWER_HINT_CPU_BOOST) {
-        duration = *(int32_t *)data / 1000;
-        if (duration > 0) {
-            interaction(duration, ARRAY_SIZE(resources_cpu_boost),
-                    resources_cpu_boost);
-            return HINT_HANDLED;
-        }
-    }
-
-    if (hint == POWER_HINT_VIDEO_ENCODE)
-        return process_video_encode_hint(data);
-
-    return HINT_NONE;
+    return ret_val;
 }
 
 int set_interactive_override(__unused struct power_module *module, int on)
@@ -298,7 +314,6 @@ int set_interactive_override(__unused struct power_module *module, int on)
 
     if (get_scaling_governor(governor, sizeof(governor)) == -1) {
         ALOGE("Can't obtain scaling governor.");
-
         return HINT_NONE;
     }
 
