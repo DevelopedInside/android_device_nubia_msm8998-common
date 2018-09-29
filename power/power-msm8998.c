@@ -173,12 +173,12 @@ static int process_interaction_hint(void *data)
     struct timespec cur_boost_timespec;
     static int s_previous_duration = 0;
     long long elapsed_time;
-    int duration = 1500; // 1.5s by default
+    int duration = 500; // 500ms by default
 
     if (data) {
-        int input_duration = *((int*)data) + 750;
+        int input_duration = *((int*)data) + 250;
         if (input_duration > duration) {
-            duration = (input_duration > 5750) ? 5750 : input_duration;
+            duration = (input_duration > 5250) ? 5250 : input_duration;
         }
     }
 
