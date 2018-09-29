@@ -29,14 +29,11 @@
 #define LOG_NIDEBUG 0
 
 #include <dlfcn.h>
-#include <fcntl.h>
-#include <errno.h>
 #include <string.h>
 #include <stdlib.h>
 #include <limits.h>
 
 #include "utils_ext.h"
-#include "power-common.h"
 #define LOG_TAG "QCOM PowerHAL-Ext"
 #include <utils/Log.h>
 
