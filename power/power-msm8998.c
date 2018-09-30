@@ -153,6 +153,7 @@ static int resources_launch[] = {
 
 static int resources_cpu_boost[] = {
     SCHED_BOOST_ON_V3, 0x2,
+    MIN_FREQ_BIG_CORE_0, 0x3E8,
 };
 
 static int resources_video_encode[] = {
