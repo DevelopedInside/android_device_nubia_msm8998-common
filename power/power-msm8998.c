@@ -66,6 +66,8 @@ int get_number_of_profiles() {
 static int profile_high_performance[] = {
     SCHED_BOOST_ON_V3, 0x1,
     ALL_CPUS_PWR_CLPS_DIS_V3, 0x1,
+    CPUS_ONLINE_MAX_LIMIT_BIG, 0x4,
+    CPUS_ONLINE_MAX_LIMIT_LITTLE, 0x4,
     CPUS_ONLINE_MIN_BIG, 0x4,
     CPUS_ONLINE_MIN_LITTLE, 0x4,
     MIN_FREQ_BIG_CORE_0, 0xFFF,
