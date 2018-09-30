@@ -137,6 +137,7 @@ static int resources_interaction_fling_boost[] = {
 
 static int resources_interaction_boost[] = {
     MIN_FREQ_BIG_CORE_0, 0x3E8,
+    SCHED_BOOST_ON_V3, 0x2,
 };
 
 static int resources_launch[] = {
