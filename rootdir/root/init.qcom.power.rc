@@ -180,10 +180,13 @@ on property:dev.bootcomplete=1
     setprop sys.io.scheduler "bfq"
 
     # update cpusets now that boot is complete and we want better load balancing
+    # CPU 3 is reserved for the top app and camera-daemon
+    write /dev/cpuset/top-app/cpus 0-7
+    write /dev/cpuset/foreground/boost/cpus 4-7
+    write /dev/cpuset/foreground/cpus 0-2,4-7
     write /dev/cpuset/background/cpus 0-1
     write /dev/cpuset/system-background/cpus 0-2
-    write /dev/cpuset/foreground/cpus 0-2,4-7
-    write /dev/cpuset/foreground/boost/cpus 4-7
+    write /dev/cpuset/camera-daemon/cpus 0-3
 
     # Disable sched_boost
     write /proc/sys/kernel/sched_boost 0
