@@ -27,10 +27,6 @@
 # Haptic
 /dev/drv2605                                                                                                                             u:object_r:haptics_device:s0
 
-# Input files
-/vendor/usr/idc(/.*)?                                                                                                                    u:object_r:idc_file:s0
-/vendor/usr/keylayout(/.*)?                                                                                                              u:object_r:keylayout_file:s0
-
 # Persist partition
 /persist/rfs/msm/mpss/server_check.txt                                                                                                   u:object_r:tftp_server_check_file:s0
 
