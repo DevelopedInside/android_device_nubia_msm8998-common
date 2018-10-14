@@ -56,6 +56,7 @@ camera.aux.packagelist=com.android.camera,cn.nubia.factory,org.codeaurora.snapca
 persist.camera.depth.focus.cb=0
 persist.camera.vdbea.switch=1
 persist.ts.rtmakeup=false
+persist.camera.CDS=Off
 
 # CNE
 persist.cne.feature=1
