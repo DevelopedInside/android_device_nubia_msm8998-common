@@ -53,6 +53,7 @@ int launch_handle = -1;
 int launch_mode;
 int cpu_boost_handle = -1;
 int cpu_boost_mode;
+static pthread_mutex_t s_interaction_lock = PTHREAD_MUTEX_INITIALIZER;
 #define CHECK_HANDLE(x) (((x)>0) && ((x)!=-1))
 
 static int current_power_profile = PROFILE_BALANCED;
@@ -179,6 +180,7 @@ static int process_interaction_hint(void *data)
     long long elapsed_time;
     int duration = 500; // 500ms by default
 
+    pthread_mutex_lock(&s_interaction_lock);
     if (data) {
         int input_duration = *((int*)data) + 250;
         if (input_duration > duration) {
@@ -191,6 +193,7 @@ static int process_interaction_hint(void *data)
     elapsed_time = calc_timespan_us(s_previous_boost_timespec, cur_boost_timespec);
     // don't hint if previous hint's duration covers this hint's duration
     if ((s_previous_duration * 1000) > (elapsed_time + duration * 1000)) {
+        pthread_mutex_unlock(&s_interaction_lock);
         return HINT_HANDLED;
     }
     s_previous_boost_timespec = cur_boost_timespec;
@@ -203,6 +206,7 @@ static int process_interaction_hint(void *data)
         interaction(duration, ARRAY_SIZE(resources_interaction_boost),
                 resources_interaction_boost);
     }
+    pthread_mutex_unlock(&s_interaction_lock);
     return HINT_HANDLED;
 }
 
