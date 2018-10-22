@@ -182,9 +182,9 @@ static int process_interaction_hint(void *data)
 
     pthread_mutex_lock(&s_interaction_lock);
     if (data) {
-        int input_duration = *((int*)data) + 250;
+        int input_duration = *((int*)data);
         if (input_duration > duration) {
-            duration = (input_duration > 5250) ? 5250 : input_duration;
+            duration = (input_duration > 5000) ? 5000 : input_duration;
         }
     }
 
