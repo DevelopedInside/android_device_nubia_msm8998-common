@@ -85,7 +85,7 @@ PRODUCT_PACKAGES += \
     audio.a2dp.default \
     audio.r_submix.default \
     audio.usb.default \
-    audio.primary.msm8998 \
+    audio.primary.msm8998
 
 PRODUCT_PACKAGES += \
     libaudio-resampler \
@@ -165,7 +165,7 @@ PRODUCT_PACKAGES += \
     liboverlay \
     libqdMetaData \
     libqdMetaData.system \
-    libtinyxml 
+    libtinyxml
 
 PRODUCT_PACKAGES += \
     android.hardware.graphics.composer@2.1-impl \
@@ -381,7 +381,7 @@ PRODUCT_PACKAGES += \
 
 # RIL
 PRODUCT_PACKAGES += \
-    ims-ext-common
+    ims-ext-common \
     librmnetctl \
     libxml2 \
     libprotobuf-cpp-full \
