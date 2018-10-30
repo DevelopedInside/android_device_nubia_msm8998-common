@@ -236,7 +236,6 @@ TARGET_USERIMAGES_USE_EXT4 := true
 TARGET_PER_MGR_ENABLED := true
 
 # Power
-TARGET_TAP_TO_WAKE_NODE := "/sys/class/tpnode/tpnode/synaptics/wake_gesture"
 TARGET_USES_INTERACTION_BOOST := true
 
 # Properties
