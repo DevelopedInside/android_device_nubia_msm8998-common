@@ -243,8 +243,7 @@ TARGET_USES_INTERACTION_BOOST := true
 TARGET_SYSTEM_PROP += $(PLATFORM_PATH)/system.prop
 
 # Recovery
-TARGET_RECOVERY_FSTAB := $(PLATFORM_PATH)/rootdir/vendor/etc/fstab.qcom
-BOARD_HAS_LARGE_FILESYSTEM := true
+TARGET_RECOVERY_FSTAB := $(PLATFORM_PATH)/recovery/root/recovery.fstab
 
 # Releasetools
 TARGET_RECOVERY_UPDATER_LIBS := librecovery_updater_nubia
