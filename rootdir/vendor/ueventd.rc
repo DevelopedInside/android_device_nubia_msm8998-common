@@ -327,8 +327,8 @@
 /dev/tas2555              0666   root       root
 
 # touchscreen
-/sys/devices/soc/c179000.i2c/i2c-5/5-0020/input/input4       wake_gesture     0644    system  system
-/sys/devices/soc/c179000.i2c/i2c-5/5-0020/input/input4       0dbutton         0644    system  system
+/sys/devices/soc/c179000.i2c/i2c-5/5-0020/input/input1       wake_gesture     0644    system  system
+/sys/devices/soc/c179000.i2c/i2c-5/5-0020/input/input1       0dbutton         0644    system  system
 
 # IR Remote
 /dev/ir_remote            0666   system     system
