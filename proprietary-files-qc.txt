@@ -32,7 +32,7 @@ vendor/lib/rfsa/adsp/libvpp_frc.so
 vendor/lib/rfsa/adsp/libvpp_svc_skel.so
 
 # Alarm
-etc/permissions/vendor-qti-hardware-alarm.xml:vendor/etc/permissions/vendor-qti-hardware-alarm.xml
+etc/permissions/vendor-qti-hardware-alarm.xml
 -vendor/app/PowerOffAlarm/PowerOffAlarm.apk
 vendor/bin/hw/vendor.qti.hardware.alarm@1.0-service
 vendor/etc/init/vendor.qti.hardware.alarm@1.0-service.rc
@@ -202,6 +202,7 @@ vendor/lib/libQSEEComAPI.so
 vendor/lib/libsecureui.so
 vendor/lib/libsecureui_svcsock.so
 vendor/lib/librpmb.so
+vendor/lib/libspl.so
 vendor/lib/libsdedrm.so
 vendor/lib/libsecureui.so
 vendor/lib/libsecureui_svcsock.so
@@ -216,6 +217,7 @@ vendor/lib64/libGPreqcancel.so
 vendor/lib64/libqisl.so
 vendor/lib64/libQSEEComAPI.so
 vendor/lib64/librpmb.so
+vendor/lib64/libspl.so
 vendor/lib64/libsdedrm.so
 vendor/lib64/libsecureui.so
 vendor/lib64/libsecureui_svcsock.so
@@ -225,6 +227,10 @@ vendor/lib64/libStDrvInt.so
 vendor/lib64/libtzdrmgenprov.so
 
 # DRM - Qualcomm Trusted Execution Enviornment
+lib/libGPTEE_system.so
+lib/libQTEEConnector_system.so
+lib64/libGPTEE_system.so
+lib64/libQTEEConnector_system.so
 lib/vendor.qti.hardware.qteeconnector@1.0.so
 lib64/vendor.qti.hardware.qteeconnector@1.0.so
 vendor/bin/hw/vendor.qti.hardware.qteeconnector@1.0-service
@@ -257,22 +263,23 @@ vendor/lib/hw/gatekeeper.msm8998.so
 vendor/lib64/hw/gatekeeper.msm8998.so
 
 # GPS
-lib/vendor.qti.gnss@1.0.so
-lib/libxt_native.so
-lib/liblocationservice_jni.so
-lib64/vendor.qti.gnss@1.0.so
-lib64/libxt_native.so
-lib64/liblocationservice_jni.so
 etc/permissions/com.qti.location.sdk.xml
 etc/permissions/com.qualcomm.location.xml
 etc/permissions/izat.xt.srv.xml
 etc/permissions/privapp-permissions-com.qualcomm.location.xml
 framework/com.qti.location.sdk.jar
 framework/izat.xt.srv.jar
+lib/vendor.qti.gnss@1.0.so
+lib/libxt_native.so
+lib/liblocationservice_jni.so
+lib64/vendor.qti.gnss@1.0.so
+lib64/libxt_native.so
+lib64/liblocationservice_jni.so
 -priv-app/com.qualcomm.location/com.qualcomm.location.apk
 vendor/bin/loc_launcher
 vendor/bin/lowi-server
 vendor/bin/slim_daemon
+vendor/bin/xtra-daemon
 vendor/bin/xtwifi-client
 vendor/bin/xtwifi-inet-agent
 vendor/bin/hw/vendor.qti.gnss@1.0-service
@@ -331,8 +338,6 @@ vendor/lib64/vendor.qti.gnss@1.0_vendor.so
 vendor/lib64/hw/vendor.qti.gnss@1.0-impl.so
 
 # Graphics
-vendor/bin/hw/vendor.qti.hardware.qdutils_disp@1.0-service-qti
-vendor/etc/init/vendor.qti.hardware.qdutils_disp@1.0-service-qti.rc
 vendor/lib/egl/eglSubDriverAndroid.so
 vendor/lib/egl/libEGL_adreno.so
 vendor/lib/egl/libGLESv1_CM_adreno.so
@@ -503,9 +508,7 @@ vendor/lib64/libgcs.so
 
 # Media
 lib/libmmosal.so
-lib/vendor.qti.hardware.vpp@1.1.so
 lib64/libmmosal.so
-lib64/vendor.qti.hardware.vpp@1.1.so
 -vendor/lib/libgpustats.so
 vendor/lib/libOmxVpp.so
 vendor/lib/libvpplibrary.so
@@ -531,18 +534,18 @@ vendor/lib64/libvpphvx.so
 vendor/bin/energy-awareness
 vendor/bin/msm_irqbalance
 
-# Peripheral manager
-vendor/bin/pm-proxy
-vendor/bin/pm-service
-vendor/lib/libperipheral_client.so
-vendor/lib64/libperipheral_client.so
-
 # PLAYready
 vendor/lib/qcdrm/playready/lib/drm/libdrmprplugin_customer.so
 vendor/lib/qcdrm/playready/lib/libprdrmdecrypt_customer.so
 vendor/lib/qcdrm/playready/lib/libtzplayready_customer.so
 vendor/lib/qcdrm/playready/lib/mediadrm/libprmediadrmdecrypt_customer.so
 vendor/lib/qcdrm/playready/lib/mediadrm/libprmediadrmplugin_customer.so
+
+# Peripheral manager
+vendor/bin/pm-proxy
+vendor/bin/pm-service
+vendor/lib/libperipheral_client.so
+vendor/lib64/libperipheral_client.so
 
 # Postprocessing
 vendor/bin/hw/vendor.display.color@1.0-service
@@ -690,6 +693,7 @@ vendor/lib/lib-imsxml.so
 vendor/lib/lib-rtpcore.so
 vendor/lib/lib-rtpdaemoninterface.so
 vendor/lib/lib-rtpsl.so
+vendor/lib/lib-siputility.so
 vendor/lib/lib-uceservice.so
 vendor/lib/vendor.qti.hardware.radio.ims@1.0_vendor.so
 vendor/lib/vendor.qti.imsrtpservice@1.0-service-Impl.so
@@ -705,6 +709,7 @@ vendor/lib64/lib-rtpcommon.so
 vendor/lib64/lib-rtpcore.so
 vendor/lib64/lib-rtpdaemoninterface.so
 vendor/lib64/lib-rtpsl.so
+vendor/lib64/lib-siputility.so
 vendor/lib64/lib-uceservice.so
 vendor/lib64/vendor.qti.hardware.radio.ims@1.0_vendor.so
 vendor/lib64/vendor.qti.imsrtpservice@1.0-service-Impl.so
@@ -737,6 +742,7 @@ vendor/lib64/libsensor1.so
 vendor/lib64/libsensor_reg.so
 vendor/lib64/libsensor1.so
 vendor/lib64/libsns_low_lat_stream_stub.so
+vendor/lib64/sensors.oem.so
 vendor/lib64/sensors.ssc.so
 vendor/lib64/vendor.qti.hardware.sensorscalibrate@1.0.so
 -vendor/framework/vendor.qti.hardware.sensorscalibrate-V1.0-java.jar
@@ -747,6 +753,12 @@ vendor/bin/thermal-engine
 -vendor/lib/libthermalclient.so
 -vendor/lib64/libthermalclient.so
 vendor/lib64/libthermalioctl.so
+
+# Time services
+-vendor/app/TimeService/TimeService.apk
+vendor/bin/time_daemon
+-vendor/lib/libtime_genoff.so
+-vendor/lib64/libtime_genoff.so
 
 # Voice fingerprint
 vendor/bin/qvop-daemon
@@ -760,95 +772,4 @@ vendor/lib64/libqvop-service.so
 vendor/lib64/vendor.qti.voiceprint@1.0.so
 
 # Wi-Fi
-vendor/bin/cnss_diag
 vendor/bin/cnss-daemon
-
-# Wi-Fi Display
--app/WfdService/WfdService.apk
--framework/WfdCommon.jar
-bin/wfdservice
-etc/init/wfdservice.rc
-etc/wfdconfig.xml
-etc/wfdconfigsink.xml
-lib/com.qualcomm.qti.wifidisplayhal@1.0.so
-lib/libExtendedExtractor.so
-lib/libFileMux.so
-lib/libmmparser.so
-lib/libmmparser_lite.so
-lib/libwfdavenhancements.so
-lib/libwfdcodecv4l2.so
-lib/libwfdcommonutils.so
-lib/libwfdconfigutils.so
-lib/libwfdmminterface.so
-lib/libwfdmmsink.so
-lib/libwfdmmsrc.so
-lib/libwfdnative.so
-lib/libwfdrtsp.so
-lib/libwfdservice.so
-lib/libwfdsm.so
-lib/libwfduibcinterface.so
-lib/libwfduibcsink.so
-lib/libwfduibcsinkinterface.so
-lib/libwfduibcsrc.so
-lib/libwfduibcsrcinterface.so
-lib64/com.qualcomm.qti.wifidisplayhal@1.0.so
-lib64/libExtendedExtractor.so
-lib64/libFileMux.so
-lib64/libmmparser.so
-lib64/libmmparser_lite.so
-lib64/libwfdavenhancements.so
-lib64/libwfdcodecv4l2.so
-lib64/libwfdcommonutils.so
-lib64/libwfdconfigutils.so
-lib64/libwfdmminterface.so
-lib64/libwfdmmsink.so
-lib64/libwfdmmsrc.so
-lib64/libwfdnative.so
-lib64/libwfdrtsp.so
-lib64/libwfdservice.so
-lib64/libwfdsm.so
-lib64/libwfduibcinterface.so
-lib64/libwfduibcsink.so
-lib64/libwfduibcsinkinterface.so
-lib64/libwfduibcsrc.so
-lib64/libwfduibcsrcinterface.so
-vendor/bin/hdcp1prov
-vendor/bin/hdcp2p2prov
-vendor/bin/wifidisplayhalservice
-vendor/etc/init/com.qualcomm.qti.wifidisplayhal@1.0-service.rc
-vendor/lib/com.qualcomm.qti.wifidisplayhal@1.0-halimpl.so
-vendor/lib/com.qualcomm.qti.wifidisplayhal@1.0-impl.so
-vendor/lib/com.qualcomm.qti.wifidisplayhal@1.0_vendor.so
-vendor/lib/libhdcp1prov.so
-vendor/lib/libhdcp2p2prov.so
-vendor/lib/libwfdcommonutils_proprietary.so
-vendor/lib/libwfdhaldsmanager.so
-vendor/lib/libwfdhdcpcp.so
-vendor/lib/libwfdhdcpcp.so
-vendor/lib/libwfdmmservice.so
-vendor/lib/libwfdmodulehdcpsession.so
-vendor/lib/libwfdmodulehdcpsession.so
-vendor/lib64/com.qualcomm.qti.wifidisplayhal@1.0-halimpl.so
-vendor/lib64/com.qualcomm.qti.wifidisplayhal@1.0-impl.so
-vendor/lib64/com.qualcomm.qti.wifidisplayhal@1.0_vendor.so
-vendor/lib64/libhdcp1prov.so
-vendor/lib64/libhdcp2p2prov.so
-vendor/lib64/libwfdcommonutils_proprietary.so
-vendor/lib64/libwfdhaldsmanager.so
-vendor/lib64/libwfdhdcpcp.so
-vendor/lib64/libwfdhdcpcp.so
-vendor/lib64/libwfdmmservice.so
-vendor/lib64/libwfdmodulehdcpsession.so
-vendor/lib64/libwfdmodulehdcpsession.so
-
-# VR
-lib64/libvr_object_engine.so
-lib64/libvr_amb_engine.so
-lib64/libvr_sam_wrapper.so
-lib64/libvraudio.so
-lib/libvr_object_engine.so
-lib/libvr_amb_engine.so
-lib/libvr_sam_wrapper.so
-lib/libvraudio.so
-vendor/lib/hw/vr.msm8998.so
-vendor/lib64/hw/vr.msm8998.so
