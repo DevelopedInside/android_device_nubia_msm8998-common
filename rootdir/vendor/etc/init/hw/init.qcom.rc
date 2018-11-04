@@ -1169,6 +1169,11 @@ service poweroffcharge /sbin/poweroffcharge
     seclabel u:r:poweroffcharge:s0
     group root system
 
+service charger /charger
+    class charger
+    group system graphics
+    seclabel u:r:charger:s0
+
 service ssr_diag /system/vendor/bin/ssr_diag
     class late_start
     user system
