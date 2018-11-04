@@ -79,10 +79,6 @@ PRODUCT_PROPERTY_OVERRIDES += \
 # Haters gonna hate..
 PRODUCT_CHARACTERISTICS := nosdcard
 
-# Additional native libraries
-PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/configs/public.libraries.txt:$(TARGET_COPY_OUT_VENDOR)/etc/public.libraries.txt
-
 # Audio
 PRODUCT_PACKAGES += \
     audio.a2dp.default \
@@ -99,9 +95,9 @@ PRODUCT_PACKAGES += \
     tinymix
 
 PRODUCT_PACKAGES += \
-    android.hardware.audio.effect@2.0-impl \
+    android.hardware.audio@2.0-service \
     android.hardware.audio@2.0-impl \
-    android.hardware.audio@2.0-service
+    android.hardware.audio.effect@2.0-impl
 
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/audio/audio_effects.conf:$(TARGET_COPY_OUT_VENDOR)/etc/audio_effects.conf \
@@ -124,6 +120,10 @@ PRODUCT_COPY_FILES += \
     $(TOPDIR)frameworks/av/services/audiopolicy/config/r_submix_audio_policy_configuration.xml:/$(TARGET_COPY_OUT_VENDOR)/etc/r_submix_audio_policy_configuration.xml \
     $(TOPDIR)frameworks/av/services/audiopolicy/config/usb_audio_policy_configuration.xml:/$(TARGET_COPY_OUT_VENDOR)/etc/usb_audio_policy_configuration.xml
 
+# Additional native libraries
+PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/configs/public.libraries.txt:$(TARGET_COPY_OUT_VENDOR)/etc/public.libraries.txt
+
 # ANT+
 PRODUCT_PACKAGES += \
     AntHalService \
@@ -132,21 +132,18 @@ PRODUCT_PACKAGES += \
 PRODUCT_COPY_FILES += \
     external/ant-wireless/antradio-library/com.dsi.ant.antradio_library.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/com.dsi.ant.antradio_library.xml
 
+# Bluetooth
+PRODUCT_PACKAGES += \
+    libbthost_if \
+    libbt-vendor
+
 # Camera
 PRODUCT_PACKAGES += \
     Snap
 
 PRODUCT_PACKAGES += \
     android.hardware.camera.provider@2.4-impl \
-    android.hardware.camera.provider@2.4-service \
-    vendor.qti.hardware.camera.device@1.0 \
-    vendor.qti.hardware.camera.device@1.0_vendor \
-    camera.device@1.0-impl \
-    camera.device@3.2-impl
-
-# Bluetooth
-PRODUCT_PACKAGES += \
-    libbt-vendor
+    android.hardware.camera.provider@2.4-service
 
 # Connectivity Engine support (CNE)
 PRODUCT_PACKAGES += \
@@ -156,31 +153,24 @@ PRODUCT_PACKAGES += \
 
 # Display
 PRODUCT_PACKAGES += \
-    gralloc.msm8998 \
     copybit.msm8998 \
+    gralloc.msm8998 \
     hwcomposer.msm8998 \
     memtrack.msm8998 \
     libdisplayconfig \
-    libhwc2on1adapter \
-    libgenlock \
     liboverlay \
-    libqdMetaData \
     libqdMetaData.system \
     libtinyxml
 
 PRODUCT_PACKAGES += \
-    android.hardware.graphics.composer@2.1-impl \
-    android.hardware.graphics.composer@2.1-service \
     android.hardware.graphics.allocator@2.0-impl \
     android.hardware.graphics.allocator@2.0-service \
     android.hardware.graphics.mapper@2.0-impl \
-    android.hardware.configstore@1.0-service \
+    android.hardware.graphics.composer@2.1-impl \
+    android.hardware.graphics.composer@2.1-service \
     android.hardware.memtrack@1.0-impl \
-    android.hardware.memtrack@1.0-service
-
-PRODUCT_PACKAGES += \
-    vendor.display.config@1.0 \
-    vendor.display.config@1.0_vendor
+    android.hardware.memtrack@1.0-service \
+    android.hardware.configstore@1.0-service
 
 # DRM
 PRODUCT_PACKAGES += \
@@ -189,8 +179,7 @@ PRODUCT_PACKAGES += \
 
 # Fingerprint sensor
 PRODUCT_PACKAGES += \
-    android.hardware.biometrics.fingerprint@2.1-service \
-    fingerprintd
+    android.hardware.biometrics.fingerprint@2.1-service
 
 # For config.fs
 PRODUCT_PACKAGES += \
@@ -205,13 +194,12 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     android.hardware.gnss@1.0-impl-qti \
     android.hardware.gnss@1.0-service-qti \
+
+PRODUCT_PACKAGES += \
     gps.conf \
+    libcurl \
     libgnss \
     libgnsspps \
-    libgps.utils \
-    liblocation_api \
-    libloc_core \
-    libloc_pla \
     libvehiclenetwork-native
 
 PRODUCT_COPY_FILES += \
@@ -274,13 +262,6 @@ PRODUCT_COPY_FILES += \
     frameworks/av/media/libstagefright/data/media_codecs_google_telephony.xml:$(TARGET_COPY_OUT_VENDOR)/etc/media_codecs_google_telephony.xml \
     frameworks/av/media/libstagefright/data/media_codecs_google_video.xml:$(TARGET_COPY_OUT_VENDOR)/etc/media_codecs_google_video.xml
 
-# Media Extensions
-PRODUCT_PACKAGES += \
-    libavmediaserviceextensions \
-    libmediametrics \
-    libregistermsext \
-    mediametrics
-
 # Net
 PRODUCT_PACKAGES += \
     android.system.net.netd@1.0 \
@@ -303,14 +284,12 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     libc2dcolorconvert \
     libextmedia_jni \
-    libhypv_intercept \
     libmm-omxcore \
     libOmxAacEnc \
     libOmxAmrEnc \
     libOmxCore \
     libOmxEvrcEnc \
     libOmxQcelp13Enc \
-    libOmxSwVencHevc \
     libOmxVdec \
     libOmxVenc \
     libstagefrighthw
@@ -374,14 +353,9 @@ PRODUCT_PACKAGES += \
 
 # RIL
 PRODUCT_PACKAGES += \
-    ims-ext-common \
     librmnetctl \
     libxml2 \
     libprotobuf-cpp-full \
-    telephony-ext
-
-PRODUCT_BOOT_JARS += \
-    telephony-ext
 
 # Seccomp policy
 PRODUCT_COPY_FILES += \
@@ -392,6 +366,14 @@ PRODUCT_COPY_FILES += \
 PRODUCT_PACKAGES += \
     android.hardware.sensors@1.0-impl \
     android.hardware.sensors@1.0-service
+
+# Telephony
+PRODUCT_PACKAGES += \
+    ims-ext-common \
+    telephony-ext
+
+PRODUCT_BOOT_JARS += \
+    telephony-ext
 
 # Tetheroffload
 PRODUCT_PACKAGES += \
@@ -416,11 +398,6 @@ PRODUCT_PACKAGES += \
 PRODUCT_PROPERTY_OVERRIDES += \
     ro.lineage.build.vendor_security_patch=2018-02-01
 
-# Vibrator
-PRODUCT_PACKAGES += \
-    android.hardware.vibrator@1.0-impl \
-    android.hardware.vibrator@1.0-service
-
 # Verity
 PRODUCT_SUPPORTS_BOOT_SIGNER := true
 PRODUCT_SUPPORTS_VERITY := true
@@ -430,6 +407,11 @@ PRODUCT_VERITY_SIGNING_KEY := build/target/product/security/verity
 
 PRODUCT_PACKAGES += \
     verity_key
+
+# Vibrator
+PRODUCT_PACKAGES += \
+    android.hardware.vibrator@1.0-impl \
+    android.hardware.vibrator@1.0-service
 
 # VNDK-SP
 PRODUCT_PACKAGES += \
@@ -464,4 +446,3 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/wifi/wpa_supplicant_overlay.conf:$(TARGET_COPY_OUT_VENDOR)/etc/wifi/wpa_supplicant_overlay.conf \
     $(LOCAL_PATH)/wifi/WCNSS_qcom_cfg.ini:$(TARGET_COPY_OUT_VENDOR)/etc/wifi/WCNSS_qcom_cfg.ini \
     $(LOCAL_PATH)/wifi/wifi_concurrency_cfg.txt:$(TARGET_COPY_OUT_VENDOR)/etc/wifi/wifi_concurrency_cfg.txt
-
