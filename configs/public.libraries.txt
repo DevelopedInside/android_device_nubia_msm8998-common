@@ -1,4 +1,5 @@
 libadsprpc.so
+libcdsprpc.so
 libOpenCL.so
 libqti-perfd-client.so
 libsdsprpc.so
