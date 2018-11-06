@@ -34,7 +34,7 @@ vendor/lib/rfsa/adsp/libvpp_frc.so
 vendor/lib/rfsa/adsp/libvpp_svc_skel.so
 
 # Alarm
-etc/permissions/vendor-qti-hardware-alarm.xml
+etc/permissions/vendor-qti-hardware-alarm.xml:vendor/etc/permissions/vendor-qti-hardware-alarm.xml
 -vendor/app/PowerOffAlarm/PowerOffAlarm.apk
 vendor/bin/hw/vendor.qti.hardware.alarm@1.0-service
 vendor/etc/init/vendor.qti.hardware.alarm@1.0-service.rc
@@ -78,10 +78,10 @@ vendor/lib64/libbt-hidlclient.so
 vendor/lib64/libbtnv.so
 
 # Bluetooth (ANT+)
-lib/com.qualcomm.qti.ant@1.0.so
--lib/libantradio.so
-lib64/com.qualcomm.qti.ant@1.0.so
--lib64/libantradio.so
+lib/com.qualcomm.qti.ant@1.0.so:vendor/lib/com.qualcomm.qti.ant@1.0.so
+-lib/libantradio.so:vendor/lib/libantradio.so
+lib64/com.qualcomm.qti.ant@1.0.so:vendor/lib64/com.qualcomm.qti.ant@1.0.so
+-lib64/libantradio.so:vendor/lib64/libantradio.so
 vendor/lib/com.qualcomm.qti.ant@1.0_vendor.so
 vendor/lib/hw/com.qualcomm.qti.ant@1.0-impl.so
 vendor/lib64/com.qualcomm.qti.ant@1.0_vendor.so
@@ -96,6 +96,10 @@ vendor/lib64/com.qualcomm.qti.bluetooth_audio@1.0_vendor.so
 vendor/lib64/hw/com.qualcomm.qti.bluetooth_audio@1.0-impl.so
 vendor/lib64/hw/vendor.qti.hardware.fm@1.0-impl.so
 vendor/lib64/vendor.qti.hardware.fm@1.0_vendor.so
+
+# Bluetooth LDAC
+lib64/libldacBT_abr.so:vendor/lib64/libldacBT_abr.so
+lib64/libldacBT_enc.so:vendor/lib64/libldacBT_enc.so
 
 # Charger
 vendor/bin/hvdcp_opti
@@ -559,8 +563,8 @@ vendor/lib64/vendor.display.color@1.0_vendor.so
 vendor/lib64/vendor.display.postproc@1.0_vendor.so
 
 # QMI
-etc/permissions/qti_libpermissions.xml
-etc/permissions/qti_permissions.xml
+etc/permissions/qti_libpermissions.xml:vendor/etc/permissions/qti_libpermissions.xml
+etc/permissions/qti_permissions.xml:vendor/etc/permissions/qti_permissions.xml
 lib/libdiag_system.so
 lib64/libdiag_system.so
 vendor/bin/irsc_util
@@ -599,18 +603,18 @@ vendor/lib64/libqmiservices.so
 vendor/lib64/libsmemlog.so
 
 # Radio
--app/datastatusnotification/datastatusnotification.apk
--app/embms/embms.apk
--app/QtiTelephonyService/QtiTelephonyService.apk
-etc/permissions/embms.xml
-etc/permissions/qcnvitems.xml
-etc/permissions/qcrilhook.xml
-etc/permissions/telephonyservice.xml
-framework/embmslibrary.jar
-framework/qcnvitems.jar
-framework/qcrilhook.jar
+-app/datastatusnotification/datastatusnotification.apk:vendor/app/datastatusnotification/datastatusnotification.apk
+-app/embms/embms.apk:vendor/app/embms/embms.apk
+-app/QtiTelephonyService/QtiTelephonyService.apk:vendor/app/QtiTelephonyService/QtiTelephonyService.apk
+etc/permissions/embms.xml:vendor/etc/permissions/embms.xml
+etc/permissions/qcnvitems.xml:vendor/etc/permissions/qcnvitems.xml
+etc/permissions/qcrilhook.xml:vendor/etc/permissions/qcrilhook.xml
+etc/permissions/telephonyservice.xml:vendor/etc/permissions/telephonyservice.xml
+framework/embmslibrary.jar:vendor/framework/embmslibrary.jar
+framework/qcnvitems.jar:vendor/framework/qcnvitems.jar
+framework/qcrilhook.jar:vendor/framework/qcrilhook.jar
 framework/qti-telephony-common.jar
-framework/QtiTelephonyServicelibrary.jar
+framework/QtiTelephonyServicelibrary.jar:vendor/framework/QtiTelephonyServicelibrary.jar
 -priv-app/qcrilmsgtunnel/qcrilmsgtunnel.apk
 vendor/bin/ATFWD-daemon
 vendor/bin/netmgrd
@@ -654,34 +658,34 @@ vendor/lib64/vendor.qti.hardware.radio.uim_remote_server@1.0_vendor.so
 vendor/radio/qcril_database/qcril.db
 
 # Radio - IMS
--app/ims/ims.apk
--app/imssettings/imssettings.apk
-etc/permissions/com.qualcomm.qti.imscmservice.xml
-etc/permissions/qti-vzw-ims-internal.xml
+-app/ims/ims.apk:vendor/app/ims/ims.apk
+-app/imssettings/imssettings.apk:vendor/app/imssettings/imssettings.apk
+etc/permissions/com.qualcomm.qti.imscmservice.xml:vendor/etc/permissions/com.qualcomm.qti.imscmservice.xml
+etc/permissions/qti-vzw-ims-internal.xml:vendor/etc/permissions/qti-vzw-ims-internal.xml
 framework/com.qualcomm.qti.imscmservice@1.0-java.jar
-lib/com.qualcomm.qti.imscmservice@1.0.so
-lib/lib-imscamera.so
-lib/libimscamera_jni.so
-lib/libimsmedia_jni.so
-lib/lib-imsvideocodec.so
-lib/lib-imsvtextutils.so
-lib/lib-imsvtutils.so
-lib/libmmrtpdecoder.so
-lib/libmmrtpencoder.so
-lib/librcc.so
-lib/vendor.qti.imsrtpservice@1.0.so
-lib64/com.qualcomm.qti.imscmservice@1.0.so
-lib64/lib-imscamera.so
-lib64/libimscamera_jni.so
-lib64/libimsmedia_jni.so
-lib64/lib-imsvideocodec.so
-lib64/lib-imsvt.so
-lib64/lib-imsvtextutils.so
-lib64/lib-imsvtutils.so
-lib64/libmmrtpdecoder.so
-lib64/libmmrtpencoder.so
-lib64/librcc.so
-lib64/vendor.qti.imsrtpservice@1.0.so
+lib/com.qualcomm.qti.imscmservice@1.0.so:vendor/lib/com.qualcomm.qti.imscmservice@1.0.so
+lib/lib-imscamera.so:vendor/lib/lib-imscamera.so
+lib/libimscamera_jni.so:vendor/lib/libimscamera_jni.so
+lib/libimsmedia_jni.so:vendor/lib/libimsmedia_jni.so
+lib/lib-imsvideocodec.so:vendor/lib/lib-imsvideocodec.so
+lib/lib-imsvtextutils.so:vendor/lib/lib-imsvtextutils.so
+lib/lib-imsvtutils.so:vendor/lib/lib-imsvtutils.so
+lib/libmmrtpdecoder.so:vendor/lib/libmmrtpdecoder.so
+lib/libmmrtpencoder.so:vendor/lib/libmmrtpencoder.so
+lib/librcc.so:vendor/lib/librcc.so
+lib/vendor.qti.imsrtpservice@1.0.so:vendor/lib/vendor.qti.imsrtpservice@1.0.so
+lib64/com.qualcomm.qti.imscmservice@1.0.so:vendor/lib64/com.qualcomm.qti.imscmservice@1.0.so
+lib64/lib-imscamera.so:vendor/lib64/lib-imscamera.so
+lib64/libimscamera_jni.so:vendor/lib64/libimscamera_jni.so
+lib64/libimsmedia_jni.so:vendor/lib64/libimsmedia_jni.so
+lib64/lib-imsvideocodec.so:vendor/lib64/lib-imsvideocodec.so
+lib64/lib-imsvt.so:vendor/lib64/lib-imsvt.so
+lib64/lib-imsvtextutils.so:vendor/lib64/lib-imsvtextutils.so
+lib64/lib-imsvtutils.so:vendor/lib64/lib-imsvtutils.so
+lib64/libmmrtpdecoder.so:vendor/lib64/libmmrtpdecoder.so
+lib64/libmmrtpencoder.so:vendor/lib64/libmmrtpencoder.so
+lib64/librcc.so:vendor/lib64/librcc.so
+lib64/vendor.qti.imsrtpservice@1.0.so:vendor/lib64/vendor.qti.imsrtpservice@1.0.so
 vendor/bin/ims_rtp_daemon
 vendor/bin/imsdatadaemon
 vendor/bin/imsqmidaemon
@@ -775,3 +779,95 @@ vendor/lib64/vendor.qti.voiceprint@1.0.so
 
 # Wi-Fi
 vendor/bin/cnss-daemon
+
+# Wi-Fi Display
+-app/WfdService/WfdService.apk:vendor/app/WfdService/WfdService.apk
+-framework/WfdCommon.jar:vendor/framework/WfdCommon.jar
+bin/wfdservice:vendor/bin/wfdservice
+etc/init/wfdservice.rc:vendor/etc/init/wfdservice.rc
+etc/wfdconfig.xml:vendor/etc/wfdconfig.xml
+etc/wfdconfigsink.xml:vendor/etc/wfdconfigsink.xml
+lib/com.qualcomm.qti.wifidisplayhal@1.0.so:vendor/lib/com.qualcomm.qti.wifidisplayhal@1.0.so
+lib/libExtendedExtractor.so:vendor/lib/libExtendedExtractor.so
+lib/libFileMux.so:vendor/lib/libFileMux.so
+lib/libmmparser.so:vendor/lib/libmmparser.so
+lib/libmmparser_lite.so:vendor/lib/libmmparser_lite.so
+lib/libwfdavenhancements.so:vendor/lib/libwfdavenhancements.so
+lib/libwfdcodecv4l2.so:vendor/lib/libwfdcodecv4l2.so
+lib/libwfdcommonutils.so:vendor/lib/libwfdcommonutils.so
+lib/libwfdconfigutils.so:vendor/lib/libwfdconfigutils.so
+lib/libwfdmminterface.so:vendor/lib/libwfdmminterface.so
+lib/libwfdmmsink.so:vendor/lib/libwfdmmsink.so
+lib/libwfdmmsrc.so:vendor/lib/libwfdmmsrc.so
+lib/libwfdnative.so:vendor/lib/libwfdnative.so
+lib/libwfdrtsp.so:vendor/lib/libwfdrtsp.so
+lib/libwfdservice.so:vendor/lib/libwfdservice.so
+lib/libwfdsm.so:vendor/lib/libwfdsm.so
+lib/libwfduibcinterface.so:vendor/lib/libwfduibcinterface.so
+lib/libwfduibcsink.so:vendor/lib/libwfduibcsink.so
+lib/libwfduibcsinkinterface.so:vendor/lib/libwfduibcsinkinterface.so
+lib/libwfduibcsrc.so:vendor/lib/libwfduibcsrc.so
+lib/libwfduibcsrcinterface.so:vendor/lib/libwfduibcsrcinterface.so
+lib64/com.qualcomm.qti.wifidisplayhal@1.0.so:vendor/lib64/com.qualcomm.qti.wifidisplayhal@1.0.so
+lib64/libExtendedExtractor.so:vendor/lib64/libExtendedExtractor.so
+lib64/libFileMux.so:vendor/lib64/libFileMux.so
+lib64/libmmparser.so:vendor/lib64/libmmparser.so
+lib64/libmmparser_lite.so:vendor/lib64/libmmparser_lite.so
+lib64/libwfdavenhancements.so:vendor/lib64/libwfdavenhancements.so
+lib64/libwfdcodecv4l2.so:vendor/lib64/libwfdcodecv4l2.so
+lib64/libwfdcommonutils.so:vendor/lib64/libwfdcommonutils.so
+lib64/libwfdconfigutils.so:vendor/lib64/libwfdconfigutils.so
+lib64/libwfdmminterface.so:vendor/lib64/libwfdmminterface.so
+lib64/libwfdmmsink.so:vendor/lib64/libwfdmmsink.so
+lib64/libwfdmmsrc.so:vendor/lib64/libwfdmmsrc.so
+lib64/libwfdnative.so:vendor/lib64/libwfdnative.so
+lib64/libwfdrtsp.so:vendor/lib64/libwfdrtsp.so
+lib64/libwfdservice.so:vendor/lib64/libwfdservice.so
+lib64/libwfdsm.so:vendor/lib64/libwfdsm.so
+lib64/libwfduibcinterface.so:vendor/lib64/libwfduibcinterface.so
+lib64/libwfduibcsink.so:vendor/lib64/libwfduibcsink.so
+lib64/libwfduibcsinkinterface.so:vendor/lib64/libwfduibcsinkinterface.so
+lib64/libwfduibcsrc.so:vendor/lib64/libwfduibcsrc.so
+lib64/libwfduibcsrcinterface.so:vendor/lib64/libwfduibcsrcinterface.so
+vendor/bin/hdcp1prov
+vendor/bin/hdcp2p2prov
+vendor/bin/wifidisplayhalservice
+vendor/etc/init/com.qualcomm.qti.wifidisplayhal@1.0-service.rc
+vendor/lib/com.qualcomm.qti.wifidisplayhal@1.0-halimpl.so
+vendor/lib/com.qualcomm.qti.wifidisplayhal@1.0-impl.so
+vendor/lib/com.qualcomm.qti.wifidisplayhal@1.0_vendor.so
+vendor/lib/libhdcp1prov.so
+vendor/lib/libhdcp2p2prov.so
+vendor/lib/libwfdcommonutils_proprietary.so
+vendor/lib/libwfdhaldsmanager.so
+vendor/lib/libwfdhdcpcp.so
+vendor/lib/libwfdhdcpcp.so
+vendor/lib/libwfdmmservice.so
+vendor/lib/libwfdmodulehdcpsession.so
+vendor/lib/libwfdmodulehdcpsession.so
+vendor/lib64/com.qualcomm.qti.wifidisplayhal@1.0-halimpl.so
+vendor/lib64/com.qualcomm.qti.wifidisplayhal@1.0-impl.so
+vendor/lib64/com.qualcomm.qti.wifidisplayhal@1.0_vendor.so
+vendor/lib64/libhdcp1prov.so
+vendor/lib64/libhdcp2p2prov.so
+vendor/lib64/libwfdcommonutils_proprietary.so
+vendor/lib64/libwfdhaldsmanager.so
+vendor/lib64/libwfdhdcpcp.so
+vendor/lib64/libwfdhdcpcp.so
+vendor/lib64/libwfdmmservice.so
+vendor/lib64/libwfdmodulehdcpsession.so
+vendor/lib64/libwfdmodulehdcpsession.so
+
+# VR
+lib64/libvraudio_client.so
+lib64/libvr_object_engine.so
+lib64/libvr_amb_engine.so
+lib64/libvr_sam_wrapper.so
+lib64/libvraudio.so
+lib/libvraudio_client.so
+lib/libvr_object_engine.so
+lib/libvr_amb_engine.so
+lib/libvr_sam_wrapper.so
+lib/libvraudio.so
+vendor/lib/hw/vr.msm8998.so
+vendor/lib64/hw/vr.msm8998.so
