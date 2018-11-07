@@ -70,7 +70,7 @@ COMMON_BLOB_ROOT="$LINEAGE_ROOT"/vendor/"$VENDOR"/"$DEVICE_COMMON"/proprietary
 function fix_camera_etc_path () {
     sed -i \
         's/\/system\/etc\//\/vendor\/etc\//g' \
-        "$COMMON_BLOB_ROOT"/"$1"
+        "$LINEAGE_ROOT"/vendor/"$VENDOR"/"$DEVICE"/proprietary/"$1"
 }
 
 fix_camera_etc_path vendor/lib/libmmcamera_imglib.so

@@ -859,12 +859,12 @@ vendor/lib64/libwfdmodulehdcpsession.so
 vendor/lib64/libwfdmodulehdcpsession.so
 
 # VR
-lib64/libvraudio_client.so
+vendor/lib64/libvraudio_client.so
 lib64/libvr_object_engine.so
 lib64/libvr_amb_engine.so
 lib64/libvr_sam_wrapper.so
 lib64/libvraudio.so
-lib/libvraudio_client.so
+vendor/lib/libvraudio_client.so
 lib/libvr_object_engine.so
 lib/libvr_amb_engine.so
 lib/libvr_sam_wrapper.so
