@@ -423,10 +423,6 @@ PRODUCT_PACKAGES += \
     android.hardware.vr@1.0-service \
     vr.msm8998
 
-# Weaver
-PRODUCT_PACKAGES += \
-    android.hardware.weaver@1.0
-
 # Wifi
 PRODUCT_PACKAGES += \
     hostapd \
