@@ -387,7 +387,7 @@
     <bool name="config_setColorTransformAccelerated">true</bool>
 
     <!-- Whether notify fingerprint client of successful cancelled authentication -->
-    <bool name="config_notifyClientOnFingerprintCancelSuccess">true</bool>
+    <!-- <bool name="config_notifyClientOnFingerprintCancelSuccess">true</bool> -->
 
     <!-- True if camera app should be pinned via Pinner Service -->
     <bool name="config_pinnerCameraApp">true</bool>
