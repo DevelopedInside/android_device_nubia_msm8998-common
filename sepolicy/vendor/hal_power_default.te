@@ -1,0 +1,4 @@
+allow hal_power_default sysfs:file { open write };
+
+# Touchpanel
+allow hal_power_default sysfs_touchpanel:file { open write };
