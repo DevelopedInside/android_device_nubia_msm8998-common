@@ -307,7 +307,6 @@ PRODUCT_PACKAGES += \
 # Ramdisk scripts
 PRODUCT_PACKAGES += \
     init.nubia.rc \
-    init.nubia.touch.lcd.rc \
     init.recovery.qcom.rc
 
 PRODUCT_PACKAGES += \
