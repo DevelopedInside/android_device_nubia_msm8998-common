@@ -260,7 +260,10 @@ BOARD_ROOT_EXTRA_FOLDERS := bt_firmware dsp firmware persist
 
 # SELinux
 include device/qcom/sepolicy/sepolicy.mk
-BOARD_SEPOLICY_DIRS += $(PLATFORM_PATH)/sepolicy
+
+BOARD_SEPOLICY_DIRS += $(PLATFORM_PATH)/sepolicy/vendor
+BOARD_PLAT_PUBLIC_SEPOLICY_DIR += $(PLATFORM_PATH)/sepolicy/public
+BOARD_PLAT_PRIVATE_SEPOLICY_DIR += $(PLATFORM_PATH)/sepolicy/private
 
 # Timeservice
 BOARD_USES_QC_TIME_SERVICES := true
