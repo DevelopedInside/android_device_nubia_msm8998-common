@@ -232,6 +232,11 @@ BOARD_USERDATAIMAGE_PARTITION_SIZE := 55680380928
 BOARD_VENDORIMAGE_PARTITION_SIZE := 471859200
 BOARD_VENDORIMAGE_FILE_SYSTEM_TYPE := ext4
 BOARD_FLASH_BLOCK_SIZE := 262144 # (BOARD_KERNEL_PAGESIZE * 64)
+BOARD_ROOT_EXTRA_SYMLINKS := \
+    /vendor/dsp:/dsp \
+    /vendor/firmware_mnt:/firmware \
+    /vendor/bt_firmware:/bt_firmware \
+    /mnt/vendor/persist:/persist
 
 TARGET_USERIMAGES_USE_EXT4 := true
 TARGET_USES_MKE2FS := true
