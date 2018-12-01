@@ -351,7 +351,7 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     librmnetctl \
     libxml2 \
-    libprotobuf-cpp-full \
+    libprotobuf-cpp-full
 
 # Seccomp policy
 PRODUCT_COPY_FILES += \
@@ -432,7 +432,7 @@ PRODUCT_PACKAGES += \
     libwifi-hal-qcom \
     wificond \
     wpa_supplicant \
-    wpa_supplicant.conf \
+    wpa_supplicant.conf
 
 PRODUCT_PACKAGES += \
     android.hardware.wifi@1.0-service
