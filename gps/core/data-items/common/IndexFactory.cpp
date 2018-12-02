@@ -1,4 +1,4 @@
-/* Copyright (c) 2017, The Linux Foundation. All rights reserved.
+/* Copyright (c) 2015, 2017 The Linux Foundation. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
@@ -26,46 +26,39 @@
  * IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  */
-#ifndef XTRA_SYSTEM_STATUS_OBS_H
-#define XTRA_SYSTEM_STATUS_OBS_H
 
-#include <cinttypes>
-#include <MsgTask.h>
+#include <string>
+#include <IndexFactory.h>
+#include <IClientIndex.h>
+#include <ClientIndex.h>
+#include <IDataItemIndex.h>
+#include <DataItemIndex.h>
+#include <IDataItemObserver.h>
+#include <DataItemId.h>
 
 using namespace std;
-using loc_core::IOsObserver;
+using loc_core::IClientIndex;
+using loc_core::IDataItemIndex;
 using loc_core::IDataItemObserver;
-using loc_core::IDataItemCore;
+using namespace loc_core;
 
+template <typename CT, typename DIT>
+inline IClientIndex <CT, DIT> * IndexFactory <CT, DIT> :: createClientIndex
+()
+{
+    return new (nothrow) ClientIndex <CT, DIT> ();
+}
 
-class XtraSystemStatusObserver : public IDataItemObserver {
-public :
-    // constructor & destructor
-    inline XtraSystemStatusObserver(IOsObserver* sysStatObs, const MsgTask* msgTask):
-            mSystemStatusObsrvr(sysStatObs), mMsgTask(msgTask) {
-        subscribe(true);
-    }
-    inline XtraSystemStatusObserver() {};
-    inline virtual ~XtraSystemStatusObserver() { subscribe(false); }
+template <typename CT, typename DIT>
+inline IDataItemIndex <CT, DIT> * IndexFactory <CT, DIT> :: createDataItemIndex
+()
+{
+    return new (nothrow) DataItemIndex <CT, DIT> ();
+}
 
-    // IDataItemObserver overrides
-    inline virtual void getName(string& name);
-    virtual void notify(const list<IDataItemCore*>& dlist);
-
-    bool updateLockStatus(uint32_t lock);
-    bool updateConnectionStatus(bool connected, uint32_t type);
-    bool updateTac(const string& tac);
-    bool updateMccMnc(const string& mccmnc);
-    inline const MsgTask* getMsgTask() { return mMsgTask; }
-    void subscribe(bool yes);
-
-private:
-    int createSocket();
-    void closeSocket(const int32_t socketFd);
-    bool sendEvent(const stringstream& event);
-    IOsObserver*    mSystemStatusObsrvr;
-    const MsgTask* mMsgTask;
-
-};
-
-#endif
+// Explicit instantiation must occur in same namespace where class is defined
+namespace loc_core
+{
+  template class IndexFactory <IDataItemObserver *, DataItemId>;
+  template class IndexFactory <string, DataItemId>;
+}

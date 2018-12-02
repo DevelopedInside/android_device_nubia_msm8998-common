@@ -1,4 +1,4 @@
-/* Copyright (c) 2017, The Linux Foundation. All rights reserved.
+/* Copyright (c) 2015, 2017 The Linux Foundation. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
@@ -26,46 +26,58 @@
  * IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  */
-#ifndef XTRA_SYSTEM_STATUS_OBS_H
-#define XTRA_SYSTEM_STATUS_OBS_H
 
-#include <cinttypes>
-#include <MsgTask.h>
+#ifndef __ICLIENTINDEX_H__
+#define __ICLIENTINDEX_H__
 
-using namespace std;
-using loc_core::IOsObserver;
-using loc_core::IDataItemObserver;
-using loc_core::IDataItemCore;
+#include <list>
 
+namespace loc_core
+{
 
-class XtraSystemStatusObserver : public IDataItemObserver {
-public :
-    // constructor & destructor
-    inline XtraSystemStatusObserver(IOsObserver* sysStatObs, const MsgTask* msgTask):
-            mSystemStatusObsrvr(sysStatObs), mMsgTask(msgTask) {
-        subscribe(true);
-    }
-    inline XtraSystemStatusObserver() {};
-    inline virtual ~XtraSystemStatusObserver() { subscribe(false); }
+template  <typename CT, typename DIT>
 
-    // IDataItemObserver overrides
-    inline virtual void getName(string& name);
-    virtual void notify(const list<IDataItemCore*>& dlist);
+class IClientIndex {
+public:
 
-    bool updateLockStatus(uint32_t lock);
-    bool updateConnectionStatus(bool connected, uint32_t type);
-    bool updateTac(const string& tac);
-    bool updateMccMnc(const string& mccmnc);
-    inline const MsgTask* getMsgTask() { return mMsgTask; }
-    void subscribe(bool yes);
+    // Checks if client is subscribed
+    virtual bool isSubscribedClient (CT client) = 0;
 
-private:
-    int createSocket();
-    void closeSocket(const int32_t socketFd);
-    bool sendEvent(const stringstream& event);
-    IOsObserver*    mSystemStatusObsrvr;
-    const MsgTask* mMsgTask;
+    // gets subscription list
+    virtual void getSubscribedList (CT client, std :: list <DIT> & out) = 0;
 
+    // removes an entry
+    virtual int remove (CT client) = 0;
+
+    // removes std :: list of data items and returns a list of clients
+    // removed if any.
+    virtual void remove
+    (
+        const std :: list <DIT> & r,
+        std :: list <CT> & out
+    ) = 0;
+
+    // removes list of data items indexed by client and returns list
+    // of data items removed if any.
+    virtual void remove
+    (
+        CT client,
+        const std :: list <DIT> & r,
+        std :: list <DIT> & out
+    ) = 0;
+
+    // adds/modifies entry in  map and returns new data items added.
+    virtual void add
+    (
+        CT client,
+        const std :: list <DIT> & l,
+        std :: list <DIT> & out
+    ) = 0;
+
+    // dtor
+    virtual ~IClientIndex () {}
 };
 
-#endif
+} // namespace loc_core
+
+#endif // #ifndef __ICLIENTINDEX_H__
