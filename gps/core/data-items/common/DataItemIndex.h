@@ -1,4 +1,4 @@
-/* Copyright (c) 2017, The Linux Foundation. All rights reserved.
+/* Copyright (c) 2015, 2017 The Linux Foundation. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
@@ -26,46 +26,45 @@
  * IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  */
-#ifndef XTRA_SYSTEM_STATUS_OBS_H
-#define XTRA_SYSTEM_STATUS_OBS_H
 
-#include <cinttypes>
-#include <MsgTask.h>
+#ifndef __DATAITEMINDEX_H__
+#define __DATAITEMINDEX_H__
 
-using namespace std;
-using loc_core::IOsObserver;
-using loc_core::IDataItemObserver;
-using loc_core::IDataItemCore;
+#include <list>
+#include <map>
+#include <IDataItemIndex.h>
 
+using loc_core::IDataItemIndex;
 
-class XtraSystemStatusObserver : public IDataItemObserver {
-public :
-    // constructor & destructor
-    inline XtraSystemStatusObserver(IOsObserver* sysStatObs, const MsgTask* msgTask):
-            mSystemStatusObsrvr(sysStatObs), mMsgTask(msgTask) {
-        subscribe(true);
-    }
-    inline XtraSystemStatusObserver() {};
-    inline virtual ~XtraSystemStatusObserver() { subscribe(false); }
+namespace loc_core
+{
 
-    // IDataItemObserver overrides
-    inline virtual void getName(string& name);
-    virtual void notify(const list<IDataItemCore*>& dlist);
+template <typename CT, typename DIT>
 
-    bool updateLockStatus(uint32_t lock);
-    bool updateConnectionStatus(bool connected, uint32_t type);
-    bool updateTac(const string& tac);
-    bool updateMccMnc(const string& mccmnc);
-    inline const MsgTask* getMsgTask() { return mMsgTask; }
-    void subscribe(bool yes);
+class DataItemIndex : public IDataItemIndex  <CT, DIT> {
+
+public:
+
+    DataItemIndex ();
+
+    ~DataItemIndex ();
+
+    void getListOfSubscribedClients (DIT id, std :: list <CT> & out);
+
+    int remove (DIT id);
+
+    void remove (const std :: list <CT> & r, std :: list <DIT> & out);
+
+    void remove (DIT id, const std :: list <CT> & r, std :: list <CT> & out);
+
+    void add (DIT id, const std :: list <CT> & l, std :: list <CT> & out);
+
+    void add (CT client, const std :: list <DIT> & l, std :: list <DIT> & out);
 
 private:
-    int createSocket();
-    void closeSocket(const int32_t socketFd);
-    bool sendEvent(const stringstream& event);
-    IOsObserver*    mSystemStatusObsrvr;
-    const MsgTask* mMsgTask;
-
+    std :: map < DIT, std :: list <CT> > mClientsPerDataItemMap;
 };
 
-#endif
+} // namespace loc_core
+
+#endif // #ifndef __DATAITEMINDEX_H__
