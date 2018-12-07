@@ -189,7 +189,7 @@ PRODUCT_PACKAGES += \
 # GPS
 PRODUCT_PACKAGES += \
     android.hardware.gnss@1.0-impl-qti \
-    android.hardware.gnss@1.0-service-qti \
+    android.hardware.gnss@1.0-service-qti
 
 PRODUCT_PACKAGES += \
     gps.conf \
@@ -351,7 +351,7 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     librmnetctl \
     libxml2 \
-    libprotobuf-cpp-full \
+    libprotobuf-cpp-full
 
 # Seccomp policy
 PRODUCT_COPY_FILES += \
@@ -409,7 +409,7 @@ PRODUCT_PACKAGES += \
     android.hardware.vibrator@1.0-impl \
     android.hardware.vibrator@1.0-service
 
-# VNDK-SP
+# VNDK
 PRODUCT_PACKAGES += \
     vndk_package
 
@@ -436,7 +436,7 @@ PRODUCT_PACKAGES += \
     libwifi-hal-qcom \
     wificond \
     wpa_supplicant \
-    wpa_supplicant.conf \
+    wpa_supplicant.conf
 
 PRODUCT_PACKAGES += \
     android.hardware.wifi@1.0-service
