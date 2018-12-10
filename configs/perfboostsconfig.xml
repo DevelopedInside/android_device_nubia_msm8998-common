@@ -27,7 +27,7 @@
 
         <!-- Type="1", main launch boost of 2sec -->
         <Config
-            Id="0x00001081" Type="1" Enable="false" Timeout="2000" Target="msm8998"
+            Id="0x00001081" Type="1" Enable="true" Timeout="2000" Target="msm8998"
             Resources="0x40C00000, 0x1, 0x40804000, 0x939, 0x40804100, 0xFFF, 0x40800000, 0xFFF,
                        0x40800100, 0xFFF, 0x41800000, 140, 0x40400000, 0x1, 0x42C10000, 0x1" />
 
@@ -45,7 +45,7 @@
 
         <!-- Type="3", FA launch boost of 15sec -->
         <Config
-            Id="0x00001081" Type="3" Enable="false" Timeout="15000" Target="msm8998"
+            Id="0x00001081" Type="3" Enable="true" Timeout="15000" Target="msm8998"
             Resources="0x40C00000, 0x3, 0x40C58000, 0x5A, 0x40C54000, 0x5F" />
 
     <!-- config_enableLaunchBoostv4-->
@@ -65,7 +65,7 @@
 
         <!-- Type="4", Adaptive Launch boost -->
         <Config
-            Id="0x00001081" Type="4" Enable="false" Timeout="2000" Target="msm8998"
+            Id="0x00001081" Type="4" Enable="true" Timeout="2000" Target="msm8998"
             Resources="0x40C00000, 0x2,
                        0x41000000, 0x4, 0x41000100, 0x4,
                        0x41410000, 0x28, 0x41410100, 0x28,
@@ -82,7 +82,7 @@
 
         <!-- Type="1", Vertical Scroll boost -->
         <Config
-            Id="0x00001080" Type="1" Enable="false" Target="msm8998"
+            Id="0x00001080" Type="1" Enable="true" Target="msm8998"
             Resources="0x41800000, 0x33, 0x40800000, 1000, 0x40800100, 1000, 0x40C00000, 0x2" />
 
     <!--Horizontal Scroll boost-->
@@ -90,7 +90,7 @@
 
         <!-- Type="2", Horizontal Scroll boost -->
         <Config
-            Id="0x00001080" Type="2" Enable="false" Target="msm8998"
+            Id="0x00001080" Type="2" Enable="true" Target="msm8998"
             Resources="0x40C00000, 0x2" />
 
     <!--Pre-Fling boost-->
@@ -101,7 +101,7 @@
 
         <!-- Type="4", Pre-Fling boost -->
         <Config
-            Id="0x00001080" Type="4" Enable="false" Timeout="80" Target="msm8998"
+            Id="0x00001080" Type="4" Enable="true" Timeout="80" Target="msm8998"
             Resources="0x41800000, 0x33, 0x40800000, 1000, 0x40800100, 1000, 0x40C00000, 0x2" />
 
     <!--PackageInstall boost-->
@@ -113,7 +113,7 @@
         <!-- Type="", Package Install boost -->
 
         <Config
-            Id="0x00001088" Enable="false" Target="msm8998"
+            Id="0x00001088" Enable="true" Target="msm8998"
             Resources="0x40C00000, 0x1, 0x40804000, 0xFFF, 0x40804100, 0xFFF, 0x40800000,0xFFF,
                        0x40800100,0xFFF" />
     </PerfBoost>
