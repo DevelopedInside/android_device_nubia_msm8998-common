@@ -50,8 +50,13 @@
 #include "performance.h"
 #include "power-common.h"
 
+#include "utils_ext.h"
+
 #define CHECK_HANDLE(x) ((x)>0)
 #define NUM_PERF_MODES  3
+
+#define VENDOR_HINT_FIRST_LAUNCH_BOOST 0x00001081
+#define VENDOR_HINT_SCROLL_BOOST 0x00001080
 
 static int current_power_profile = PROFILE_BALANCED;
 
@@ -261,6 +266,83 @@ static int process_video_encode_hint(void *metadata)
     return HINT_NONE;
 }
 
+static int launch_handle = 0;
+static int process_activity_launch_hint(void *data)
+{
+    if (current_mode != NORMAL_MODE) {
+        return HINT_HANDLED;
+    }
+
+    char governor[80];
+    if (get_scaling_governor(governor, sizeof(governor)) == -1) {
+        ALOGE("Can't obtain scaling governor.");
+        return HINT_NONE;
+    }
+
+    if (data) {
+        int duration = 2000; // by default 2s
+
+        launch_handle = perf_hint_ext(VENDOR_HINT_FIRST_LAUNCH_BOOST, duration, 1);
+        if(CHECK_HANDLE(launch_handle)) {
+            return HINT_HANDLED;
+        }
+        return HINT_NONE;
+    } else if (data == NULL) {
+        release_request(launch_handle);
+        return HINT_HANDLED;
+    }
+    return HINT_NONE;
+}
+
+static int process_interaction_hint(void *data)
+{
+    if (current_mode != NORMAL_MODE) {
+        return HINT_HANDLED;
+    }
+
+    char governor[80];
+    if (get_scaling_governor(governor, sizeof(governor)) == -1) {
+        ALOGE("Can't obtain scaling governor.");
+        return HINT_NONE;
+    }
+
+    static struct timespec s_previous_boost_timespec;
+    struct timespec cur_boost_timespec;
+    long long elapsed_time;
+    static int s_previous_duration = 0;
+    int duration = 500; // 500 ms by default
+
+    if (data) {
+        int input_duration = *((int*)data);
+        if (input_duration > duration) {
+            duration = (input_duration > 5000) ? 5000 : input_duration;
+        }
+    }
+
+    clock_gettime(CLOCK_MONOTONIC, &cur_boost_timespec);
+
+    elapsed_time = calc_timespan_us(s_previous_boost_timespec, cur_boost_timespec);
+    // don't hint if previous hint's duration covers this hint's duration
+    if ((s_previous_duration * 1000) > (elapsed_time + duration * 1000)) {
+        return HINT_HANDLED;
+    }
+    s_previous_boost_timespec = cur_boost_timespec;
+    s_previous_duration = duration;
+
+    int type = 2; // horizontal scroll
+    if (duration >= 1500) {
+        type = 4; // pre-fling
+    } else {
+        type = 1; // vertical
+    }
+
+    int interaction_handle = perf_hint_ext(VENDOR_HINT_SCROLL_BOOST, duration, type);
+    if (CHECK_HANDLE(interaction_handle)) {
+        return HINT_HANDLED;
+    }
+    return HINT_NONE;
+}
+
 int power_hint_override(power_hint_t hint, void *data)
 {
     int ret_val = HINT_NONE;
@@ -288,9 +370,10 @@ int power_hint_override(power_hint_t hint, void *data)
             ret_val = process_perf_hint(data, VR_MODE);
             break;
         case POWER_HINT_INTERACTION:
-            if (current_mode != NORMAL_MODE) {
-                ret_val = HINT_HANDLED;
-            }
+            ret_val = process_interaction_hint(data);
+            break;
+        case POWER_HINT_LAUNCH:
+            ret_val = process_activity_launch_hint(data);
             break;
         default:
             break;
