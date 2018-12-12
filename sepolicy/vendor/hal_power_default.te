@@ -2,3 +2,6 @@ allow hal_power_default sysfs:file { open write };
 
 # Touchpanel
 allow hal_power_default sysfs_touchpanel:file { open write };
+
+# PowerHAL 1.1
+r_dir_file(hal_power_default, debugfs_wlan)
