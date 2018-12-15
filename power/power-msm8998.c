@@ -287,7 +287,7 @@ static int process_activity_launch_hint(void *data)
             return HINT_HANDLED;
         }
         return HINT_NONE;
-    } else if (data == NULL) {
+    } else {
         release_request(launch_handle);
         return HINT_HANDLED;
     }
