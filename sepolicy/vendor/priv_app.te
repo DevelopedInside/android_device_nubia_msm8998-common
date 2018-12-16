@@ -1,2 +1,8 @@
 allow priv_app adsprpcd_file:filesystem getattr;
 allow priv_app proc_interrupts:file open;
+
+# rules for nubia camera
+allow priv_app camera_data_file:dir r_dir_perms;
+allow priv_app camera_data_file:file r_file_perms;
+allow priv_app qemu_hw_mainkeys_prop:file read;
+allow priv_app vendor_file:file read;
