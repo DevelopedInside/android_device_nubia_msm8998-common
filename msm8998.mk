@@ -233,6 +233,11 @@ PRODUCT_PACKAGES += \
     ebtables \
     ethertypes
 
+# IMS
+PRODUCT_PACKAGES += \
+    ims-ext-common \
+    ims_ext_common.xml
+
 # IRQ
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/configs/msm_irqbalance.conf:$(TARGET_COPY_OUT_VENDOR)/etc/msm_irqbalance.conf
@@ -385,7 +390,6 @@ PRODUCT_SOONG_NAMESPACES += \
 
 # Telephony
 PRODUCT_PACKAGES += \
-    ims-ext-common \
     telephony-ext
 
 PRODUCT_BOOT_JARS += \
