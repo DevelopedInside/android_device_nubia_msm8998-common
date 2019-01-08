@@ -132,6 +132,7 @@ on property:sys.shutdown.requested=*
 
 on charger
     start vendor.hvdcp_opti
+    start vendor.power_off_alarm
     setprop sys.usb.configfs 1
 
 #on post-fs
