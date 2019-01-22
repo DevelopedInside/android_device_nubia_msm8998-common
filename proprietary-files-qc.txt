@@ -14,7 +14,6 @@ vendor/lib64/libfastcvadsp_stub.so
 vendor/lib64/libfastcvopt.so
 
 # ADSP modules
-lib/rfsa/adsp/libqvr_adsp_driver_skel.so:vendor/lib/rfsa/adsp/libqvr_adsp_driver_skel.so
 vendor/lib/rfsa/adsp/libadsp_fd_skel.so
 vendor/lib/rfsa/adsp/libadsp_hvx_add_constant.so
 vendor/lib/rfsa/adsp/libadsp_hvx_skel.so
