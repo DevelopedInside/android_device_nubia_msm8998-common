@@ -87,11 +87,13 @@
 
     <!--Horizontal Scroll boost-->
         <!-- SCHEDBOOST resource opcode, value-->
+        <!-- CPUBOOST_MIN_FREQ BIG CORE resource opcode, value -->
+        <!-- CPUBOOST_MIN_FREQ LITTLE Core resource opcode, value -->
 
         <!-- Type="2", Horizontal Scroll boost -->
         <Config
             Id="0x00001080" Type="2" Enable="true" Target="msm8998"
-            Resources="0x40C00000, 0x2" />
+            Resources="0x40C00000, 0x2, 0x40800000, 806, 0x40800100, 518" />
 
     <!--Pre-Fling boost-->
         <!-- CPUBW_MIN_FREQ resource opcode, value-->
