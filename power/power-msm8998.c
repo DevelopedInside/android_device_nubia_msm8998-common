@@ -266,12 +266,32 @@ static int process_video_encode_hint(void *metadata)
     return HINT_NONE;
 }
 
-static int process_activity_launch_hint(void *UNUSED(data))
+static int process_activity_launch_hint(void *data)
 {
+    static int launch_handle = -1;
+    static int launch_mode = 0;
+    int state = *((int*)data);
+
+    // release lock early if launch has finished
+    if (!state) {
+        if (CHECK_HANDLE(launch_handle)) {
+            release_request(launch_handle);
+            launch_handle = -1;
+        }
+        launch_mode = 0;
+        return HINT_HANDLED;
+    }
+
     if (current_mode != NORMAL_MODE) {
         ALOGV("%s: ignoring due to other active perf hints", __func__);
-    } else {
-        perf_hint_enable_with_type(VENDOR_HINT_FIRST_LAUNCH_BOOST, -1, LAUNCH_BOOST_V1);
+    } else if (!launch_mode) {
+        launch_handle = perf_hint_enable_with_type(VENDOR_HINT_FIRST_LAUNCH_BOOST,
+                -1, LAUNCH_BOOST_V1);
+        if (!CHECK_HANDLE(launch_handle)) {
+            ALOGE("Failed to perform launch boost");
+            return HINT_NONE;
+        }
+        launch_mode = 1;
     }
     return HINT_HANDLED;
 }
