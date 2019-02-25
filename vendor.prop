@@ -185,5 +185,8 @@ ro.build.shutdown_timeout=0
 # Timeservice
 persist.timed.enable=true
 
+# VNDK
+ro.vendor.vndk.version=28
+
 # Wi-Fi
 wifi.interface=wlan0
