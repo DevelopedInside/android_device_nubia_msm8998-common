@@ -161,8 +161,10 @@ PRODUCT_PACKAGES += \
     memtrack.msm8998 \
     libdisplayconfig \
     liboverlay \
+    libqdMetaData \
     libqdMetaData.system \
-    libtinyxml
+    libtinyxml \
+    libvulkan
 
 PRODUCT_PACKAGES += \
     android.hardware.graphics.allocator@2.0-impl \
@@ -416,11 +418,8 @@ PRODUCT_PACKAGES += \
 
 # VNDK
 PRODUCT_PACKAGES += \
+    libstdc++.vendor \
     vndk_package
-
-# VNDK-SP
-PRODUCT_PACKAGES += \
-    vndk-sp
 
 # VR
 PRODUCT_PACKAGES += \
