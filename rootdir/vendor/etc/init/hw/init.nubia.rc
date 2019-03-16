@@ -293,13 +293,6 @@ service vendor.dataqti /system/vendor/bin/qti
     disabled
     writepid /dev/cpuset/system-background/tasks
 
-#start dpmQmiMgr service
-service dpmQmiMgr /system/vendor/bin/dpmQmiMgr
-    class main
-    user system
-    group system
-    writepid /dev/cpuset/system-background/tasks
-
 # Manage netmgrd based on value of property
 on property:persist.vendor.data.mode=disabled
     stop vendor.netmgrd
