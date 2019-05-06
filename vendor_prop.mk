@@ -65,7 +65,6 @@ PRODUCT_PROPERTY_OVERRIDES += \
 
 # Camera
 PRODUCT_PROPERTY_OVERRIDES += \
-    vendor.camera.aux.packagelist=com.android.camera,org.codeaurora.snapcam,org.lineageos.snap \
     persist.camera.HAL3.enabled=1 \
     persist.camera.depth.focus.cb=0 \
     persist.camera.vdbea.switch=1 \
