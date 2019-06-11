@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, The Linux Foundation. All rights reserved.
+ * Copyright (c) 2017-2018, The Linux Foundation. All rights reserved.
  * Not a Contribution
  */
 /*
@@ -18,7 +18,7 @@
  * limitations under the License.
  */
 
-#define LOG_TAG "android.hardware.gnss@1.0-service-qti"
+#define LOG_TAG "android.hardware.gnss@1.1-service-qti"
 
 #include <android/hardware/gnss/1.0/IGnss.h>
 #include <hidl/LegacySupport.h>
