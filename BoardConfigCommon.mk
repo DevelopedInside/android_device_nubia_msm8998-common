@@ -227,6 +227,7 @@ DEVICE_MANIFEST_FILE := $(PLATFORM_PATH)/manifest.xml
 DEVICE_MATRIX_FILE := $(PLATFORM_PATH)/compatibility_matrix.xml
 
 # Media
+BOARD_SECCOMP_POLICY := $(PLATFORM_PATH)/seccomp
 TARGET_USES_MEDIA_EXTENSIONS := true
 
 # Partitions
