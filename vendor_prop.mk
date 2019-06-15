@@ -143,6 +143,10 @@ PRODUCT_PROPERTY_OVERRIDES += \
     persist.nfc.smartcard.config=SIM1,eSE1 \
     ro.nfc.port=I2C
 
+# OEM Unlock reporting
+PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
+    ro.oem_unlock_supported=1
+
 # Perf
 PRODUCT_PROPERTY_OVERRIDES += \
     ro.vendor.qti.sys.fw.bg_apps_limit=60 \
