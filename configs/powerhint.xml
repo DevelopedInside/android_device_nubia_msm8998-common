@@ -44,7 +44,7 @@
         <!-- CPUBW low power io percent of 50 -->
 
         <Config
-            Id="0x00001300" Enable="true" Target="msm8998"
+            Id="0x00001300" Enable="true" Timeout="0" Target="msm8998"
             Resources="0x41400000, 0x4, 0x41410000, 0x5F, 0x41414000, 0x22C, 0x41420000, 0x5A, 0x41400100, 0x4, 0x41410100, 0x5F
             , 0x41414100, 0x22C, 0x41420100, 0x5A, 0x41810000, 0x9C4, 0x41814000, 0x32" />
 
@@ -79,7 +79,7 @@
         <!-- GPU - max pwrlevel 5 (freq 414 MHz)-->
         <!-- GPUBW freq uncapped -->
         <Config
-            Id="0x00001206" Enable="true" Target="msm8998"
+            Id="0x00001206" Enable="true" Timeout="0" Target="msm8998"
             Resources="0x40800000, 0x0, 0x40800100, 0x0, 0x40804000, 0x4E0, 0x40804100, 0x4E0,
             0X42804000, 0x6, 0X42808000, 0x5, 0x42814000, 0x0"/>
         <!--vr mode-->
@@ -91,7 +91,7 @@
         <!-- GPU - max pwrlevel 3 (freq 596 MHz)-->
         <!-- GPUBW freq 775 Mhz-->
         <Config
-            Id="0x00001207" Enable="true" Target="msm8998"
+            Id="0x00001207" Enable="true" Timeout="0" Target="msm8998"
             Resources="0x40800000, 0x579, 0x40800100, 0x579, 0x40804000, 0x579, 0x40804100, 0x579,
             0X42804000, 0x3, 0X42808000, 0x3, 0x42814000, 0x1E4F"/>
 
@@ -104,7 +104,7 @@
         <!-- GPU - max pwrlevel 5 (freq 414 MHz)-->
         <!-- GPUBW freq 775 Mhz -->
         <Config
-            Id="0x00001301" Enable="true" Target="msm8998"
+            Id="0x00001301" Enable="true" Timeout="0" Target="msm8998"
             Resources="0x40800000, 0x4E0, 0x40800100, 0x4E0, 0x40804000, 0x4E0, 0x40804100, 0x4E0, 0X42804000, 0x5,
             0X42808000, 0x5, 0x42814000, 0x1E4F"/>
 
@@ -118,7 +118,7 @@
         <!-- GPU - max freq 414 Mhz -->
         <!-- Gold min_cpus = 4 -->
         <Config
-            Id="0x0000130A" Enable="true" Target="msm8998"
+            Id="0x0000130A" Enable="true" Timeout="0" Target="msm8998"
             Resources="0x40800000, 0x4A6, 0x40804000, 0x900, 0x40800100, 0x373, 0x40804100, 0x76C, 0x40404000, 0x0,
             0x42804000, 0x6, 0x42808000, 0x4, 0x41000000, 0x4"/>
 
@@ -132,7 +132,7 @@
         <!-- GPU - max freq 515 Mhz -->
         <!-- Gold min_cpus = 4 -->
         <Config
-            Id="0x0000130B" Enable="true" Target="msm8998"
+            Id="0x0000130B" Enable="true" Timeout="0" Target="msm8998"
             Resources="0x40800000, 0x4A6, 0x40804000, 0x900, 0x40800100, 0x373, 0x40804100, 0x76C, 0x40404000, 0x0,
             0x42804000, 0x4, 0x42808000, 0x3, 0x41000000, 0x4"/>
 
@@ -146,7 +146,7 @@
         <!-- GPU - max freq 670 Mhz -->
         <!-- Gold min_cpus = 4 -->
         <Config
-            Id="0x0000130C" Enable="true" Target="msm8998"
+            Id="0x0000130C" Enable="true" Timeout="0" Target="msm8998"
             Resources="0x40800000, 0x4A6, 0x40804000, 0x900, 0x40800100, 0x373, 0x40804100, 0x76C, 0x40404000, 0x0,
             0x42804000, 0x3, 0x42808000, 0x1, 0x41000000, 0x4"/>
 
@@ -160,7 +160,7 @@
         <!-- GPU - max freq 414 Mhz -->
         <!-- Gold min_cpus = 4 -->
         <Config
-            Id="0x0000130D" Enable="true" Target="msm8998"
+            Id="0x0000130D" Enable="true" Timeout="0" Target="msm8998"
             Resources="0x40800000, 0x4A6, 0x40804000, 0x900, 0x40800100, 0x493, 0x40804100, 0x76C, 0x40404000, 0x0,
             0x42804000, 0x6, 0x42808000, 0x4, 0x41000000, 0x4"/>
 
@@ -174,7 +174,7 @@
         <!-- GPU - max freq 515 Mhz -->
         <!-- Gold min_cpus = 4 -->
         <Config
-            Id="0x0000130E" Enable="true" Target="msm8998"
+            Id="0x0000130E" Enable="true" Timeout="0" Target="msm8998"
             Resources="0x40800000, 0x4A6, 0x40804000, 0x900, 0x40800100, 0x493, 0x40804100, 0x76C, 0x40404000, 0x0,
             0x42804000, 0x4, 0x42808000, 0x3, 0x41000000, 0x4"/>
 
@@ -188,7 +188,7 @@
         <!-- GPU - max freq 670 Mhz -->
         <!-- Gold min_cpus = 4 -->
         <Config
-            Id="0x0000130F" Enable="true" Target="msm8998"
+            Id="0x0000130F" Enable="true" Timeout="0" Target="msm8998"
             Resources="0x40800000, 0x4A6, 0x40804000, 0x900, 0x40800100, 0x493, 0x40804100, 0x76C, 0x40404000, 0x0,
             0x42804000, 0x3, 0x42808000, 0x1, 0x41000000, 0x4"/>
 
@@ -202,7 +202,7 @@
         <!-- GPU - max freq 414 Mhz -->
         <!-- Gold min_cpus = 4 -->
         <Config
-            Id="0x00001310" Enable="true" Target="msm8998"
+            Id="0x00001310" Enable="true" Timeout="0" Target="msm8998"
             Resources="0x40800000, 0x4F3, 0x40804000, 0x900, 0x40800100, 0x4E0, 0x40804100, 0x76C, 0x40404000, 0x0,
             0x42804000, 0x6, 0x42808000, 0x4, 0x41000000, 0x4"/>
 
@@ -216,7 +216,7 @@
         <!-- GPU - max freq 515 Mhz -->
         <!-- Gold min_cpus = 4 -->
         <Config
-            Id="0x00001311" Enable="true" Target="msm8998"
+            Id="0x00001311" Enable="true" Timeout="0" Target="msm8998"
             Resources="0x40800000, 0x4F3, 0x40804000, 0x900, 0x40800100, 0x4E0, 0x40804100, 0x76C, 0x40404000, 0x0,
             0x42804000, 0x4, 0x42808000, 0x3, 0x41000000, 0x4"/>
 
@@ -230,7 +230,7 @@
         <!-- GPU - max freq 670 Mhz -->
         <!-- Gold min_cpus = 4 -->
         <Config
-            Id="0x00001312" Enable="true" Target="msm8998"
+            Id="0x00001312" Enable="true" Timeout="0" Target="msm8998"
             Resources="0x40800000, 0x4F3, 0x40804000, 0x900, 0x40800100, 0x4E0, 0x40804100, 0x76C, 0x40404000, 0x0,
             0x42804000, 0x3, 0x42808000, 0x1, 0x41000000, 0x4"/>
     </Powerhint>
