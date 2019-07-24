@@ -148,6 +148,7 @@ PRODUCT_PROPERTY_OVERRIDES += \
 
 # Graphics
 PRODUCT_PROPERTY_OVERRIDES += \
+    debug.sf.enable_gl_backpressure=1 \
     debug.gralloc.enable_fb_ubwc=1 \
     debug.sf.enable_hwc_vds=1 \
     debug.sf.hw=1 \
