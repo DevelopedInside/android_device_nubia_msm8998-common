@@ -176,6 +176,10 @@ PRODUCT_PACKAGES += \
     android.hardware.memtrack@1.0-service \
     android.hardware.configstore@1.0-service
 
+# Doze
+PRODUCT_PACKAGES += \
+    NubiaDoze
+
 # DRM
 PRODUCT_PACKAGES += \
     android.hardware.drm@1.0-impl \
