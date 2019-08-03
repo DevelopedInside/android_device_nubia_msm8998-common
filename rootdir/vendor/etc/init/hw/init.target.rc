@@ -166,6 +166,7 @@ service qseecomd /vendor/bin/qseecomd
    class core
    user root
    group root
+   writepid /dev/cpuset/system-background/tasks
 
 service spdaemon /vendor/bin/spdaemon
    class core
@@ -335,6 +336,7 @@ service imsdatadaemon /vendor/bin/imsdatadaemon
 #   oneshot
 service pd_mapper /vendor/bin/pd-mapper
      class core
+     writepid /dev/cpuset/system-background/tasks
 
 #
 ## QCA1530 SoC late_start group trigger

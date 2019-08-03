@@ -686,21 +686,25 @@ service dpmQmiMgr /vendor/bin/dpmQmiMgr
     class main
     user system
     group radio system
+    writepid /dev/cpuset/system-background/tasks
 
 service irsc_util /vendor/bin/irsc_util "/vendor/etc/sec_config"
     class core
     user root
     oneshot
+    writepid /dev/cpuset/system-background/tasks
 
 service rmt_storage /vendor/bin/rmt_storage
     class core
     user root
     shutdown critical
     ioprio rt 0
+    writepid /dev/cpuset/system-background/tasks
 
 service tftp_server /vendor/bin/tftp_server
-   class core
-   user root
+    class core
+    user root
+    writepid /dev/cpuset/system-background/tasks
 
 on property:wc_transport.start_hci=true
     start start_hci_filter
@@ -849,6 +853,7 @@ service wpa_supplicant /vendor/bin/hw/wpa_supplicant \
     socket wpa_wlan0 dgram 660 wifi wifi
     disabled
     oneshot
+    writepid /dev/cpuset/system-background/tasks
 
 service vendor.wigig_supplicant /vendor/bin/hw/wpa_supplicant \
     -iwigig0 -Dnl80211 -c/data/vendor/wifi/wigig_supplicant.conf \
@@ -1055,6 +1060,7 @@ service qcom-sh /vendor/bin/init.qcom.sh
     class late_start
     user root
     oneshot
+    writepid /dev/cpuset/system-background/tasks
 
 service sensor-sh /vendor/bin/init.qcom.sensors.sh
     class core
@@ -1071,6 +1077,7 @@ service qcom-post-boot /vendor/bin/init.qcom.post_boot.sh
     user root
     disabled
     oneshot
+    writepid /dev/cpuset/system-background/tasks
 
 service wifi-sdio-on /vendor/bin/init.qcom.sdio.sh
     class late_start
@@ -1167,6 +1174,7 @@ service charger /charger
     class charger
     group system graphics
     seclabel u:r:charger:s0
+    writepid /dev/cpuset/system-background/tasks
 
 service ssr_diag /vendor/bin/ssr_diag
     class late_start
