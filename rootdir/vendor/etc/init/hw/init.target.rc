@@ -1,4 +1,4 @@
-# Copyright (c) 2013-2017, The Linux Foundation. All rights reserved.
+# Copyright (c) 2013-2018, The Linux Foundation. All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions are
@@ -27,41 +27,34 @@
 #
 #
 
-import /vendor/etc/init/hw/init.qcom.power.rc
+import /vendor/etc/init/hw/init.nubia.rc
 
-on early-init
-    mkdir /system 0777 root root
-    mkdir /firmware 0771 system system
-    mkdir /bt_firmware 0771 system system
-    symlink /data/tombstones /tombstones
-    mkdir /dsp 0771 media media
+on init
+    write /dev/stune/foreground/schedtune.sched_boost_no_override 1
+    write /dev/stune/top-app/schedtune.sched_boost_no_override 1
+    write /dev/stune/schedtune.colocate 0
+    write /dev/stune/background/schedtune.colocate 0
+    write /dev/stune/system-background/schedtune.colocate 0
+    write /dev/stune/foreground/schedtune.colocate 0
+    write /dev/stune/top-app/schedtune.colocate 1
+    write /sys/module/qpnp_rtc/parameters/poweron_alarm 1
 
 on fs
     wait /dev/block/platform/soc/1da4000.ufshc
     symlink /dev/block/platform/soc/1da4000.ufshc /dev/block/bootdevice
-
-    # modify for boot mount persist partition fix reformat partition issue
-    wait /dev/block/bootdevice/by-name/persist
-    mount ext4 /dev/block/bootdevice/by-name/persist /persist nosuid noatime nodev barrier=1
-    mkdir /persist/data 0700 system system
-    mkdir /persist/bms 0700 root system
-    restorecon_recursive /persist
     mount_all /vendor/etc/fstab.qcom
+    chown root system /mnt/vendor/persist
+    chmod 0771 /mnt/vendor/persist
     swapon_all /vendor/etc/fstab.qcom
-
     # Keeping following partitions outside fstab file. As user may not have
     # these partition flashed on the device. Failure to mount any partition in fstab file
     # results in failure to launch late-start class.
 
-    # add nubia embedlog
-    wait /dev/block/bootdevice/by-name/embedlog
-    mount ext3 /dev/block/bootdevice/by-name/embedlog /embedlog rw nosuid noatime nodev barrier=1 context=u:object_r:embedlog_file:s0
-
-    mkdir /persist/data 0700 system system
-    write /sys/kernel/boot_adsp/boot 1
+    restorecon_recursive /mnt/vendor/persist
+    mkdir /mnt/vendor/persist/data 0700 system system
 
 on post-fs
-    start qseecomd
+    start vendor.qseecomd
     exec - system system -- /vendor/bin/init.qti.qseecomd.sh
     write /dev/ipa 1
 
@@ -73,39 +66,31 @@ on post-fs-data
     mkdir /tombstones/dsps 0771 system system
     mkdir /data/vendor/hbtp 0750 system system
     mkdir /data/misc/qvr 0770 system system
-    
-    # create directory for nfc- give nfc the read/write access to
-    # the following directory-added by ZTEMT 2015.1.8
-    mkdir /data/nfc 0770 nfc nfc
-    mkdir /data/vendor/nfc 0770 nfc nfc
 
+# For cpusets initialize for Silver Only first and then Silver + Gold
+# Silver Only configuration cannot work with 0-7
 on boot
     start rmt_storage
     start rfs_access
 
-    ####Regionalization config and prop files####
-    chmod 0644 /persist/speccfg/spec
-    chmod 0644 /persist/speccfg/devicetype
-    chmod 0644 /persist/speccfg/mbnversion
-    chmod 0644 /persist/speccfg/.not_triggered
-    chmod 0644 /persist/speccfg/vendor_ro.prop
-    chmod 0644 /persist/speccfg/vendor_persist.prop
-    chmod 0644 /persist/speccfg/submask
-    chmod 0644 /persist/speccfg/partition
-    chown system system /persist/speccfg/spec
-    chown system system /persist/speccfg/devicetype
-    chown system system /persist/speccfg/mbnversion
-    chown system system /persist/speccfg/.not_triggered
-    chown system system /persist/speccfg/vendor_ro.prop
-    chown system system /persist/speccfg/vendor_persist.prop
-    chown system system /persist/speccfg/submask
-    chown system system /persist/speccfg/partition
+   ####Regionalization config and prop files####
+   chmod 0644 /persist/speccfg/spec
+   chmod 0644 /persist/speccfg/devicetype
+   chmod 0644 /persist/speccfg/mbnversion
+   chmod 0644 /persist/speccfg/.not_triggered
+   chmod 0644 /persist/speccfg/vendor_ro.prop
+   chmod 0644 /persist/speccfg/vendor_persist.prop
+   chmod 0644 /persist/speccfg/submask
+   chmod 0644 /persist/speccfg/partition
+   chown system system /persist/speccfg/spec
+   chown system system /persist/speccfg/devicetype
+   chown system system /persist/speccfg/mbnversion
+   chown system system /persist/speccfg/.not_triggered
+   chown system system /persist/speccfg/vendor_ro.prop
+   chown system system /persist/speccfg/vendor_persist.prop
+   chown system system /persist/speccfg/submask
+   chown system system /persist/speccfg/partition
 
-#Tuxera exFAT kernel module
-   insmod /vendor/lib/modules/texfat.ko
-
-   #for audio driver to read
-   chmod 0644 /persist/tas2555_cal.bin
 #install video modules
    insmod /system/lib/modules/msm-vidc-vmem.ko
    insmod /system/lib/modules/msm-vidc.ko
@@ -115,27 +100,34 @@ on boot
 #Load WLAN driver
    insmod /vendor/lib/modules/qca_cld3_wlan.ko
 
+#USB controller configuration
+    setprop vendor.usb.rndis.func.name "gsi"
+    setprop vendor.usb.rmnet.func.name "gsi"
+    setprop vendor.usb.rmnet.inst.name "rmnet"
+    setprop vendor.usb.dpl.inst.name "dpl"
+    setprop sys.usb.configfs 1
+
 #Peripheral manager
-service per_mgr /vendor/bin/pm-service
+service vendor.per_mgr /vendor/bin/pm-service
     class core
     user system
     group system
     ioprio rt 4
 
-service per_proxy /vendor/bin/pm-proxy
+service vendor.per_proxy /vendor/bin/pm-proxy
     class core
     user system
     group system
     disabled
 
-on property:init.svc.per_mgr=running
-    start per_proxy
+on property:init.svc.vendor.per_mgr=running
+    start vendor.per_proxy
 
 on property:sys.shutdown.requested=*
-    stop per_proxy
+    stop vendor.per_proxy
 
 on charger
-    start hvdcp_opti
+    start vendor.hvdcp_opti
     setprop sys.usb.configfs 1
 
 #on post-fs
@@ -163,7 +155,7 @@ on charger
 #on property:sys.boot_completed=1
 #    start qrngp
 #
-service qseecomd /vendor/bin/qseecomd
+service vendor.qseecomd /vendor/bin/qseecomd
    class core
    user root
    group root
@@ -173,7 +165,7 @@ service spdaemon /vendor/bin/spdaemon
    user system
    group system
 
-#service mpdecision /vendor/bin/mpdecision --avg_comp
+#service mpdecision /system/vendor/bin/mpdecision --avg_comp
 #   user root
 #   disabled
 #
@@ -182,7 +174,7 @@ service spdaemon /vendor/bin/spdaemon
 #   group system
 #   disabled
 #
-service thermal-engine /vendor/bin/thermal-engine
+service thermal-engine /system/vendor/bin/thermal-engine
    class main
    user root
    socket thermal-send-client stream 0666 system system
@@ -190,7 +182,6 @@ service thermal-engine /vendor/bin/thermal-engine
    socket thermal-recv-passive-client stream 0666 system system
    socket thermal-send-rule stream 0660 system system
    group root
-   writepid /dev/cpuset/system-background/tasks
 
 #service security-check1 /sbin/security_boot_check system
 #    class core
@@ -201,61 +192,60 @@ service thermal-engine /vendor/bin/thermal-engine
 #    oneshot
 #
 
-service adsprpcd /vendor/bin/adsprpcd
+service adsprpcd /system/vendor/bin/adsprpcd
    class main
    user media
    group media
-   writepid /dev/cpuset/system-background/tasks
 
-service hbtp /vendor/bin/hbtp_daemon
+service hbtp /system/vendor/bin/hbtp_daemon
     class main
     user system
     group system
     disabled
 
-service audiod /vendor/bin/audiod
+service audiod /system/vendor/bin/audiod
    class late_start
    user system
    group system
 
-#service usf_tester /vendor/bin/usf_tester
+#service usf_tester /system/vendor/bin/usf_tester
 #    user system
 #    group system inet
 #    disabled
 #
-#service usf_epos /vendor/bin/usf_epos
+#service usf_epos /system/vendor/bin/usf_epos
 #    user system
 #    group system inet
 #    disabled
 #
-#service usf_gesture /vendor/bin/usf_gesture
-#    user system
-#    group system inet
-#    disabled
-#
-
-#service usf_sync_gesture /vendor/bin/usf_sync_gesture
+#service usf_gesture /system/vendor/bin/usf_gesture
 #    user system
 #    group system inet
 #    disabled
 #
 
-#service usf_p2p /vendor/bin/usf_p2p
+#service usf_sync_gesture /system/vendor/bin/usf_sync_gesture
 #    user system
 #    group system inet
 #    disabled
 #
-#service usf_hovering /vendor/bin/usf_hovering
+
+#service usf_p2p /system/vendor/bin/usf_p2p
 #    user system
 #    group system inet
 #    disabled
 #
-#service usf_proximity /vendor/bin/usf_proximity
+#service usf_hovering /system/vendor/bin/usf_hovering
 #    user system
 #    group system inet
 #    disabled
 #
-#service usf-post-boot /vendor/bin/sh /system/etc/usf_post_boot.sh
+#service usf_proximity /system/vendor/bin/usf_proximity
+#    user system
+#    group system inet
+#    disabled
+#
+#service usf-post-boot /system/vendor/bin/sh /system/etc/usf_post_boot.sh
 #    class late_start
 #    user root
 #    disabled
@@ -279,20 +269,21 @@ service audiod /vendor/bin/audiod
 #    chown system drmrpc /sys/devices/f9966000.i2c/i2c-1/1-0020/secure_touch
 #
 #
-service imsqmidaemon /vendor/bin/imsqmidaemon
+#
+## imsdatadaemon starts with root and UID will be downgraded to SYSTEM.
+service vendor.imsqmidaemon /system/vendor/bin/imsqmidaemon
     class main
     user system
     socket ims_qmid stream 0660 system radio
     group radio log diag
-    writepid /dev/cpuset/system-background/tasks
 
-service imsdatadaemon /vendor/bin/imsdatadaemon
+# imsdatadaemon starts with root and UID will be downgraded to SYSTEM.
+service vendor.imsdatadaemon /system/vendor/bin/imsdatadaemon
     class main
     user system
     socket ims_datad stream 0660 system radio
     group system wifi radio inet log diag
     disabled
-    writepid /dev/cpuset/system-background/tasks
 #
 #service mdm_helper /system/bin/mdm_helper
 #    class core
@@ -331,54 +322,49 @@ service imsdatadaemon /vendor/bin/imsdatadaemon
 #    start mdm_helper_proxy
 #
 ## QCA1530 SoC core detect
-#service gnss-detect /vendor/bin/gnss.qca1530.sh detect
+#service gnss-detect /system/vendor/bin/gnss.qca1530.sh detect
 #   class core
 #   oneshot
-service pd_mapper /vendor/bin/pd-mapper
+service vendor.pd_mapper /vendor/bin/pd-mapper
      class core
 
 #
 ## QCA1530 SoC late_start group trigger
-#service gnss-init /vendor/bin/gnss.qca1530.sh init
+#service gnss-init /system/vendor/bin/gnss.qca1530.sh init
 #   class late_start
 #   oneshot
 #
 ## QCA1530 SoC Service Daemon
-#service gnss-svcd /vendor/bin/gnss.qca1530.sh start
+#service gnss-svcd /system/vendor/bin/gnss.qca1530.sh start
 #   class late_start
 #   user root
 #   group gps system oem_2901 diag log inet net_raw
 #   disabled
 
 on property:vendor.ims.QMI_DAEMON_STATUS=1
-    start imsdatadaemon
+    start vendor.imsdatadaemon
 
-service ims_rtp_daemon /vendor/bin/ims_rtp_daemon
+on property:vold.decrypt=trigger_restart_framework
+   start cnss_diag
+
+service cnss_diag /system/vendor/bin/cnss_diag -q -f -t HELIUM
+   class main
+   user system
+   group system wifi inet sdcard_rw media_rw diag
+   oneshot
+
+service vendor.ims_rtp_daemon /system/vendor/bin/ims_rtp_daemon
    class main
    user system
    group radio diag inet log
-   disabled
-   writepid /dev/cpuset/system-background/tasks
 
-service vendor.imsrcsservice /vendor/bin/imsrcsd
+service vendor.imsrcsservice /system/vendor/bin/imsrcsd
    class main
    user system
-   group radio diag inet log
-   disabled
-   writepid /dev/cpuset/system-background/tasks
-
-service powerofflog /system/bin/sh /system/etc/fg_logs_start.sh /cache/nubialog
-    disabled
-    oneshot
-    group root shell
-    seclabel u:r:powerofflog:s0
-
-on property:sys.poweroffcharge.control=on
-    start powerofflog
+   group radio diag inet log wakelock
 
 on property:vendor.ims.DATA_DAEMON_STATUS=1
-    start ims_rtp_daemon
-    start vendor.imsrcsservice
+    restart vendor.ims_rtp_daemon
 
 service ppd /vendor/bin/mm-pp-dpps
     class late_start
@@ -386,33 +372,25 @@ service ppd /vendor/bin/mm-pp-dpps
     group system graphics
     socket pps stream 0660 system system
     disabled
-    writepid /dev/cpuset/system-background/tasks
 
-on property:init.svc.hwcomposer-2-1=stopped
+on property:init.svc.surfaceflinger=stopped
     stop ppd
 
-on property:init.svc.hwcomposer-2-1=running
+on property:init.svc.surfaceflinger=running
     start ppd
 
-on property:init.svc.hwcomposer-2-1=restarting
+on property:init.svc.surfaceflinger=restarting
     stop ppd
 
-on charger
-    wait /dev/block/bootdevice/by-name/persist
-    mount ext4 /dev/block/bootdevice/by-name/persist /persist nosuid nodev barrier=1
-    wait /dev/block/bootdevice/by-name/cache
-    mount ext4 /dev/block/bootdevice/by-name/cache /cache nosuid nodev barrier=1
-    mount_all fstab.qcom
-    restorecon_recursive /persist
-    restorecon_recursive /cache
-    restorecon_recursive /sys/kernel/debug
-    rm /sdcard
-    symlink /cache /sdcard
-    load_system_props
-    start qcom-post-boot
-    mkdir /cache/nubialog 0755 system system
-    chmod 755 /system/etc/fg_logs_start.sh
-    chown root shell /system/etc/fg_logs_start.sh
+on property:init.svc.zygote=stopped
+    stop ppd
+
+on property:init.svc.zygote=running
+    start ppd
+
+on property:init.svc.zygote=restarting
+    stop ppd
+
 #
 #service nqs /system/bin/nqs
 #    class late_start
@@ -420,7 +398,7 @@ on charger
 #    user system
 #    group drmrpc
 #
-#service adsprpcd /vendor/bin/adsprpcd
+#service adsprpcd /system/vendor/bin/adsprpcd
 #   class main
 #   user media
 #   group media
@@ -432,27 +410,21 @@ on charger
 #    user system
 #    group system
 
-service energy-awareness /vendor/bin/energy-awareness
+service energy-awareness /system/vendor/bin/energy-awareness
     class main
     user root
     group system
     oneshot
 
-service mdtpd /vendor/bin/mdtpd
+service mdtpd /system/vendor/bin/mdtpd
     class late_start
     user root
     group system radio drmrpc
 
-#dm instructions added by nubia
-service dmapp /vendor/bin/dmapp
-    class main
-    seclabel u:r:dm:s0
-
-service hvdcp_opti /vendor/bin/hvdcp_opti
+service vendor.hvdcp_opti /system/vendor/bin/hvdcp_opti
     class main
     user root
     group system wakelock
-    writepid /dev/cpuset/system-background/tasks
 
 service qvrd /system/bin/qvrservice
     class late_start
@@ -460,3 +432,4 @@ service qvrd /system/bin/qvrservice
     group system camera graphics
     socket qvrservice stream 0666 system system
     capabilities SYS_NICE
+
