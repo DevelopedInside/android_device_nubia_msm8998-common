@@ -73,6 +73,49 @@ fi
 #
 # Override USB default composition
 #
+
+#
+# ZTEMT: Allow USB enumeration with or without debug port
+#
+
+chown -R root:system /mnt/vendor/persist/property
+chmod -R 770 /mnt/vendor/persist/property
+
+isfactory=`cat /mnt/vendor/persist/property/persist.vendor.usb.factory`
+case "$isfactory" in
+	"0" | "1")
+		setprop persist.vendor.usb.factory "$isfactory"
+	;;
+	*)
+		mkdir /mnt/vendor/persist/property
+		touch /mnt/vendor/persist/property/persist.vendor.usb.factory
+		echo 1 > /mnt/vendor/persist/property/persist.vendor.usb.factory
+		chown -R root:system /mnt/vendor/persist/property
+		chmod -R 770 /mnt/vendor/persist/property
+		setprop persist.vendor.usb.factory 1
+	;;
+esac
+
+if [ "$(getprop init.svc.vendor.usb-gadget-hal-1-0)" != "running" ]; then
+    usb_config=`getprop persist.vendor.usb.config`
+    build_type=`getprop ro.build.type`
+    case "$usb_config" in
+        "nubia,adb"|"nubia")
+           # do nothing
+        ;;
+        *)
+          case "$build_type" in
+              "eng"|"userdebug")
+                  setprop persist.vendor.usb.config nubia,adb
+              ;;
+              *)
+                  setprop persist.vendor.usb.config nubia
+              ;;
+          esac
+        ;;
+    esac
+fi
+
 # If USB persist config not set, set default configuration
 if [ "$(getprop persist.vendor.usb.config)" == "" -a \
 	"$(getprop init.svc.vendor.usb-gadget-hal-1-0)" != "running" ]; then
@@ -129,7 +172,7 @@ if [ "$(getprop persist.vendor.usb.config)" == "" -a \
 	              "sdm845" | "sdm710")
 		          setprop persist.vendor.usb.config diag,serial_cdev,rmnet,dpl,adb
 		      ;;
-	              "msmnile" | "sm6150")
+	              "msmnile" | "talos")
 			  setprop persist.vendor.usb.config diag,serial_cdev,rmnet,dpl,qdss,adb
 		      ;;
 	              *)
@@ -185,12 +228,29 @@ if [ -d /config/usb_gadget ]; then
 	product_string="$machine_type-$soc_hwplatform _SN:$msm_serial_hex"
 	echo "$product_string" > /config/usb_gadget/g1/strings/0x409/product
 
+        # Use fixed serialno if in ffbm mode or /cache/usb/usb_fixed_serialno is set
+        bootmode=`getprop ro.bootmode`
+        serialnomode=`cat /cache/usb/usb_fixed_serialno`
+        if [ "$bootmode" = "ffbm-01" ] || [ "$serialnomode" -eq 1 ]; then
+                setprop persist.vendor.usb.fixedserialno 1
+        else
+                setprop persist.vendor.usb.fixedserialno 0
+        fi
+
 	# ADB requires valid iSerialNumber; if ro.serialno is missing, use dummy
 	serialnumber=`cat /config/usb_gadget/g1/strings/0x409/serialnumber` 2> /dev/null
 	if [ "$serialnumber" == "" ]; then
 		serialno=1234567
 		echo $serialno > /config/usb_gadget/g1/strings/0x409/serialnumber
 	fi
+
+	persist_comp=`getprop persist.sys.usb.config`
+	comp=`getprop sys.usb.config`
+	if [ "$comp" != "$persist_comp" ]; then
+		echo "setting sys.usb.config"
+		setprop sys.usb.config $persist_comp
+	fi
+
 fi
 
 #

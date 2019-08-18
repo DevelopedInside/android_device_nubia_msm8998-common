@@ -318,14 +318,18 @@ PRODUCT_PACKAGES += \
 
 # Ramdisk scripts
 PRODUCT_PACKAGES += \
-    init.nubia.rc \
     init.recovery.qcom.rc
 
 PRODUCT_PACKAGES += \
     ueventd.rc
 
 PRODUCT_PACKAGES += \
+    move_time_data.sh \
+    move_wifi_data.sh
+
+PRODUCT_PACKAGES += \
     init.class_main.sh \
+    init.nubia.usb.sh \
     init.qcom.early_boot.sh \
     init.qcom.post_boot.sh \
     init.qcom.sensors.sh \
@@ -338,8 +342,8 @@ PRODUCT_PACKAGES += \
 
 PRODUCT_PACKAGES += \
     init.msm.usb.configfs.rc \
+    init.nubia.rc \
     init.qcom.rc \
-    init.qcom.factory.rc \
     init.qcom.power.rc \
     init.qcom.usb.rc \
     init.target.rc

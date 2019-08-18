@@ -1,6 +1,6 @@
 #! /vendor/bin/sh
 
-# Copyright (c) 2012-2013, 2016, The Linux Foundation. All rights reserved.
+# Copyright (c) 2012-2013, 2016-2018, The Linux Foundation. All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions are met:
@@ -42,6 +42,18 @@ if [ -f /sys/devices/soc0/select_image ]; then
     echo $image_variant > /sys/devices/soc0/image_variant
     echo $oem_version > /sys/devices/soc0/image_crm_version
 fi
+
+# Change console log level as per console config property
+console_config=`getprop persist.vendor.console.silent.config`
+case "$console_config" in
+    "1")
+        echo "Enable console config to $console_config"
+        echo 0 > /proc/sys/kernel/printk
+        ;;
+    *)
+        echo "Enable console config to $console_config"
+        ;;
+esac
 
 # Parse misc partition path and set property
 misc_link=$(ls -l /dev/block/bootdevice/by-name/misc)
