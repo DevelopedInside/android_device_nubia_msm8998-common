@@ -71,12 +71,14 @@ vendor/lib64/libbtnv.so
 # Charger
 vendor/bin/hvdcp_opti
 
+# CNEService - from mata QP1A.190711.107
+-priv-app/CNEService/CNEService.apk|d8579ab4633111f5473b3be8c9da487504908167
+
 # CNE
 etc/permissions/cneapiclient.xml
 etc/permissions/com.quicinc.cne.xml
 framework/cneapiclient.jar
 framework/com.quicinc.cne.jar
--priv-app/CNEService/CNEService.apk
 vendor/bin/cnd
 vendor/etc/cne/wqeclient/ATT/ATT_profile1.xml
 vendor/etc/cne/wqeclient/ATT/ATT_profile2.xml
