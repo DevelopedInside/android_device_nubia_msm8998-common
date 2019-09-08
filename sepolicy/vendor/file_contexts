@@ -34,6 +34,9 @@
 # Persist partition
 /persist/rfs/msm/mpss/server_check.txt                                                                                                   u:object_r:tftp_server_check_file:s0
 
+# Root extra symlink
+/persist                                                                                                                                 u:object_r:mnt_vendor_file:s0
+
 # Sys files
 /sys/kernel/boot_wlan(/.*)?                                                                                                              u:object_r:sysfs_wifi:s0
 
