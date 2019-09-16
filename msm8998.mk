@@ -385,11 +385,10 @@ PRODUCT_SOONG_NAMESPACES += \
 
 # Telephony
 PRODUCT_PACKAGES += \
-    ims-ext-common_system \
+    ims-ext-common \
     telephony-ext
 
 PRODUCT_BOOT_JARS += \
-    ims-ext-common_system \
     telephony-ext
 
 # Tetheroffload
