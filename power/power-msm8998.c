@@ -55,7 +55,7 @@
 #define NUM_PERF_MODES  3
 
 const int kMaxInteractiveDuration = 5000; /* ms */
-const int kMinInteractiveDuration = 500; /* ms */
+const int kMinInteractiveDuration = 750; /* ms */
 
 static int current_power_profile = PROFILE_BALANCED;
 
