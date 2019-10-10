@@ -143,6 +143,10 @@ PRODUCT_PACKAGES += \
     android.hardware.camera.provider@2.5:64 \
     vendor.qti.hardware.camera.device@1.0:64
 
+# Component overrides
+PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/configs/component-overrides.xml:$(TARGET_COPY_OUT_VENDOR)/etc/sysconfig/component-overrides.xml
+
 # Connectivity Engine support (CNE)
 PRODUCT_PACKAGES += \
     cneapiclient \
@@ -152,7 +156,7 @@ PRODUCT_PACKAGES += \
 # Configstore
 PRODUCT_PACKAGES += \
     android.hardware.configstore@1.0-service
-    
+
 # Display
 PRODUCT_PACKAGES += \
     gralloc.msm8998 \
