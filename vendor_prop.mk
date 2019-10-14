@@ -181,6 +181,7 @@ PRODUCT_PROPERTY_OVERRIDES += \
     mmp.enable.3g2=true \
     persist.media.treble_omx=true \
     persist.mm.enable.prefetch=true \
+    vendor.vidc.enc.disable.pq=true \
     vidc.enc.dcvs.extra-buff-count=2
 
 # IZat
