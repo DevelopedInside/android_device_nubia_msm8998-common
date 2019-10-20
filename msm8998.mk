@@ -337,13 +337,6 @@ PRODUCT_PACKAGES += \
     init.qcom.usb.rc \
     init.target.rc
 
-# RCS
-PRODUCT_PACKAGES += \
-    rcs_service_aidl \
-    rcs_service_aidl.xml \
-    rcs_service_api \
-    rcs_service_api.xml
-
 # Releasetools
 PRODUCT_PACKAGES += \
     librecovery_updater_nubia
