@@ -326,6 +326,9 @@ static int process_interaction_hint(void *data)
 
     if (data) {
         int input_duration = *((int*)data);
+        if (input_duration > 0) {
+            perf_hint_enable_with_type(VENDOR_HINT_SCROLL_BOOST, -1, SCROLL_PREFILING);
+        }
         if (input_duration > duration) {
             duration = (input_duration > kMaxInteractiveDuration) ?
                     kMaxInteractiveDuration : input_duration;
