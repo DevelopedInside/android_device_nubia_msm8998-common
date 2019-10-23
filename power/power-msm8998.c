@@ -54,9 +54,8 @@
 #define CHECK_HANDLE(x) ((x)>0)
 #define NUM_PERF_MODES  3
 
-const int kMaxInteractiveDuration = 5000; /* ms */
+const int kMaxInteractiveDuration = 5160; /* ms */
 const int kMinInteractiveDuration = 500; /* ms */
-const int kMinFlingDuration = 750; /* ms */
 
 static int current_power_profile = PROFILE_BALANCED;
 
@@ -331,7 +330,7 @@ static int process_interaction_hint(void *data)
         }
         if (input_duration > duration) {
             duration = (input_duration > kMaxInteractiveDuration) ?
-                    kMaxInteractiveDuration : input_duration;
+                    kMaxInteractiveDuration : (input_duration + 160);
         }
     }
 
@@ -345,7 +344,7 @@ static int process_interaction_hint(void *data)
     s_previous_boost_timespec = cur_boost_timespec;
     s_previous_duration = duration;
 
-    if (duration >= kMinFlingDuration) {
+    if (duration > kMinInteractiveDuration) {
         perf_hint_enable_with_type(VENDOR_HINT_SCROLL_BOOST, duration, SCROLL_VERTICAL);
     } else {
         perf_hint_enable_with_type(VENDOR_HINT_SCROLL_BOOST, duration, SCROLL_HORIZONTAL);
