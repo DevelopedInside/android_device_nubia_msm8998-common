@@ -366,6 +366,9 @@ int power_hint_override(power_hint_t hint, void *data)
         case POWER_HINT_VIDEO_ENCODE:
             ret_val = process_video_encode_hint(data);
             break;
+        case POWER_HINT_VIDEO_DECODE:
+            ret_val = HINT_HANDLED;
+            break;
         case POWER_HINT_SUSTAINED_PERFORMANCE:
             ret_val = process_perf_hint(data, SUSTAINED_MODE);
             break;
