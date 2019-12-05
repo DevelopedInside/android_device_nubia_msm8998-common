@@ -145,10 +145,7 @@ AUDIO_FEATURE_ENABLED_SND_MONITOR := true
 
 # Bluetooth
 BOARD_BLUETOOTH_BDROID_BUILDCFG_INCLUDE_DIR := $(PLATFORM_PATH)/bluetooth
-BOARD_HAVE_BLUETOOTH := true
 BOARD_HAVE_BLUETOOTH_QCOM := true
-QCOM_BT_USE_BTNV := true
-QCOM_BT_USE_SMD_TTY := true
 
 # Camera
 # Force camera module to be compiled only in 32-bit mode on 64-bit systems
@@ -160,7 +157,6 @@ USE_DEVICE_SPECIFIC_CAMERA := true
 
 # Charger
 BOARD_CHARGER_ENABLE_SUSPEND := true
-BOARD_CHARGER_DISABLE_INIT_BLANK := true
 
 # CNE and DPM
 BOARD_USES_QCNE := true
@@ -218,9 +214,6 @@ TARGET_RECOVERY_DEVICE_MODULES := libinit_msm8998
 # Keymaster
 TARGET_PROVIDES_KEYMASTER := true
 
-# Lights
-TARGET_PROVIDES_LIBLIGHT := true
-
 # Manifest
 DEVICE_MANIFEST_FILE := $(PLATFORM_PATH)/manifest.xml
 DEVICE_MATRIX_FILE := $(PLATFORM_PATH)/compatibility_matrix.xml
@@ -241,11 +234,6 @@ BOARD_USERDATAIMAGE_PARTITION_SIZE := 55680380928
 BOARD_VENDORIMAGE_PARTITION_SIZE := 471859200
 BOARD_VENDORIMAGE_FILE_SYSTEM_TYPE := ext4
 BOARD_FLASH_BLOCK_SIZE := 262144 # (BOARD_KERNEL_PAGESIZE * 64)
-BOARD_ROOT_EXTRA_SYMLINKS := \
-    /vendor/dsp:/dsp \
-    /vendor/firmware_mnt:/firmware \
-    /vendor/bt_firmware:/bt_firmware \
-    /mnt/vendor/persist:/persist
 
 TARGET_USERIMAGES_USE_EXT4 := true
 TARGET_USES_MKE2FS := true
@@ -258,7 +246,10 @@ BOARD_POWER_CUSTOM_BOARD_LIB := libpower_msm8998
 TARGET_USES_INTERACTION_BOOST := true
 
 # Recovery
+TARGET_RECOVERY_DENSITY := xxhdpi
 TARGET_RECOVERY_FSTAB := $(PLATFORM_PATH)/recovery/root/recovery.fstab
+TARGET_RECOVERY_PIXEL_FORMAT := "RGBX_8888"
+TARGET_RECOVERY_UI_BLANK_UNBLANK_ON_INIT := true
 BOARD_HAS_LARGE_FILESYSTEM := true
 
 # Releasetools
@@ -271,7 +262,11 @@ TARGET_PROVIDES_QTI_TELEPHONY_JAR := true
 TARGET_RIL_VARIANT := caf
 
 # Root
-BOARD_ROOT_EXTRA_FOLDERS := bt_firmware dsp firmware persist
+BOARD_ROOT_EXTRA_SYMLINKS := \
+    /vendor/dsp:/dsp \
+    /vendor/firmware_mnt:/firmware \
+    /vendor/bt_firmware:/bt_firmware \
+    /mnt/vendor/persist:/persist
 
 # Security patch level
 VENDOR_SECURITY_PATCH := 2018-06-05
