@@ -419,10 +419,9 @@ PRODUCT_PACKAGES += \
     android.hardware.vibrator@1.0-impl \
     android.hardware.vibrator@1.0-service
 
-# VNDK
+# VNDK-SP
 PRODUCT_PACKAGES += \
-    libstdc++.vendor \
-    vndk_package
+    vndk-sp
 
 # VR
 PRODUCT_PACKAGES += \
