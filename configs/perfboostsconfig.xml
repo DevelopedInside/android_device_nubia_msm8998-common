@@ -87,13 +87,11 @@
 
     <!--Horizontal Scroll boost-->
         <!-- SCHEDBOOST resource opcode, value-->
-        <!-- CPUBOOST_MIN_FREQ BIG CORE resource opcode, value -->
-        <!-- CPUBOOST_MIN_FREQ LITTLE Core resource opcode, value -->
 
         <!-- Type="2", Horizontal Scroll boost -->
         <Config
             Id="0x00001080" Type="2" Enable="true" Target="msm8998"
-            Resources="0x40C00000, 0x2, 0x40800000, 806, 0x40800100, 518" />
+            Resources="0x40C00000, 0x2" />
 
     <!--Pre-Fling boost-->
         <!-- CPUBW_MIN_FREQ resource opcode, value-->
@@ -118,5 +116,27 @@
             Id="0x00001088" Enable="true" Target="msm8998"
             Resources="0x40C00000, 0x1, 0x40804000, 0xFFF, 0x40804100, 0xFFF, 0x40800000,0xFFF,
                        0x40800100,0xFFF" />
+
+    <!--Rotation latency boost-->
+        <!-- SCHEDBOOST resource opcode, value-->
+        <!-- CPUBOOST_MAX_FREQ BIG Core resource opcode, value-->
+        <!-- CPUBOOST_MAX_FREQ LITTLE Core resource opcode, value-->
+        <!-- CPUBOOST_MIN_FREQ BIG Core resource opcode, value-->
+        <!-- CPUBOOST_MIN_FREQ LITTLE Core resource opcode, value-->
+        <!-- Type="", Rotation latency boost -->
+
+        <Config
+            Id="0x00001089" Enable="true" Timeout="1500" Target="msm8998"
+            Resources="0x40C00000, 0x1, 0x40804000, 0xFFF, 0x40804100, 0xFFF, 0x40800000,0xFFF,
+                       0x40800100,0xFFF" />
+
+    <!--Rotation animation boost-->
+        <!-- CPUBOOST_MIN_FREQ LITTLE Core resource opcode, value-->
+        <!-- GPU MIN_FREQUENCY resource opcode,value-->
+        <!-- Type="", Rotation animation boost -->
+
+        <Config
+            Id="0x00001090" Enable="true" Timeout="1000" Target="msm8998"
+            Resources="0x40800100, 1000, 0x4280C000, 596" />
     </PerfBoost>
 </BoostConfigs>
