@@ -218,4 +218,4 @@ on property:sys.boot_completed=1
     start iop
 
     # Set perfd properties
-    setprop sys.post_boot.parsed 1
+    setprop vendor.post_boot.parsed 1
