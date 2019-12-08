@@ -23,10 +23,8 @@ PRODUCT_PROPERTY_OVERRIDES += \
 
 # Audio
 PRODUCT_PROPERTY_OVERRIDES += \
-    persist.vendor.audio.aanc.enable=true \
     af.fast_track_multiplier=1 \
     vendor.audio_hal.period_size=192 \
-    ro.config.vc_call_vol_steps=11 \
     ro.vendor.audio.sdk.fluencetype=fluence \
     persist.vendor.audio.fluence.voicecall=true \
     persist.vendor.audio.fluence.voicerec=false \
@@ -52,10 +50,13 @@ PRODUCT_PROPERTY_OVERRIDES += \
     vendor.audio.use.sw.alac.decoder=true \
     vendor.audio.use.sw.ape.decoder=true \
     vendor.audio.hw.aac.encoder=true \
-    vendor.fm.a2dp.conc.disabled=true \
     vendor.audio.noisy.broadcast.delay=600 \
     vendor.audio.offload.pstimeout.secs=3 \
-    audio.adm.buffering.ms=3
+    vendor.audio.adm.buffering.ms=3 \
+    ro.af.client_heap_size_kbyte=7168 \
+    persist.vendor.audio.hw.binder.size_kbyte=1024 \
+    vendor.audio.noise.reduction.for.voice.call=false \
+    ro.config.vc_call_vol_steps=11
 
 # Battery
 PRODUCT_PROPERTY_OVERRIDES += \
@@ -64,14 +65,14 @@ PRODUCT_PROPERTY_OVERRIDES += \
 # Bluetooth
 PRODUCT_PROPERTY_OVERRIDES += \
     bt.max.hfpclient.connections=1 \
-    qcom.bluetooth.soc=cherokee \
+    vendor.qcom.bluetooth.soc=cherokee \
     ro.bluetooth.a4wp=false \
     ro.bluetooth.emb_wp_mode=false \
     ro.bluetooth.wipower=false
 
 # Camera
 PRODUCT_PROPERTY_OVERRIDES += \
-    camera.aux.packagelist=com.android.camera,org.codeaurora.snapcam,org.lineageos.snap \
+    vendor.camera.aux.packagelist=com.android.camera,org.codeaurora.snapcam,org.lineageos.snap \
     persist.camera.HAL3.enabled=1 \
     persist.camera.depth.focus.cb=0 \
     persist.camera.vdbea.switch=1 \
@@ -80,7 +81,7 @@ PRODUCT_PROPERTY_OVERRIDES += \
 
 # CNE
 PRODUCT_PROPERTY_OVERRIDES += \
-    persist.cne.feature=1
+    persist.vendor.cne.feature=1
 
 # Core control
 PRODUCT_PROPERTY_OVERRIDES += \
@@ -90,8 +91,9 @@ PRODUCT_PROPERTY_OVERRIDES += \
 # Data
 PRODUCT_PROPERTY_OVERRIDES += \
     persist.data.netmgrd.qos.enable=true \
-    persist.data.mode=concurrent \
-    ro.use_data_netmgrd=true
+    persist.radio.aosp_usr_pref_sel=true \
+    persist.vendor.data.mode=concurrent \
+    ro.vendor.use_data_netmgrd=true
 
 # DRM
 PRODUCT_PROPERTY_OVERRIDES += \
@@ -103,18 +105,22 @@ PRODUCT_PROPERTY_OVERRIDES += \
 
 # Graphics
 PRODUCT_PROPERTY_OVERRIDES += \
+    ro.opengles.version=196610 \
     debug.sf.enable_hwc_vds=1 \
     debug.sf.hw=1 \
     debug.sf.latch_unsignaled=1 \
     debug.gralloc.enable_fb_ubwc=1 \
     dev.pm.dyn_samplingrate=1 \
     persist.demo.hdmirotationlock=false \
-    ro.opengles.version=196610 \
-    sdm.debug.disable_skip_validate=1 \
-    sdm.perf_hint_window=50 \
-    persist.debug.wfd.enable=1 \
-    persist.sys.wfd.virtual=0 \
-    persist.hwc.enable_vds=1
+    persist.hwc.enable_vds=1 \
+    persist.sys.force_sw_gles=0 \
+    vendor.gralloc.enable_fb_ubwc=1 \
+    vendor.gralloc.disable_wb_ubwc=1 \
+    vendor.display.disable_partial_split=1 \
+    vendor.display.disable_rotator_downscale=1 \
+    vendor.display.disable_skip_validate=1 \
+    vendor.display.enable_default_color_mode=1 \
+    vendor.display.perf_hint_window=50
 
 # Media
 PRODUCT_PROPERTY_OVERRIDES += \
@@ -136,6 +142,7 @@ PRODUCT_PROPERTY_OVERRIDES += \
 
 # NFC
 PRODUCT_PROPERTY_OVERRIDES += \
+    ro.hardware.nfc_nci=bcm2079x.default \
     persist.nfc.smartcard.config=SIM1,eSE1 \
     ro.nfc.port=I2C
 
@@ -147,14 +154,9 @@ PRODUCT_PROPERTY_OVERRIDES += \
     sched.colocate.enable=1 \
     sys.games.gt.prof=1
 
-# IMS
+# QCOM
 PRODUCT_PROPERTY_OVERRIDES += \
-    persist.dbg.volte_avail_ovr=1 \
-    persist.dbg.vt_avail_ovr=1 \
-    persist.vendor.qti.telephony.vt_cam_interface=1 \
-    persist.dbg.ims_volte_enable=1 \
-    persist.radio.videopause.mode=1 \
-    persist.data.iwlan.enable=true
+    persist.vendor.qcomsysd.enabled=1
 
 # QTI
 PRODUCT_PROPERTY_OVERRIDES += \
@@ -163,7 +165,9 @@ PRODUCT_PROPERTY_OVERRIDES += \
 
 # RIL
 PRODUCT_PROPERTY_OVERRIDES += \
+    DEVICE_PROVISIONED=1 \
     rild.libpath=/vendor/lib64/libril-qc-qmi-1.so \
+    vendor.rild.libpath=/vendor/lib64/libril-qc-qmi-1.so \
     persist.rild.nitz_plmn="" \
     persist.rild.nitz_long_ons_0="" \
     persist.rild.nitz_long_ons_1="" \
@@ -174,25 +178,24 @@ PRODUCT_PROPERTY_OVERRIDES += \
     persist.rild.nitz_short_ons_2="" \
     persist.rild.nitz_short_ons_3="" \
     ril.subscription.types=NV,RUIM \
-    DEVICE_PROVISIONED=1 \
     ro.telephony.default_network=22,20 \
     telephony.lteOnCdmaDevice=1 \
-    keyguard.no_require_sim=true \
-    persist.sys.ap.restart_level=1 \
     persist.sys.oem_smooth=1 \
-    persist.sys.ssr.restart_level=3 \
     persist.radio.multisim.config=dsds \
-    persist.vendor.qcomsysd.enabled=1 \
-    persist.radio.hw_mbn_update=0 \
-    persist.radio.sw_mbn_update=0 \
-    persist.radio.apm_sim_not_pwdn=1 \
     persist.vendor.radio.apm_sim_not_pwdn=1 \
     persist.vendor.radio.custom_ecc=1 \
     persist.vendor.radio.rat_on=combine \
     persist.vendor.radio.sib16_support=1 \
-    persist.vendor.radio.cs_srv_type=1 \
-    persist.radio.schd.cache=3500 \
-    persist.activate_mbn.enabled=false
+    persist.vendor.ap.restart_level=0 \
+    persist.vendor.ssr.restart_level=3
+
+# Radio - VoLTE / VoWifi
+PRODUCT_PROPERTY_OVERRIDES += \
+    persist.dbg.ims_volte_enable=1 \
+    persist.dbg.volte_avail_ovr=1 \
+    persist.dbg.vt_avail_ovr=1 \
+    persist.dbg.wfc_avail_ovr=1 \
+    persist.radio.calls.on.ims=1
 
 # RmNet Data
 PRODUCT_PROPERTY_OVERRIDES += \
@@ -205,7 +208,7 @@ PRODUCT_PROPERTY_OVERRIDES += \
     persist.data.df.mux_count=8 \
     persist.data.df.iwlan_mux=9 \
     persist.data.df.dev_name=rmnet_usb0 \
-    persist.data.iwlan.enable=true
+    persist.vendor.data.iwlan.enable=true
 
 # Sensors
 PRODUCT_PROPERTY_OVERRIDES += \
@@ -218,12 +221,18 @@ PRODUCT_PROPERTY_OVERRIDES += \
 
 # Shutdown
 PRODUCT_PROPERTY_OVERRIDES += \
-    sys.vendor.shutdown.waittime=500 \
-    ro.build.shutdown_timeout=0
+    ro.build.shutdown_timeout=0 \
+    sys.vendor.shutdown.waittime=500
 
-# Timeservice
+# Times services
 PRODUCT_PROPERTY_OVERRIDES += \
+    persist.delta_time.enable=true \
     persist.timed.enable=true
+
+# WFD
+PRODUCT_PROPERTY_OVERRIDES += \
+    persist.debug.wfd.enable=0 \
+    persist.sys.wfd.virtual=0
 
 # Wi-Fi
 PRODUCT_PROPERTY_OVERRIDES += \
