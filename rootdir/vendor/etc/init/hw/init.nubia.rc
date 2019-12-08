@@ -99,7 +99,6 @@ on post-fs-data
     chown nfc nfc /dev/bcm2079x
     mkdir /data/nfc 770 nfc nfc
     mkdir /data/vendor/nfc 770 nfc nfc
-    setprop ro.hardware.nfc_nci bcm2079x.default
 
     # Nubia begin feature add sensors node
     chmod 0777 /persist/sensors
