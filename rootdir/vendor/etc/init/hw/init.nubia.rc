@@ -48,11 +48,6 @@ on boot
     copy /persist/tas2555_cal.bin /data/vendor/audio/tas2555_cal.bin
     chmod 0644 /data/vendor/audio/tas2555_cal.bin
 
-on post-fs
-    start vendor.qseecomd
-    wait_for_prop vendor.sys.listeners.registered true
-    write /dev/ipa 1
-
 on post-fs-data
     # NubiaCamera permissions
     mkdir /data/vendor/nubiaeffect 0777 camera camera
