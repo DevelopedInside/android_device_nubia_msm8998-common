@@ -158,6 +158,7 @@ service vendor.qseecomd /vendor/bin/qseecomd
    class core
    user root
    group root
+   writepid /dev/cpuset/system-background/tasks
 
 service spdaemon /vendor/bin/spdaemon
    class core
@@ -181,6 +182,7 @@ service thermal-engine /system/vendor/bin/thermal-engine
    socket thermal-recv-passive-client stream 0666 system system
    socket thermal-send-rule stream 0660 system system
    group root
+   writepid /dev/cpuset/system-background/tasks
 
 #service security-check1 /sbin/security_boot_check system
 #    class core
@@ -195,6 +197,7 @@ service adsprpcd /system/vendor/bin/adsprpcd
    class main
    user media
    group media
+   writepid /dev/cpuset/system-background/tasks
 
 service hbtp /system/vendor/bin/hbtp_daemon
     class main
@@ -275,6 +278,7 @@ service vendor.imsqmidaemon /system/vendor/bin/imsqmidaemon
     user system
     socket ims_qmid stream 0660 system radio
     group radio log diag
+    writepid /dev/cpuset/system-background/tasks
 
 # imsdatadaemon starts with root and UID will be downgraded to SYSTEM.
 service vendor.imsdatadaemon /system/vendor/bin/imsdatadaemon
@@ -283,6 +287,7 @@ service vendor.imsdatadaemon /system/vendor/bin/imsdatadaemon
     socket ims_datad stream 0660 system radio
     group system wifi radio inet log diag
     disabled
+    writepid /dev/cpuset/system-background/tasks
 #
 #service mdm_helper /system/bin/mdm_helper
 #    class core
@@ -326,6 +331,7 @@ service vendor.imsdatadaemon /system/vendor/bin/imsdatadaemon
 #   oneshot
 service vendor.pd_mapper /vendor/bin/pd-mapper
      class core
+     writepid /dev/cpuset/system-background/tasks
 
 #
 ## QCA1530 SoC late_start group trigger
@@ -356,11 +362,13 @@ service vendor.ims_rtp_daemon /system/vendor/bin/ims_rtp_daemon
    class main
    user system
    group radio diag inet log
+   writepid /dev/cpuset/system-background/tasks
 
 service vendor.imsrcsservice /system/vendor/bin/imsrcsd
    class main
    user system
    group radio diag inet log wakelock
+   writepid /dev/cpuset/system-background/tasks
 
 on property:vendor.ims.DATA_DAEMON_STATUS=1
     restart vendor.ims_rtp_daemon
@@ -424,6 +432,7 @@ service vendor.hvdcp_opti /system/vendor/bin/hvdcp_opti
     class main
     user root
     group system wakelock
+    writepid /dev/cpuset/system-background/tasks
 
 service qvrd /system/bin/qvrservice
     class late_start
