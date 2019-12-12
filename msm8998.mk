@@ -209,12 +209,9 @@ PRODUCT_PACKAGES += \
     android.hardware.gnss@1.0-service-qti
 
 PRODUCT_PACKAGES += \
+    libcurl \
     libgnss \
     libgnsspps \
-    libgps.utils \
-    liblocation_api \
-    libloc_core \
-    libloc_pla \
     libvehiclenetwork-native
 
 PRODUCT_COPY_FILES += \
