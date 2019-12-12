@@ -1,4 +1,2 @@
-allow hal_bluetooth_default bluetooth_data_file:dir rw_dir_perms;
-allow hal_bluetooth_default bluetooth_data_file:file create_file_perms;
-allow hal_bluetooth_default wcnss_filter:unix_stream_socket { connectto };
-r_dir_file(hal_bluetooth_default, firmware_file);
+allow hal_bluetooth_qti vendor_radio_data_file:dir { search };
+allow hal_bluetooth_qti vendor_radio_data_file:file { r_file_perms };
