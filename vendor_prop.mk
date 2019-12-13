@@ -133,6 +133,11 @@ PRODUCT_PROPERTY_OVERRIDES += \
 PRODUCT_PROPERTY_OVERRIDES += \
     persist.vendor.overlay.izat.optin=rro
 
+# Network Location Provider
+PRODUCT_PROPERTY_OVERRIDES += \
+    ro.location.osnlp.package=com.google.android.gms \
+    ro.location.osnlp.region.package=""
+
 # NFC
 PRODUCT_PROPERTY_OVERRIDES += \
     ro.hardware.nfc_nci=bcm2079x.default \
