@@ -221,7 +221,6 @@ PRODUCT_PROPERTY_OVERRIDES += \
 
 # Times services
 PRODUCT_PROPERTY_OVERRIDES += \
-    persist.delta_time.enable=true \
     persist.timed.enable=true
 
 # WFD
