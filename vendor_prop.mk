@@ -65,9 +65,9 @@ PRODUCT_PROPERTY_OVERRIDES += \
 
 # Camera
 PRODUCT_PROPERTY_OVERRIDES += \
-    persist.camera.HAL3.enabled=1 \
-    persist.camera.depth.focus.cb=0 \
-    persist.camera.vdbea.switch=1 \
+    persist.vendor.camera.HAL3.enabled=1 \
+    persist.vendor.camera.depth.focus.cb=0 \
+    persist.vendor.camera.vdbea.switch=1 \
     persist.ts.rtmakeup=false \
     persist.camera.CDS=Off
 
