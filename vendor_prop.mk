@@ -25,6 +25,7 @@ PRODUCT_PROPERTY_OVERRIDES += \
     vendor.audio.tunnel.encode=false \
     persist.vendor.audio.ras.enabled=false \
     vendor.audio.offload.buffer.size.kb=32 \
+    audio.offload.min.duration.secs=30 \
     audio.offload.video=true \
     vendor.audio.offload.track.enable=true \
     audio.deep_buffer.media=true \
@@ -176,7 +177,6 @@ PRODUCT_PROPERTY_OVERRIDES += \
     ril.subscription.types=NV,RUIM \
     ro.telephony.default_network=22,20 \
     telephony.lteOnCdmaDevice=1 \
-    persist.sys.oem_smooth=1 \
     persist.radio.multisim.config=dsds \
     persist.vendor.radio.apm_sim_not_pwdn=1 \
     persist.vendor.radio.custom_ecc=1 \
@@ -184,13 +184,6 @@ PRODUCT_PROPERTY_OVERRIDES += \
     persist.vendor.radio.sib16_support=1 \
     persist.vendor.ap.restart_level=0 \
     persist.vendor.ssr.restart_level=3
-
-# Radio - VoLTE / VoWifi
-PRODUCT_PROPERTY_OVERRIDES += \
-    persist.dbg.volte_avail_ovr=0 \
-    persist.dbg.vt_avail_ovr=0 \
-    persist.dbg.wfc_avail_ovr=0 \
-    persist.rcs.supported=0
 
 # RmNet Data
 PRODUCT_PROPERTY_OVERRIDES += \
@@ -202,8 +195,7 @@ PRODUCT_PROPERTY_OVERRIDES += \
     persist.data.df.agg.dl_size=4096 \
     persist.data.df.mux_count=8 \
     persist.data.df.iwlan_mux=9 \
-    persist.data.df.dev_name=rmnet_usb0 \
-    persist.vendor.data.iwlan.enable=true
+    persist.data.df.dev_name=rmnet_usb0
 
 # Sensors
 PRODUCT_PROPERTY_OVERRIDES += \
@@ -212,11 +204,11 @@ PRODUCT_PROPERTY_OVERRIDES += \
     ro.vendor.sensors.sta_detect=true \
     ro.vendor.sensors.mot_detect=true \
     ro.vendor.sensors.dpc=true \
-    ro.vendor.sensors.multishake=true
+    ro.vendor.sensors.multishake=true \
+    persist.vendor.sensors.direct_channel=true
 
 # Shutdown
 PRODUCT_PROPERTY_OVERRIDES += \
-    ro.build.shutdown_timeout=0 \
     sys.vendor.shutdown.waittime=500
 
 # Times services
@@ -225,7 +217,7 @@ PRODUCT_PROPERTY_OVERRIDES += \
 
 # WFD
 PRODUCT_PROPERTY_OVERRIDES += \
-    persist.debug.wfd.enable=0 \
+    persist.debug.wfd.enable=1 \
     persist.sys.wfd.virtual=0
 
 # Wi-Fi
