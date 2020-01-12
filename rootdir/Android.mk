@@ -110,15 +110,6 @@ LOCAL_SRC_FILES    := vendor/bin/init.qti.qseecomd.sh
 LOCAL_MODULE_PATH  := $(TARGET_OUT_VENDOR_EXECUTABLES)
 include $(BUILD_PREBUILT)
 
-# /vendor/etc/
-include $(CLEAR_VARS)
-LOCAL_MODULE       := fstab.qcom
-LOCAL_MODULE_TAGS  := optional
-LOCAL_MODULE_CLASS := ETC
-LOCAL_SRC_FILES    := vendor/etc/fstab.qcom
-LOCAL_MODULE_PATH  := $(TARGET_OUT_VENDOR_ETC)
-include $(BUILD_PREBUILT)
-
 # /vendor/etc/init/hw
 include $(CLEAR_VARS)
 LOCAL_MODULE       := init.msm.usb.configfs.rc
