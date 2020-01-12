@@ -348,9 +348,6 @@ PRODUCT_PACKAGES += \
     init.qti.qseecomd.sh
 
 PRODUCT_PACKAGES += \
-    fstab.qcom
-
-PRODUCT_PACKAGES += \
     init.msm.usb.configfs.rc \
     init.nubia.rc \
     init.qcom.rc \
