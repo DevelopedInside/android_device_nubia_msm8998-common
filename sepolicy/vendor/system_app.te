@@ -1,0 +1,2 @@
+r_dir_file(system_app, proc_pagetypeinfo)
+r_dir_file(system_app, sysfs_zram)
