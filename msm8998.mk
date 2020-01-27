@@ -416,14 +416,9 @@ PRODUCT_PACKAGES += \
     android.hardware.usb@1.0-service
 
 # Verity
-PRODUCT_SUPPORTS_BOOT_SIGNER := true
-PRODUCT_SUPPORTS_VERITY := true
-PRODUCT_SUPPORTS_VERITY_FEC := true
-
-PRODUCT_VERITY_SIGNING_KEY := build/target/product/security/verity
-
-PRODUCT_PACKAGES += \
-    verity_key
+PRODUCT_SYSTEM_VERITY_PARTITION := /dev/block/platform/soc/1da4000.ufshc/by-name/system
+PRODUCT_VENDOR_VERITY_PARTITION := /dev/block/platform/soc/1da4000.ufshc/by-name/vendor
+$(call inherit-product, build/target/product/verity.mk)
 
 # Vibrator
 PRODUCT_PACKAGES += \
