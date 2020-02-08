@@ -1,0 +1,2 @@
+allow wcnss_service sysfs_nubia_hw:file { open read getattr };
+allow wcnss_service sysfs_nubia_hw:dir search;

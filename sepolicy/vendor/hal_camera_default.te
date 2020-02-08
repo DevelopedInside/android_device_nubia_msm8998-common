@@ -1,3 +1,0 @@
-# rules for nubia camera
-allow hal_camera_default system_data_file:file read;
-allow hal_camera_default self:capability sys_nice;

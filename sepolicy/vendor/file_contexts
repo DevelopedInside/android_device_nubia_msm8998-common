@@ -1,59 +1,51 @@
 # TAS2555 Amplifier
-/dev/tas2555                                                                                            u:object_r:audio_device:s0
-/dev/tiload_node                                                                                        u:object_r:alarm_device:s0
+/dev/tas2555                                                                                                                             u:object_r:audio_device:s0
+/dev/tiload_node                                                                                                                         u:object_r:alarm_device:s0
 
 # Amplifier persist files
-/persist/tas2555_cal\.bin                                                                               u:object_r:persist_amp_cal_file:s0
-
-# Camera
-/sys/devices(/platform)?/soc/[a-z0-9]+\.qcom,jpeg/video4linux/video[0-9]+/name(/.*)?                    u:object_r:sysfs_graphics:s0
+/persist/tas2555_cal\.bin                                                                                                                u:object_r:persist_amp_cal_file:s0
 
 # Charging
-/sys/devices/soc/.*ssusb/power_supply/usb(/.*)?                                                         u:object_r:sysfs_usb_supply:s0
-/sys/devices/soc/800f000.qcom,spmi/spmi-0/spmi0-02/800f000.qcom,spmi:qcom,pmi8998@2:qcom,qpnp-smb2/power_supply/usb(/.*)?    u:object_r:sysfs_usb_supply:s0
-/sys/devices/soc/800f000.qcom,spmi/spmi-0/spmi0-02/800f000.qcom,spmi:qcom,pmi8998@2:qcom,qpnp-smb2/power_supply/battery(/.*)?    u:object_r:sysfs_battery_supply:s0
-/sys/devices/soc/800f000.qcom,spmi/spmi-0/spmi0-02/800f000.qcom,spmi:qcom,pmi8998@2:qpnp,fg/power_supply/bms(/.*)?    u:object_r:sysfs_battery_supply:s0
+/sys/devices/soc/800f000\.qcom,spmi/spmi-0/spmi0-02/800f000\.qcom,spmi:qcom,pmi8998@2:qcom,qpnp-smb2/power_supply/battery(/.*)?          u:object_r:sysfs_healthd:s0
+/sys/devices/soc/800f000\.qcom,spmi/spmi-0/spmi0-02/800f000\.qcom,spmi:qcom,pmi8998@2:qcom,qpnp-smb2/power_supply/dc(/.*)?               u:object_r:sysfs_healthd:s0
+/sys/devices/soc/800f000\.qcom,spmi/spmi-0/spmi0-02/800f000\.qcom,spmi:qcom,pmi8998@2:qcom,qpnp-smb2/power_supply/main(/.*)?             u:object_r:sysfs_healthd:s0
+/sys/devices/soc/800f000\.qcom,spmi/spmi-0/spmi0-02/800f000\.qcom,spmi:qcom,pmi8998@2:qcom,qpnp-smb2/power_supply/pc_port(/.*)?          u:object_r:sysfs_healthd:s0
+/sys/devices/soc/800f000\.qcom,spmi/spmi-0/spmi0-02/800f000\.qcom,spmi:qcom,pmi8998@2:qcom,qpnp-smb2/power_supply/usb(/.*)?              u:object_r:sysfs_healthd:s0
+/sys/devices/soc/800f000\.qcom,spmi/spmi-0/spmi0-02/800f000\.qcom,spmi:qcom,pmi8998@2:qcom,qpnp-smb2/power_supply/usbeb(/.*)?            u:object_r:sysfs_healthd:s0
+/sys/devices/soc/800f000\.qcom,spmi/spmi-0/spmi0-02/800f000\.qcom,spmi:qcom,pmi8998@2:qcom,qpnp-smb2/power_supply/wireless(/.*)?         u:object_r:sysfs_healthd:s0
+/sys/devices/soc/800f000\.qcom,spmi/spmi-0/spmi0-02/800f000\.qcom,spmi:qcom,pmi8998@2:neo,battery/power_supply/neo-battery(/.*)?         u:object_r:sysfs_healthd:s0
 
 # FRP partition
-/dev/block/bootdevice/by-name/frp                                                                       u:object_r:frp_block_device:s0
-
-# Fingerprint
-/dev/fpc                                                                                                u:object_r:fingerprint_device:s0
-/sys/devices/soc/1.fpc1020(/.*)?                                                                        u:object_r:sysfs_fingerprint:s0
-/(vendor|system/vendor)/bin/hw/android\.hardware\.biometrics\.fingerprint\.fpc@2\.1-service             u:object_r:hal_fingerprint_default_exec:s0
+/dev/block/bootdevice/by-name/frp                                                                                                        u:object_r:frp_block_device:s0
 
 # NFC
-/dev/bcm2079x                                                                                           u:object_r:nfc_device:s0
+/dev/bcm2079x                                                                                                                            u:object_r:nfc_device:s0
 
 # Haptic
-/dev/drv2605                                                                                            u:object_r:haptics_device:s0
-
-# Light HAL
-/sys/class/leds(/.*)?                                                                                   u:object_r:sysfs_leds:s0
+/dev/drv2605                                                                                                                             u:object_r:haptics_device:s0
 
 # Input files
-/vendor/usr/idc(/.*)?                                                                                   u:object_r:idc_file:s0
-/vendor/usr/keylayout(/.*)?                                                                             u:object_r:keylayout_file:s0
-
-# IR Remote
-/dev/ttyMSM1                                                                                            u:object_r:ir_remote_device:s0
-/dev/ir_remote                                                                                          u:object_r:ir_remote_device:s0
-/sys/class/ir_remote/ir_remote/enable                                                                   u:object_r:sysfs_ir_remote:s0
-/sys/devices/virtual/ir_remote/ir_remote/enable                                                         u:object_r:sysfs_ir_remote:s0
-
-# Touchpanel
-/sys/devices/soc/c179000.i2c/i2c-5/5-0020/input/input1/0dbutton                                         u:object_r:sysfs_touchpanel:s0
-/sys/devices/soc/c179000.i2c/i2c-5/5-0020/input/input1/wake_gesture                                     u:object_r:sysfs_touchpanel:s0
+/vendor/usr/idc(/.*)?                                                                                                                    u:object_r:idc_file:s0
+/vendor/usr/keylayout(/.*)?                                                                                                              u:object_r:keylayout_file:s0
 
 # Persist partition
-/dev/block/bootdevice/by-name/persist                                                                   u:object_r:persist_block_device:s0
-
-# RIL
-/data/oemnvitems(/.*)?                                                                                  u:object_r:nv_data_file:s0
-/(vendor|system/vendor)/radio/qcril_database/qcril.db                                                   u:object_r:nv_data_file:s0
+/dev/block/bootdevice/by-name/persist                                                                                                    u:object_r:persist_block_device:s0
+/persist/rfs/msm/mpss/server_check.txt                                                                                                   u:object_r:tftp_server_check_file:s0
 
 # Sys files
-/sys/kernel/boot_wlan(/.*)?                                                                             u:object_r:sysfs_wifi:s0
+/sys/kernel/boot_wlan(/.*)?                                                                                                              u:object_r:sysfs_wifi:s0
+
+# Shell files
+/(vendor|system/vendor)/bin/init\.qcom\.mem\.sh                                                                                          u:object_r:qti_init_shell_exec:s0
+/system/bin/move_time_data\.sh                                                                                                           u:object_r:move-time-data-sh_exec:s0
 
 # Vibrator
-/sys/devices/virtual/timed_output/vibrator(/.*)?                                                        u:object_r:sysfs_vibrator:s0
+/sys/devices/virtual/timed_output/vibrator(/.*)?                                                                                         u:object_r:sysfs_vibrator:s0
+
+# Nubia HW
+/sys/nubia_hw_version(/.*)?                                                                                                              u:object_r:sysfs_nubia_hw:s0
+/(vendor|system/vendor)/bin/init\.nubia\.usb\.sh                                                                                         u:object_r:qti_init_shell_exec:s0
+
+# Wi-Fi
+/sys/devices/soc/18800000\.qcom,icnss/net/wlan0/address                                                                                  u:object_r:sysfs_wlan_address:s0
+/sys/devices/soc/18800000\.qcom,icnss/net/wlan0(/.*)?                                                                                    u:object_r:sysfs_wlan_icnss:s0
