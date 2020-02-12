@@ -1,1 +1,2 @@
 allow init sysfs_healthd:file { open read };
+allow init sysfs_dm:file { open write };
