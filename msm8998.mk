@@ -440,6 +440,7 @@ PRODUCT_PACKAGES += \
 
 # VNDK-SP
 PRODUCT_PACKAGES += \
+    vndk-ext \
     vndk-sp
 
 # VR
