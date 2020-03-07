@@ -465,7 +465,7 @@ vendor/radio/qcril_database/upgrade/3_version_update_wps_config.sql
 
 # Radio - IMS
 -app/imssettings/imssettings.apk
--app/uceShimService/uceShimService.apk|b08e5b896f8238d4c417ffb542deb21a51ab388d
+-app/uceShimService/uceShimService.apk|0e749475132f37919b39cc71ad2c3381b4066bf2
 lib64/lib-imscamera.so
 lib64/lib-imsvideocodec.so
 lib64/lib-imsvt.so
