@@ -62,6 +62,9 @@ function blob_fixup() {
     vendor/etc/permissions/qti_libpermissions.xml)
         sed -i 's|name=\"android.hidl.manager-V1.0-java|name=\"android.hidl.manager@1.0-java|g' "${2}"
         ;;
+    vendor/bin/thermal-engine)
+        sed -i "s|/system/etc/.tp/|/vendor/etc/.tp/|g" "${2}"
+        ;;
     esac
 }
 
