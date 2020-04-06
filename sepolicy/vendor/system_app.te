@@ -1,2 +1,4 @@
 r_dir_file(system_app, proc_pagetypeinfo)
 r_dir_file(system_app, sysfs_zram)
+
+allow system_app hal_imsrcsd_hwservice:hwservice_manager find;
