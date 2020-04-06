@@ -4,3 +4,6 @@ persist.vendor.camera.                                        u:object_r:camera_
 
 # cnss-daemon
 persist.vendor.wigig.npt.enable                               u:object_r:cnss_prop:s0
+
+# Wi-Fi
+wifi.active.interface                                         u:object_r:wifi_prop:s0

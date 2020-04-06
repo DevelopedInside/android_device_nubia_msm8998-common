@@ -5,3 +5,4 @@ allow priv_app proc_modules:file { getattr open };
 allow priv_app sysfs_wlan_address:file { getattr open read };
 allow priv_app sysfs_wlan_icnss:dir open;
 allow priv_app sysfs_wlan_icnss:file { open read };
+dontaudit priv_app mnt_vendor_file:dir search;
