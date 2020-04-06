@@ -1,4 +1,4 @@
-# Copyright (c) 2013-2018, The Linux Foundation. All rights reserved.
+# Copyright (c) 2013-2019, The Linux Foundation. All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions are
@@ -29,6 +29,12 @@
 
 import /vendor/etc/init/hw/init.nubia.rc
 
+on early-init
+    mkdir /firmware 0771 system system
+    mkdir /bt_firmware 0771 system system
+    symlink /data/tombstones /tombstones
+    mkdir /dsp 0771 media media
+
 on init
     write /dev/stune/foreground/schedtune.sched_boost_no_override 1
     write /dev/stune/top-app/schedtune.sched_boost_no_override 1
@@ -57,9 +63,6 @@ on post-fs
     exec - system system -- /vendor/bin/init.qti.qseecomd.sh
     write /dev/ipa 1
 
-on late-fs
-    exec_start wait_for_keymaster
-
 on post-fs-data
     mkdir /data/tombstones 0771 system system
     mkdir /tombstones/modem 0771 system system
@@ -68,6 +71,12 @@ on post-fs-data
     mkdir /tombstones/dsps 0771 system system
     mkdir /data/vendor/hbtp 0750 system system
     mkdir /data/misc/qvr 0770 system system
+    # Create directory for dolby audio
+    mkdir /mnt/vendor/persist/audio 0770 audio audio
+    mkdir /mnt/vendor/persist/audio/dolby 0770 audio audio
+    chown audio audio /mnt/vendor/persist/audio/silence.ac3
+    # Create directory for ecref audio
+    mkdir /data/vendor/misc/audio 0770 audio audio
 
 # For cpusets initialize for Silver Only first and then Silver + Gold
 # Silver Only configuration cannot work with 0-7
@@ -107,6 +116,7 @@ on boot
     setprop vendor.usb.rmnet.func.name "gsi"
     setprop vendor.usb.rmnet.inst.name "rmnet"
     setprop vendor.usb.dpl.inst.name "dpl"
+    setprop vendor.usb.qdss.inst.name "qdss"
     setprop sys.usb.configfs 1
 
 #Peripheral manager
@@ -168,10 +178,6 @@ service spdaemon /vendor/bin/spdaemon
    user system
    group system
 
-#service mpdecision /system/vendor/bin/mpdecision --avg_comp
-#   user root
-#   disabled
-#
 #service qosmgrd /system/bin/qosmgr /system/etc/qosmgr_rules.xml
 #   user system
 #   group system
@@ -275,7 +281,7 @@ service audiod /system/vendor/bin/audiod
 #
 #
 #
-## imsdatadaemon starts with root and UID will be downgraded to SYSTEM.
+## imsdatadaemon starts with root and UID will be downgraded to RADIO.
 service vendor.imsqmidaemon /system/vendor/bin/imsqmidaemon
     class main
     user radio
@@ -283,7 +289,7 @@ service vendor.imsqmidaemon /system/vendor/bin/imsqmidaemon
     group radio log diag
     writepid /dev/cpuset/system-background/tasks
 
-# imsdatadaemon starts with root and UID will be downgraded to SYSTEM.
+# imsdatadaemon starts with root and UID will be downgraded to RADIO.
 service vendor.imsdatadaemon /system/vendor/bin/imsdatadaemon
     class main
     user radio
@@ -364,7 +370,7 @@ service cnss_diag /system/vendor/bin/cnss_diag -q -f -t HELIUM
 service vendor.ims_rtp_daemon /system/vendor/bin/ims_rtp_daemon
    class main
    user radio
-   group radio vendor_qti_diag inet log
+   group radio vendor_qti_diag audio inet log
    writepid /dev/cpuset/system-background/tasks
 
 service vendor.imsrcsservice /system/vendor/bin/imsrcsd
