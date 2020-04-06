@@ -341,10 +341,6 @@ PRODUCT_PACKAGES += \
     ueventd.rc
 
 PRODUCT_PACKAGES += \
-    move_time_data.sh \
-    move_wifi_data.sh
-
-PRODUCT_PACKAGES += \
     init.class_main.sh \
     init.nubia.usb.sh \
     init.qcom.early_boot.sh \
