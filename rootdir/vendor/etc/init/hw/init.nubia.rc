@@ -55,11 +55,11 @@ on boot
     # Wifi firmware reload path
     chown wifi wifi /sys/module/wlan/parameters/fwpath
 
+on post-fs-data
     #for audio driver to read
     copy /persist/tas2555_cal.bin /data/vendor/audio/tas2555_cal.bin
     chmod 0644 /data/vendor/audio/tas2555_cal.bin
 
-on post-fs-data
     #Create port-bridge log dir
     mkdir /data/vendor/port_bridge 0770 radio radio
     chmod 0770 /data/vendor/port_bridge
