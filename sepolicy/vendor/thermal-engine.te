@@ -1,5 +1,2 @@
-allow thermal-engine sysfs_healthd:dir search;
-allow thermal-engine sysfs_healthd:file { read write open };
-
 # to read /sys/devices
 allow thermal-engine sysfs:dir r_dir_perms;
