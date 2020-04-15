@@ -1,2 +1,0 @@
-allow hvdcp sysfs_healthd:dir search;
-allow hvdcp sysfs_healthd:file { open read getattr };
