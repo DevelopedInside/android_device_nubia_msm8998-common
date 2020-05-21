@@ -163,6 +163,10 @@ PRODUCT_PROPERTY_OVERRIDES += \
     vendor.gralloc.disable_wb_ubwc=1 \
     vendor.gralloc.enable_fb_ubwc=1
 
+# IMS
+PRODUCT_PROPERTY_OVERRIDES += \
+    persist.dbg.wfc_avail_ovr=1
+
 # Media
 PRODUCT_PROPERTY_OVERRIDES += \
     debug.stagefright.omx_default_rank.sw-audio=1 \
@@ -184,6 +188,10 @@ PRODUCT_PROPERTY_OVERRIDES += \
 # IZat
 PRODUCT_PROPERTY_OVERRIDES += \
     persist.vendor.overlay.izat.optin=rro
+
+# Network manager
+PRODUCT_PROPERTY_OVERRIDES += \
+    persist.vendor.data.iwlan.enable=true
 
 # Network Location Provider
 PRODUCT_PROPERTY_OVERRIDES += \
