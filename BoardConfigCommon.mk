@@ -26,8 +26,6 @@ PLATFORM_PATH := device/nubia/msm8998-common
 
 BUILD_BROKEN_DUP_RULES := true
 
-BOARD_VENDOR := nubia
-
 # Bootloader
 TARGET_BOOTLOADER_BOARD_NAME := msm8998
 TARGET_NO_BOOTLOADER := true
