@@ -68,8 +68,8 @@ vendor/lib64/libbtnv.so
 # Charger
 vendor/bin/hvdcp_opti
 
-# CNEService - from mata QP1A.190711.107
--priv-app/CNEService/CNEService.apk|d8579ab4633111f5473b3be8c9da487504908167
+# CNEService - from mata - QP1A.190711.107
+-priv-app/CNEService/CNEService.apk:product/priv-app/CNEService/CNEService.apk|d8579ab4633111f5473b3be8c9da487504908167
 
 # CNE
 etc/permissions/cneapiclient.xml
@@ -353,7 +353,6 @@ vendor/lib64/libperipheral_client.so
 # QMI
 etc/permissions/qti_libpermissions.xml:vendor/etc/permissions/qti_libpermissions.xml
 etc/permissions/qti_permissions.xml:vendor/etc/permissions/qti_permissions.xml
-lib64/libdiag_system.so
 vendor/bin/irsc_util
 vendor/bin/pd-mapper
 vendor/lib/libdiag.so
@@ -386,19 +385,19 @@ vendor/lib64/libqmi_encdec.so
 vendor/lib64/libqmiservices.so
 
 # Radio
--app/datastatusnotification/datastatusnotification.apk
+-app/datastatusnotification/datastatusnotification.apk:product/app/datastatusnotification/datastatusnotification.apk
 -app/embms/embms.apk
--app/QtiTelephonyService/QtiTelephonyService.apk
+-app/QtiTelephonyService/QtiTelephonyService.apk:product/app/QtiTelephonyService/QtiTelephonyService.apk
 etc/permissions/embms.xml
 etc/permissions/lpa.xml
-etc/permissions/qcrilhook.xml
+etc/permissions/qcrilhook.xml:product/etc/permissions/qcrilhook.xml
 etc/permissions/telephonyservice.xml
 framework/embmslibrary.jar
-framework/qcrilhook.jar
-framework/qti-telephony-common.jar
+framework/qcrilhook.jar:product/framework/qcrilhook.jar
+framework/qti-telephony-common.jar:product/framework/qti-telephony-common.jar
 framework/QtiTelephonyServicelibrary.jar
 framework/uimlpalibrary.jar
--priv-app/qcrilmsgtunnel/qcrilmsgtunnel.apk
+-priv-app/qcrilmsgtunnel/qcrilmsgtunnel.apk:product/priv-app/qcrilmsgtunnel/qcrilmsgtunnel.apk
 vendor/bin/ATFWD-daemon
 vendor/bin/netmgrd
 vendor/bin/pd-mapper
@@ -448,17 +447,18 @@ vendor/radio/qcril_database/upgrade/3_version_update_wps_config.sql
 
 # Radio - IMS
 -app/imssettings/imssettings.apk
--app/uceShimService/uceShimService.apk|0e749475132f37919b39cc71ad2c3381b4066bf2
-lib64/lib-imscamera.so
-lib64/lib-imsvideocodec.so
-lib64/lib-imsvt.so
-lib64/lib-imsvtextutils.so
-lib64/lib-imsvtutils.so
-lib64/libimscamera_jni.so
-lib64/libimsmedia_jni.so
-lib64/librcc.so
-lib64/vendor.qti.imsrtpservice@1.0.so
--priv-app/ims/ims.apk
+-app/uceShimService/uceShimService.apk:product/app/uceShimService/uceShimService.apk|0e749475132f37919b39cc71ad2c3381b4066bf2
+lib64/lib-imscamera.so:product/lib64/lib-imscamera.so
+lib64/lib-imsvideocodec.so:product/lib64/lib-imsvideocodec.so
+lib64/lib-imsvt.so:product/lib64/lib-imsvt.so
+lib64/lib-imsvtextutils.so:product/lib64/lib-imsvtextutils.so
+lib64/lib-imsvtutils.so:product/lib64/lib-imsvtutils.so
+lib64/libdiag_system.so:product/lib64/libdiag_system.so
+lib64/libimscamera_jni.so:product/lib64/libimscamera_jni.so
+lib64/libimsmedia_jni.so:product/lib64/libimsmedia_jni.so
+lib64/librcc.so:product/lib64/librcc.so
+lib64/vendor.qti.imsrtpservice@1.0.so:product/lib64/vendor.qti.imsrtpservice@1.0.so
+-priv-app/ims/ims.apk:product/priv-app/ims/ims.apk|71b2daa01887c75301f8b73ad47317c29392d383
 vendor/bin/ims_rtp_daemon
 vendor/bin/imsdatadaemon
 vendor/bin/imsqmidaemon
