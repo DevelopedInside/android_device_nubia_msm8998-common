@@ -56,6 +56,9 @@ on boot
     # Wifi firmware reload path
     chown wifi wifi /sys/module/wlan/parameters/fwpath
 
+    # Disable serial console
+    setprop init.svc.console stopped
+
 on post-fs-data
     #for audio driver to read
     copy /persist/tas2555_cal.bin /data/vendor/audio/tas2555_cal.bin
