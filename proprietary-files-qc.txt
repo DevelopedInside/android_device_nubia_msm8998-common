@@ -384,6 +384,9 @@ vendor/lib64/libqmi_csi.so
 vendor/lib64/libqmi_encdec.so
 vendor/lib64/libqmiservices.so
 
+# RIL - from jasmine V11.0.15.0.QDIMIXM
+product/framework/qti-telephony-common.jar|5b1c23ce0d42e1b666d387eedde3444dd07e61bc
+
 # Radio
 -app/datastatusnotification/datastatusnotification.apk:product/app/datastatusnotification/datastatusnotification.apk
 -app/embms/embms.apk
@@ -394,7 +397,6 @@ etc/permissions/qcrilhook.xml:product/etc/permissions/qcrilhook.xml
 etc/permissions/telephonyservice.xml
 framework/embmslibrary.jar
 framework/qcrilhook.jar:product/framework/qcrilhook.jar
-framework/qti-telephony-common.jar:product/framework/qti-telephony-common.jar
 framework/QtiTelephonyServicelibrary.jar
 framework/uimlpalibrary.jar
 -priv-app/qcrilmsgtunnel/qcrilmsgtunnel.apk:product/priv-app/qcrilmsgtunnel/qcrilmsgtunnel.apk
@@ -445,6 +447,11 @@ vendor/radio/qcril_database/upgrade/1_version_intro.sql
 vendor/radio/qcril_database/upgrade/2_version_add_wps_config.sql
 vendor/radio/qcril_database/upgrade/3_version_update_wps_config.sql
 
+# Radio - IMS from jasmine V11.0.15.0.QDIMIXM
+-product/priv-app/ims/ims.apk|fe11b3fe75a52e586ca6390adbd1b234f4f565ed
+product/lib64/libimscamera_jni.so|7cb89110cca94d37d68c705f12a7a5a4ee106139
+product/lib64/libimsmedia_jni.so|3540752cc3658261ea3c909f03018eea4398f84e
+
 # Radio - IMS
 -app/imssettings/imssettings.apk
 -app/uceShimService/uceShimService.apk:product/app/uceShimService/uceShimService.apk|0e749475132f37919b39cc71ad2c3381b4066bf2
@@ -454,11 +461,8 @@ lib64/lib-imsvt.so:product/lib64/lib-imsvt.so
 lib64/lib-imsvtextutils.so:product/lib64/lib-imsvtextutils.so
 lib64/lib-imsvtutils.so:product/lib64/lib-imsvtutils.so
 lib64/libdiag_system.so:product/lib64/libdiag_system.so
-lib64/libimscamera_jni.so:product/lib64/libimscamera_jni.so
-lib64/libimsmedia_jni.so:product/lib64/libimsmedia_jni.so
 lib64/librcc.so:product/lib64/librcc.so
 lib64/vendor.qti.imsrtpservice@1.0.so:product/lib64/vendor.qti.imsrtpservice@1.0.so
--priv-app/ims/ims.apk:product/priv-app/ims/ims.apk|71b2daa01887c75301f8b73ad47317c29392d383
 vendor/bin/ims_rtp_daemon
 vendor/bin/imsdatadaemon
 vendor/bin/imsqmidaemon
