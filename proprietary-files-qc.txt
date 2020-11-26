@@ -304,12 +304,6 @@ vendor/lib/libgcs.so
 vendor/lib/libsmwrapper.so
 
 # Media
-lib/extractors/libmmparser.so
-lib/libFileMux.so
-lib/libmmosal.so
-lib/libmmparser_lite.so
-lib/libOmxMux.so
-lib64/libmmosal.so
 vendor/lib/libgpustats.so
 vendor/lib/libI420colorconvert.so
 vendor/lib/libmm-color-convertor.so
