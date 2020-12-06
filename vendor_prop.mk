@@ -30,8 +30,6 @@ PRODUCT_PROPERTY_OVERRIDES += \
     persist.vendor.audio.fluence.voicerec=false \
     persist.vendor.audio.hw.binder.size_kbyte=1024 \
     persist.vendor.audio.ras.enabled=false \
-    persist.vendor.bt.a2dp_offload_cap=sbc-aac \
-    persist.vendor.bt.aac_frm_ctl.enabled=true \
     ro.af.client_heap_size_kbyte=7168 \
     ro.bluetooth.a2dp_offload.supported=false \
     ro.vendor.audio.sdk.fluencetype=fluence \
@@ -104,6 +102,7 @@ PRODUCT_PROPERTY_OVERRIDES += \
 
 # Bluetooth
 PRODUCT_PROPERTY_OVERRIDES += \
+    persist.vendor.qcom.bluetooth.aac_frm_ctl.enabled=true \
     vendor.qcom.bluetooth.soc=cherokee
 
 # Camera
