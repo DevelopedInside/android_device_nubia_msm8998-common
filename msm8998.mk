@@ -78,9 +78,9 @@ PRODUCT_CHARACTERISTICS := nosdcard
 # Audio
 PRODUCT_PACKAGES += \
     audio.a2dp.default \
+    audio.primary.msm8998 \
     audio.r_submix.default \
-    audio.usb.default \
-    audio.primary.msm8998
+    audio.usb.default
 
 PRODUCT_PACKAGES += \
     libaudio-resampler \
@@ -88,14 +88,16 @@ PRODUCT_PACKAGES += \
     libqcompostprocbundle \
     libqcomvisualizer \
     libqcomvoiceprocessing \
-    libvolumelistener \
-    tinymix
+    libvolumelistener
 
 PRODUCT_PACKAGES += \
     android.hardware.audio.effect@5.0-impl \
     android.hardware.audio@5.0-impl \
     android.hardware.audio@2.0-service \
     android.hardware.soundtrigger@2.2-impl
+
+PRODUCT_PACKAGES += \
+    tinymix
 
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/audio/audio_effects.xml:$(TARGET_COPY_OUT_VENDOR)/etc/audio_effects.xml \
@@ -153,6 +155,10 @@ PRODUCT_PACKAGES += \
     com.quicinc.cne \
     services-ext
 
+# Configstore
+PRODUCT_PACKAGES += \
+    android.hardware.configstore@1.0-service
+    
 # Display
 PRODUCT_PACKAGES += \
     copybit.msm8998 \
@@ -169,12 +175,12 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     android.hardware.graphics.allocator@2.0-impl \
     android.hardware.graphics.allocator@2.0-service \
-    android.hardware.graphics.mapper@2.0-impl-2.1 \
     android.hardware.graphics.composer@2.1-impl \
     android.hardware.graphics.composer@2.1-service \
+    android.hardware.graphics.mapper@2.0-impl-2.1 \
     android.hardware.memtrack@1.0-impl \
     android.hardware.memtrack@1.0-service \
-    android.hardware.configstore@1.0-service
+    android.hardware.renderscript@1.0-impl
 
 # Doze
 PRODUCT_PACKAGES += \
@@ -268,8 +274,8 @@ PRODUCT_PACKAGES += \
 # Media
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/configs/media_codecs.xml:$(TARGET_COPY_OUT_VENDOR)/etc/media_codecs.xml \
-    $(LOCAL_PATH)/configs/media_profiles_V1_0.xml:$(TARGET_COPY_OUT_VENDOR)/etc/media_profiles_V1_0.xml \
     $(LOCAL_PATH)/configs/media_codecs_performance.xml:$(TARGET_COPY_OUT_VENDOR)/etc/media_codecs_performance.xml \
+    $(LOCAL_PATH)/configs/media_profiles_V1_0.xml:$(TARGET_COPY_OUT_VENDOR)/etc/media_profiles_V1_0.xml
 
 PRODUCT_COPY_FILES += \
     frameworks/av/media/libstagefright/data/media_codecs_google_audio.xml:$(TARGET_COPY_OUT_VENDOR)/etc/media_codecs_google_audio.xml \
@@ -353,26 +359,17 @@ PRODUCT_PACKAGES += \
     init.qcom.usb.rc \
     init.target.rc
 
-# Releasetools
-PRODUCT_PACKAGES += \
-    librecovery_updater_nubia
-    
-# RenderScript HAL
-PRODUCT_PACKAGES += \
-    android.hardware.renderscript@1.0-impl
-
 # RCS
 PRODUCT_PACKAGES += \
     com.android.ims.rcsmanager \
     PresencePolling \
     RcsService
 
-# RIL
+# Releasetools
 PRODUCT_PACKAGES += \
-    android.hardware.radio@1.2 \
-    android.hardware.radio.config@1.0 \
-    android.hardware.secure_element@1.0
+    librecovery_updater_nubia
 
+# RIL
 PRODUCT_PACKAGES += \
     librmnetctl \
     libxml2 \
