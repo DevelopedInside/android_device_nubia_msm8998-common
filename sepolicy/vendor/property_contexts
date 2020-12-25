@@ -23,6 +23,9 @@ sdm.                                                          u:object_r:vendor_
 # Recovery
 ro.build.expect.firmware                                      u:object_r:exported_default_prop:s0
 
+# Subsystem restart level
+persist.vendor.ssr.restart_level                              u:object_r:vendor_default_prop:s0
+
 # Thermal engine
 persist.sys.game.                                             u:object_r:vendor_default_prop:s0
 persist.sys.lcd.backlight.max                                 u:object_r:vendor_default_prop:s0
