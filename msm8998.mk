@@ -321,6 +321,8 @@ PRODUCT_COPY_FILES += \
 # Properties
 include $(LOCAL_PATH)/vendor_prop.mk
 
+PRODUCT_COMPATIBLE_PROPERTY_OVERRIDE := true
+
 # QCOM
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/configs/product-privapp-permissions-qti.xml:$(TARGET_COPY_OUT_PRODUCT)/etc/permissions/privapp-permissions-qti.xml \
