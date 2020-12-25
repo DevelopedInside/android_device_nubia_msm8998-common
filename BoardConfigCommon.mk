@@ -213,9 +213,9 @@ USE_DEVICE_SPECIFIC_GPS := true
 TARGET_PROVIDES_KEYMASTER := true
 
 # Manifest
+DEVICE_FRAMEWORK_MANIFEST_FILE := $(PLATFORM_PATH)/framework_manifest.xml
 DEVICE_MANIFEST_FILE := $(PLATFORM_PATH)/manifest.xml
 DEVICE_MATRIX_FILE := $(PLATFORM_PATH)/compatibility_matrix.xml
-DEVICE_FRAMEWORK_MANIFEST_FILE := $(PLATFORM_PATH)/framework_manifest.xml
 
 # Media
 BOARD_SECCOMP_POLICY := $(PLATFORM_PATH)/seccomp
@@ -228,7 +228,12 @@ BOARD_CACHEIMAGE_PARTITION_SIZE := 268435456
 BOARD_RECOVERYIMAGE_PARTITION_SIZE := 67108864
 BOARD_USERDATAIMAGE_PARTITION_SIZE := 55680380928
 BOARD_FLASH_BLOCK_SIZE := 262144 # (BOARD_KERNEL_PAGESIZE * 64)
-
+BOARD_ROOT_EXTRA_SYMLINKS := \
+    /vendor/dsp:/dsp \
+    /vendor/firmware_mnt:/firmware \
+    /vendor/bt_firmware:/bt_firmware \
+    /mnt/vendor/persist:/persist
+TARGET_COPY_OUT_VENDOR := vendor
 TARGET_USERIMAGES_USE_EXT4 := true
 
 # Peripheral manager
@@ -251,13 +256,6 @@ TARGET_RELEASETOOLS_EXTENSIONS := $(PLATFORM_PATH)
 PROTOBUF_SUPPORTED := true
 TARGET_PROVIDES_QTI_TELEPHONY_JAR := true
 
-# Root
-BOARD_ROOT_EXTRA_SYMLINKS := \
-    /vendor/dsp:/dsp \
-    /vendor/firmware_mnt:/firmware \
-    /vendor/bt_firmware:/bt_firmware \
-    /mnt/vendor/persist:/persist
-
 # Security patch level
 VENDOR_SECURITY_PATCH := 2020-11-01
 
@@ -267,10 +265,9 @@ BOARD_SEPOLICY_DIRS += $(PLATFORM_PATH)/sepolicy/vendor
 BOARD_PLAT_PRIVATE_SEPOLICY_DIR += $(PLATFORM_PATH)/sepolicy/private
 
 # Treble
+BOARD_PROPERTY_OVERRIDES_SPLIT_ENABLED := true
 PRODUCT_FULL_TREBLE_OVERRIDE := true
 PRODUCT_VENDOR_MOVE_ENABLED := true
-TARGET_COPY_OUT_VENDOR := vendor
-BOARD_PROPERTY_OVERRIDES_SPLIT_ENABLED := true
 
 # VNDK
 BOARD_VNDK_VERSION := current
