@@ -365,12 +365,6 @@ PRODUCT_PACKAGES += \
     init.qcom.usb.rc \
     init.target.rc
 
-# RCS
-PRODUCT_PACKAGES += \
-    com.android.ims.rcsmanager \
-    PresencePolling \
-    RcsService
-
 # Releasetools
 PRODUCT_PACKAGES += \
     librecovery_updater_nubia
