@@ -18,9 +18,6 @@
 # FRP partition
 /dev/block/bootdevice/by-name/frp                                                                                                        u:object_r:frp_block_device:s0
 
-# NFC
-/dev/bcm2079x                                                                                                                            u:object_r:nfc_device:s0
-
 # Haptic
 /dev/drv2605                                                                                                                             u:object_r:haptics_device:s0
 
