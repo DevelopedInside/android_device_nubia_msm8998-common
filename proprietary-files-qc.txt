@@ -119,7 +119,6 @@ vendor/lib64/com.quicinc.cne.server@2.2.so
 vendor/lib64/libcne.so
 vendor/lib64/libcneapiclient.so
 vendor/lib64/libcneoplookup.so
-vendor/lib64/libcneqmiutils.so
 vendor/lib64/libwms.so
 vendor/lib64/libwqe.so
 vendor/lib64/libxml.so
@@ -157,17 +156,9 @@ vendor/lib64/libqisl.so
 vendor/lib64/libQSEEComAPI.so
 vendor/lib64/librpmb.so
 vendor/lib64/libsdedrm.so
-vendor/lib64/libSecureUILib.so
 vendor/lib64/libsecureui.so
-vendor/lib64/libsecureui_svcsock.so
 vendor/lib64/libspl.so
 vendor/lib64/libssd.so
-vendor/lib64/libStDrvInt.so
-
-# DRM (TUI)
-lib64/vendor.qti.hardware.tui_comm@1.0.so:vendor/lib64/vendor.qti.hardware.tui_comm@1.0.so
-vendor/bin/hw/vendor.qti.hardware.tui_comm@1.0-service-qti
-vendor/etc/init/vendor.qti.hardware.tui_comm@1.0-service-qti.rc
 
 # DRM (Widevine)
 vendor/bin/hw/android.hardware.drm@1.1-service.widevine
@@ -187,21 +178,13 @@ vendor/bin/xtwifi-inet-agent
 vendor/etc/cacert_location.pem
 vendor/etc/xtra_root_cert.pem
 vendor/lib64/libdataitems.so
-vendor/lib64/libDRPlugin.so
-vendor/lib64/libdrplugin_client.so
-vendor/lib64/libevent_observer.so
 vendor/lib64/libflp.so
 vendor/lib64/libgdtap.so
 vendor/lib64/libgeofence.so
-vendor/lib64/libizat_client_api.so
 vendor/lib64/libizat_core.so
 vendor/lib64/liblbs_core.so
 vendor/lib64/libloc_api_v02.so
 vendor/lib64/libloc_ds_api.so
-vendor/lib64/liblowi_client.so
-vendor/lib64/libulp2.so
-vendor/lib64/libxtadapter.so
-vendor/lib64/libxtwifi_ulp_adaptor.so
 
 # Graphics
 vendor/lib/egl/eglSubDriverAndroid.so
@@ -248,7 +231,6 @@ vendor/lib64/librs_adreno.so
 vendor/lib64/libRSDriver_adreno.so
 
 # Graphics (SDM) - from DRG - QKQ1.190828.002
-vendor/lib/libqseed3.so|f1c5c5e2db7cf1bf1cd6782af3476ec721c525e7
 -vendor/lib/libsdm-disp-vndapis.so|15a98ef885dbd29935b1107d7a2988ae495abb87
 vendor/lib64/libqseed3.so|24ae4dfe5d9fa27a858b64dfafd1c713da6e6fde
 vendor/lib64/libsdm-color.so|ed022cfcc1546c11b82991986e0a938464400858
@@ -331,9 +313,6 @@ vendor/firmware/ipa_fws.mdt
 # Keystore
 vendor/lib/hw/keystore.msm8998.so
 vendor/lib64/hw/keystore.msm8998.so
-vendor/lib64/libkeymasterdeviceutils.so
-vendor/lib64/libkeymasterprovision.so
-vendor/lib64/libkeymasterutils.so
 
 # Listen
 vendor/lib/hw/sound_trigger.primary.msm8998.so
