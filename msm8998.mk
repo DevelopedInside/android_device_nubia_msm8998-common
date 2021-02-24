@@ -166,10 +166,7 @@ PRODUCT_PACKAGES += \
     hwcomposer.msm8998 \
     memtrack.msm8998 \
     libdisplayconfig \
-    libqdMetaData \
-    libqdMetaData.system \
-    libtinyxml \
-    libvulkan
+    libqdMetaData.system
 
 PRODUCT_PACKAGES += \
     android.hardware.graphics.allocator@2.0-impl:64 \
@@ -217,10 +214,7 @@ PRODUCT_PACKAGES += \
     android.hardware.gnss@1.0-service-qti
 
 PRODUCT_PACKAGES += \
-    libcurl \
-    libgnss \
-    libgnsspps \
-    libvehiclenetwork-native
+    libgnss
 
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/gps/etc/apdr.conf:$(TARGET_COPY_OUT_VENDOR)/etc/apdr.conf \
