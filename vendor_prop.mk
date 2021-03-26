@@ -208,6 +208,10 @@ PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
 PRODUCT_PROPERTY_OVERRIDES += \
     persist.vendor.delta_time.enable=true
 
+# Widevine
+PRODUCT_PROPERTY_OVERRIDES += \
+    drm.service.enabled=true
+
 # WFD
 PRODUCT_PROPERTY_OVERRIDES += \
     persist.sys.wfd.virtual=0
