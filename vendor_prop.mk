@@ -171,6 +171,7 @@ PRODUCT_PROPERTY_OVERRIDES += \
 # RIL
 PRODUCT_PROPERTY_OVERRIDES += \
     persist.radio.multisim.config=dsds \
+    persist.sys.indication_max=50 \
     persist.vendor.ap.restart_level=0 \
     persist.vendor.data.mode=concurrent \
     persist.vendor.radio.apm_sim_not_pwdn=1 \
