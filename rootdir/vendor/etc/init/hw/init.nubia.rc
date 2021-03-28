@@ -274,12 +274,6 @@ on property:sys.boot_completed=1
     # Enable ZRAM on boot_completed
     swapon_all /vendor/etc/fstab.qcom
 
-service vendor.cnd /system/vendor/bin/cnd
-    class main
-    user system
-    group system wifi inet radio wakelock net_admin
-    writepid /dev/cpuset/system-background/tasks
-
 service vendor.dataqti /system/vendor/bin/qti
     class main
     user radio
@@ -288,23 +282,8 @@ service vendor.dataqti /system/vendor/bin/qti
     disabled
     writepid /dev/cpuset/system-background/tasks
 
-# Manage netmgrd based on value of property
-on property:persist.vendor.data.mode=disabled
-    stop vendor.netmgrd
-
 service vendor.netmgrd /system/vendor/bin/netmgrd
     class main
-    writepid /dev/cpuset/system-background/tasks
-
-on property:ro.vendor.use_data_netmgrd=false
-    # netmgr not supported on specific target
-    stop vendor.netmgrd
-
-service vendor.port-bridge /system/vendor/bin/port-bridge
-    class main
-    user radio
-    group radio system inet
-    oneshot
     writepid /dev/cpuset/system-background/tasks
 
 service vendor.rmt_storage /vendor/bin/rmt_storage
@@ -317,4 +296,42 @@ service vendor.rmt_storage /vendor/bin/rmt_storage
 service vendor.tftp_server /vendor/bin/tftp_server
    class core
    user root
+   writepid /dev/cpuset/system-background/tasks
+
+service adsprpcd /system/vendor/bin/adsprpcd
+   class main
+   user media
+   group media
+   writepid /dev/cpuset/system-background/tasks
+
+## imsdatadaemon starts with root and UID will be downgraded to RADIO.
+service vendor.imsqmidaemon /system/vendor/bin/imsqmidaemon
+    class main
+    user radio
+    socket ims_qmid stream 0660 system radio
+    group radio log vendor_qti_diag
+    writepid /dev/cpuset/system-background/tasks
+
+# imsdatadaemon starts with root and UID will be downgraded to RADIO.
+service vendor.imsdatadaemon /system/vendor/bin/imsdatadaemon
+    class main
+    user radio
+    socket ims_datad stream 0660 system radio
+    group radio wifi inet log vendor_qti_diag
+    disabled
+    writepid /dev/cpuset/system-background/tasks
+
+on property:vendor.ims.DATA_DAEMON_STATUS=1
+    restart vendor.ims_rtp_daemon
+
+service vendor.ims_rtp_daemon /system/vendor/bin/ims_rtp_daemon
+   class main
+   user radio
+   group radio vendor_qti_diag audio inet log
+   writepid /dev/cpuset/system-background/tasks
+
+service vendor.imsrcsservice /system/vendor/bin/imsrcsd
+   class main
+   user radio
+   group radio vendor_qti_diag inet log wakelock
    writepid /dev/cpuset/system-background/tasks

@@ -53,14 +53,6 @@ if [ -f /sys/class/drm/card0-DSI-1/modes ]; then
         fb_width=${line%%x*};
         break;
     done < $mode_file
-elif [ -f /sys/class/drm/card0-DP-1/modes ]; then
-    echo "detect" > /sys/class/drm/card0-DP-1/status
-    is_dp_mode=1
-    mode_file=/sys/class/drm/card0-DP-1/modes
-    while read line; do
-        fb_width=${line%%x*};
-        break;
-    done < $mode_file
 elif [ -f /sys/class/graphics/fb0/virtual_size ]; then
     res=`cat /sys/class/graphics/fb0/virtual_size` 2> /dev/null
     fb_width=${res%,*}
@@ -79,9 +71,6 @@ fi
 function set_density_by_fb() {
     #put default density based on width
     if [ -z $fb_width ]; then
-        if [ $is_dp_mode -eq 1 ]; then
-            return;
-        fi
         setprop vendor.display.lcd_density 320
     else
         if [ $fb_width -ge 1600 ]; then
@@ -273,10 +262,11 @@ case "$target" in
                     log -t BOOT -p i "SDM429 early_boot prop set for: HwID '$soc_hwid'"
                 fi
                 ;;
-            303|307|308|309|320)
+            303|307|308|309|320|386|436)
                 # Vulkan is not supported for 8917 variants
                 setprop vendor.opengles.version 196608
                 setprop persist.graphics.vulkan.disable true
+                setprop vendor.gralloc.disable_ahardware_buffer 1
                 ;;
             *)
                 setprop vendor.opengles.version 196608
@@ -294,13 +284,6 @@ case "$target" in
         case "$soc_hwplatform" in
             *)
                 setprop vendor.display.lcd_density 560
-                ;;
-        esac
-        ;;
-    "qcs605")
-        case "$soc_hwplatform" in
-            *)
-                setprop vendor.display.lcd_density 640
                 ;;
         esac
         ;;
@@ -329,6 +312,7 @@ case "$target" in
     "kona")
         case "$soc_hwplatform" in
             *)
+                setprop vendor.media.target_variant "_kona"
                 if [ $fb_width -le 1600 ]; then
                     setprop vendor.display.lcd_density 560
                 else
@@ -345,28 +329,57 @@ case "$target" in
                     setprop vendor.media.target.version 1
                 fi
                 ;;
-            434)
+            434|459)
                 sku_ver=`cat /sys/devices/platform/soc/aa00000.qcom,vidc1/sku_version` 2> /dev/null
                 setprop vendor.media.target.version 2
                 if [ $sku_ver -eq 1 ]; then
                     setprop vendor.media.target.version 3
                 fi
                 ;;
+            476)
+                # Fraser soc_id 476
+                setprop vendor.display.enable_qsync_idle 1
+                ;;
         esac
         ;;
     "bengal")
-        case "$soc_hwplatform" in
-            *)
-                sku_ver=`cat /sys/devices/platform/soc/5a00000.qcom,vidc/sku_version` 2> /dev/null
+        case "$soc_hwid" in
+            441|473)
+                # 441 is for scuba and 473 for scuba iot qcm
+                setprop vendor.fastrpc.disable.cdsprpcd.daemon 1
+                setprop vendor.media.target.version 2
+                setprop vendor.gralloc.disable_ubwc 1
+                setprop vendor.display.enhance_idle_time 1
+                setprop vendor.netflix.bsp_rev ""
+                # 196609 is decimal for 0x30001 to report version 3.1
+                setprop vendor.opengles.version 196609
+                sku_ver=`cat /sys/devices/platform/soc/5a00000.qcom,vidc1/sku_version` 2> /dev/null
                 if [ $sku_ver -eq 1 ]; then
-                    setprop vendor.media.target.version 1
+                   setprop vendor.media.target.version 3
                 fi
+                ;;
+            471|474)
+                # 471 is for scuba APQ and 474 for scuba iot qcs
+                setprop vendor.fastrpc.disable.cdsprpcd.daemon 1
+                setprop vendor.gralloc.disable_ubwc 1
+                setprop vendor.display.enhance_idle_time 1
+                setprop vendor.netflix.bsp_rev ""
+                ;;
+            *)
+                # default case is for bengal
+                setprop vendor.netflix.bsp_rev "Q6115-31409-1"
                 ;;
         esac
         ;;
     "sdm710" | "msmpeafowl")
         case "$soc_hwplatform" in
             *)
+                if [ $fb_width -le 1600 ]; then
+                    setprop vendor.display.lcd_density 560
+                else
+                    setprop vendor.display.lcd_density 640
+                fi
+
                 sku_ver=`cat /sys/devices/platform/soc/aa00000.qcom,vidc1/sku_version` 2> /dev/null
                 if [ $sku_ver -eq 1 ]; then
                     setprop vendor.media.target.version 1
@@ -389,10 +402,22 @@ case "$target" in
     #Set property to differentiate SDM660 & SDM455
     #SOC ID for SDM455 is 385
     "sdm660")
-        case "$soc_hwid" in
-           385)
-               setprop vendor.media.target.version 1
+        case "$soc_hwplatform" in
+            *)
+                if [ $fb_width -le 1600 ]; then
+                    setprop vendor.display.lcd_density 560
+                else
+                    setprop vendor.display.lcd_density 640
+                fi
+
+                if [ $soc_hwid -eq 385 ]; then
+                    setprop vendor.media.target.version 1
+                fi
+                ;;
         esac
+        ;;
+    "holi")
+        setprop vendor.media.target_variant "_holi"
         ;;
 esac
 
@@ -436,8 +461,6 @@ esac
 case "$product" in
         "sdmshrike_au")
          setprop vendor.display.lcd_density 160
-         echo 940800000 > /sys/class/devfreq/soc:qcom,cpu0-cpu-l3-lat/min_freq
-         echo 940800000 > /sys/class/devfreq/soc:qcom,cpu4-cpu-l3-lat/min_freq
          ;;
         *)
         ;;
