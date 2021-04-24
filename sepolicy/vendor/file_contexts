@@ -34,6 +34,7 @@
 /(vendor|system/vendor)/bin/init\.qcom\.mem\.sh                                                                                          u:object_r:qti_init_shell_exec:s0
 
 # Vibrator
+/vendor/bin/hw/android\.hardware\.vibrator@1\.1-service\.nubia                                                                           u:object_r:hal_vibrator_default_exec:s0
 /sys/devices/virtual/timed_output/vibrator(/.*)?                                                                                         u:object_r:sysfs_vibrator:s0
 
 # Nubia HW
