@@ -320,7 +320,7 @@ PRODUCT_PACKAGES += \
     init.recovery.qcom.rc
 
 PRODUCT_PACKAGES += \
-    ueventd.rc
+    ueventd.qcom.rc
 
 PRODUCT_PACKAGES += \
     init.class_main.sh \
