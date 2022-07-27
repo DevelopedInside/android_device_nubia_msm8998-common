@@ -137,19 +137,14 @@ vendor/etc/init/dpmQmiMgr.rc|67569302d3a8828a9118c835e5b69c51b0c8ac68
 vendor/lib64/com.qualcomm.qti.dpm.api@1.0.so|fbff6357ee46dd6d62f490a942ff567b6ce955d1
 vendor/lib64/libdpmqmihal.so|30a170684219dd589d05ce5b446e73b7501f13e3
 
-# DRM
+# DRM and SEE
 vendor/bin/qseecomd
-vendor/lib/libQSEEComAPI.so
-vendor/lib/libsdedrm.so
 vendor/lib64/libdrmfs.so
 vendor/lib64/libdrmtime.so
 vendor/lib64/libGPreqcancel_svc.so
 vendor/lib64/libGPreqcancel.so
-vendor/lib64/libqisl.so
 vendor/lib64/libQSEEComAPI.so
 vendor/lib64/librpmb.so
-vendor/lib64/libsdedrm.so
-vendor/lib64/libsecureui.so
 vendor/lib64/libspl.so
 vendor/lib64/libssd.so
 
@@ -159,17 +154,12 @@ vendor/etc/init/android.hardware.drm@1.1-service.widevine.rc
 vendor/lib64/libwvhidl.so
 
 # Gatekeeper
-vendor/lib/hw/gatekeeper.msm8998.so
 vendor/lib64/hw/gatekeeper.msm8998.so
 
 # GPS
 vendor/bin/loc_launcher
 vendor/bin/lowi-server
 vendor/bin/xtra-daemon
-vendor/bin/xtwifi-client
-vendor/bin/xtwifi-inet-agent
-vendor/etc/cacert_location.pem
-vendor/etc/xtra_root_cert.pem
 vendor/lib64/libdataitems.so
 vendor/lib64/libflp.so
 vendor/lib64/libgdtap.so
@@ -185,7 +175,6 @@ vendor/lib/egl/libEGL_adreno.so
 vendor/lib/egl/libGLESv1_CM_adreno.so
 vendor/lib/egl/libGLESv2_adreno.so
 vendor/lib/egl/libq3dtools_adreno.so
-vendor/lib/egl/libq3dtools_esx.so
 vendor/lib/egl/libQTapGLES.so
 vendor/lib/hw/vulkan.msm8998.so
 vendor/lib/libadreno_utils.so
@@ -194,7 +183,6 @@ vendor/lib/libC2D2.so
 vendor/lib/libc2d30_bltlib.so
 vendor/lib/libCB.so
 vendor/lib/libgsl.so
-vendor/lib/libhdr_tm.so
 vendor/lib/libllvm-glnext.so
 vendor/lib/libllvm-qcom.so
 vendor/lib/libOpenCL.so
@@ -215,7 +203,6 @@ vendor/lib64/libC2D2.so
 vendor/lib64/libc2d30_bltlib.so
 vendor/lib64/libCB.so
 vendor/lib64/libgsl.so
-vendor/lib64/libhdr_tm.so
 vendor/lib64/libllvm-glnext.so
 vendor/lib64/libllvm-qcom.so
 vendor/lib64/libOpenCL.so
@@ -233,19 +220,8 @@ vendor/lib64/libsdmextension.so|264c00a0920d291700b2948b9337037684986921
 vendor/lib64/libtinyxml2_1.so|ba981e332895a053a67fc54a8190365a3ad37f2d
 
 # Graphics firmware
-vendor/firmware/a530_gpmu.fw2
 vendor/firmware/a530_pfp.fw
 vendor/firmware/a530_pm4.fw
-vendor/firmware/a530v1_pfp.fw
-vendor/firmware/a530v1_pm4.fw
-vendor/firmware/a530v2_seq.fw2
-vendor/firmware/a530v3_gpmu.fw2
-vendor/firmware/a530v3_seq.fw2
-vendor/firmware/a530_zap.b00
-vendor/firmware/a530_zap.b01
-vendor/firmware/a530_zap.b02
-vendor/firmware/a530_zap.elf
-vendor/firmware/a530_zap.mdt
 vendor/firmware/a540_gpmu.fw2
 vendor/firmware/a540_zap.b00
 vendor/firmware/a540_zap.b01
@@ -299,31 +275,22 @@ vendor/firmware/ipa_fws.b01
 vendor/firmware/ipa_fws.b02
 vendor/firmware/ipa_fws.b03
 vendor/firmware/ipa_fws.b04
-vendor/firmware/ipa_fws.elf
 vendor/firmware/ipa_fws.mdt
+vendor/firmware/ipa_fws.elf
+
+# IRQ balance
+vendor/bin/msm_irqbalance
 
 # Keystore
-vendor/lib/hw/keystore.msm8998.so
 vendor/lib64/hw/keystore.msm8998.so
 
 # Listen
 vendor/lib/hw/sound_trigger.primary.msm8998.so
-vendor/lib/libadpcmdec.so
-vendor/lib/libgcs-calwrapper.so
-vendor/lib/libgcs-ipc.so
-vendor/lib/libgcs-osal.so
-vendor/lib/libgcs.so
 vendor/lib/libsmwrapper.so
 
 # Media
 vendor/lib/libgpustats.so
-vendor/lib/libI420colorconvert.so
-vendor/lib/libmm-color-convertor.so
-vendor/lib/libmmosal_proprietary.so
-vendor/lib/libOmxAacDec.so
 vendor/lib/libOmxEvrcDec.so
-vendor/lib/libOmxQcelp13Dec.so
-vendor/lib/libOmxVideoDSMode.so
 vendor/lib/libOmxVpp.so
 vendor/lib/libvpphvx.so
 vendor/lib/libvpplibrary.so
@@ -332,7 +299,6 @@ vendor/lib64/libgpustats.so
 
 # Perf
 vendor/bin/energy-awareness
-vendor/bin/msm_irqbalance
 vendor/bin/hw/vendor.qti.hardware.perf@1.0-service
 vendor/etc/init/vendor.qti.hardware.perf@1.0-service.rc
 vendor/etc/perf/commonresourceconfigs.xml
@@ -446,11 +412,6 @@ vendor/radio/qcril_database/upgrade/1_version_intro.sql|67b96cb3e94737bfe271b251
 vendor/radio/qcril_database/upgrade/2_version_add_wps_config.sql|b4a825ba20fea3e2f20c7f02c8bd64596c24a75e
 vendor/radio/qcril_database/upgrade/3_version_update_wps_config.sql|0571aacaf9fc0868c48bba2f7542f5b4e68c9022
 
-# Secure Processor SubSystem
-vendor/bin/spdaemon
-vendor/lib/libspcom.so
-vendor/lib64/libspcom.so
-
 # Sensors
 vendor/bin/sensors.qti
 vendor/etc/sensors/hals.conf
@@ -479,19 +440,14 @@ lib64/vendor.qti.hardware.soter@1.0.so:vendor/lib64/vendor.qti.hardware.soter@1.
 # Thermal
 vendor/bin/thermal-engine
 vendor/etc/thermal-engine.conf
--vendor/lib/libthermalclient.so
--vendor/lib64/libthermalclient.so
+vendor/lib/libthermalclient.so
+vendor/lib64/libthermalclient.so
 vendor/lib64/libthermalioctl.so
 
 # Time services
 -vendor/app/TimeService/TimeService.apk
 vendor/bin/time_daemon
--vendor/lib64/libtime_genoff.so
-
-# Voiceprint
-framework/vendor.qti.voiceprint-V1.0-java.jar
-lib/vendor.qti.voiceprint@1.0.so
-lib64/vendor.qti.voiceprint@1.0.so
+vendor/lib64/libtime_genoff.so
 
 # Wi-Fi
 vendor/bin/cnss-daemon
