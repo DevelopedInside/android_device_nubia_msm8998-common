@@ -24,6 +24,7 @@ sdm.                                                          u:object_r:vendor_
 ro.build.expect.firmware                                      u:object_r:exported_default_prop:s0
 
 # RIL
+gsm.call.other_to_gsm                                         u:object_r:vendor_default_prop:s0
 persist.sys.indication_max                                    u:object_r:vendor_default_prop:s0
 ro.build.software.version                                     u:object_r:vendor_qcom_ims_prop:s0
 
